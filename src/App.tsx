@@ -1,23 +1,21 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState<number | undefined>()
+const App = () => {
+  const [J, setJ] = useState(0);
+  const [K, setK] = useState(0);
 
   return (
     <>
       <h1>Collatz Cycle Search Game</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => (count ?? 0) + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <header>
+        <label for="J">Select J</label>
+        <input id="J" type="number" value={J} onChange={setJ}/>
+        <label for="K">Select K</label>
+        <input id="K" type="number" value={K} onChange={setK}/>
+      </header>
+      <main>
+      </main>
     </>
   )
 }
