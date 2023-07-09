@@ -1,0 +1,38 @@
+.updown-arrow {
+	display: block;
+	font-size: xx-small;
+}
+
+.row-header2 {
+	background-color:hotpink;
+}
+
+.row-header3 {
+	background-color:cornflowerblue;
+}
+
+.minus-cell {
+	background-color:blue;
+}
+
+.plus-cell {
+	background-color:red;
+}
+
+.inactive {
+	pointer-events: none;
+	user-select: none;
+}
+
+.inactive:focus {
+	outline: 0;
+}
+
+table {
+	width: auto;
+}
+
+td, th, td *, th * {
+	min-width: 3rem;
+	font-size: xx-small !important;
+}

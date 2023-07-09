@@ -1,0 +1,9 @@
+menu {
+	display: flex;
+	padding: 0;
+}
+
+menu > li {
+	display: flex;
+	flex-direction: column;
+}

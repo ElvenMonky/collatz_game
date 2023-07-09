@@ -33,13 +33,6 @@ body,
 	height: 100%;
 }
 
-h1 {
-	font-size: 3.2em;
-	line-height: 1.1;
-	display: flex;
-	align-items: center;
-}
-
 button {
 	border-radius: 8px;
 	border: 1px solid transparent;
@@ -50,7 +43,6 @@ button {
 	background-color: #1a1a1a;
 	cursor: pointer;
 	transition: border-color 0.25s;
-	min-width: 5rem;
 }
 
 button:hover {
