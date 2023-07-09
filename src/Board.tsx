@@ -41,8 +41,8 @@ const Board = ({
 	const [rowHeaders2, setRowHeaders2] = useState<number[]>([]);
 	const [rowHeaders3, setRowHeaders3] = useState<number[]>([]);
 
-	const K = board.length ?? 0;
-	const J = (board[0]?.length ?? K) - K;
+	const K = (board.length ?? 1) - 1;
+	const J = (board[0]?.length ?? K) - K - 1;
 
 	useEffect(() => {
 		console.log(jShift);
@@ -58,12 +58,12 @@ const Board = ({
 			<thead>
 				<tr>
 					<th scope="col">
-						<button className="updown-arrow" onClick={() => setJShift(v => v - 1)}>
+						<button className="updown-arrow" onClick={() => setJShift(v => v - (v <= -J ? 0 : 1))}>
 							&#x2193;
 						</button>
 					</th>
 					<th scope="col">
-						<button className="updown-arrow" onClick={() => setJShift(v => v + 1)}>
+						<button className="updown-arrow" onClick={() => setJShift(v => v + (v >= K ? 0 : 1))}>
 							&#x2192;
 						</button>
 					</th>
@@ -83,14 +83,14 @@ const Board = ({
 					<th key="3^" scope="row" className="inactive row-header3">
 						3^{rowHeaders3[k]}
 					</th>
-					{row.slice(K-jShift-1).map((cell, j) => (
+					{row.slice(K-jShift).map((cell, j) => (
 						<td key={j}>
 							<button
 								className={`${isInactive(j, k) ? "inactive" : ""} ${cellClassMap[cell] ?? ""}`}
 								disabled={isInactive(j, k)}
-								onClick={() => setSelectedCell({ j: j+K-jShift-1, k })}
+								onClick={() => setSelectedCell({ j: j+K-jShift, k })}
 							>
-								{ selectedCell && cellDisplayMap[k-selectedCell.k]?.[j+K-jShift-1-selectedCell.j] || "\u00A0" }
+								{ selectedCell && cellDisplayMap[k-selectedCell.k]?.[j+K-jShift-selectedCell.j] || "\u00A0" }
 							</button>
 						</td>
 					))}

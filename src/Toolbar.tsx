@@ -53,8 +53,8 @@ interface IToolbarProps {
 };
 
 const Toolbar = ({ selectedCell, board, setBoard }: IToolbarProps) => {
-	const K = board.length ?? 1;
-	const J = board[0]?.length ?? 1;
+	const K = (board.length ?? 1) - 1;
+	const J = (board[0]?.length ?? K) - K - 1;
 	
 	const canUpdateBoard = (board: number[][], changes: string) => {
 		if (!selectedCell) {
