@@ -18,6 +18,10 @@ const saveBoard = () => {
   localStorage.setItem("board", JSON.stringify(board));
 }
 
+const loadBoard = () => {
+setBoard(JSON.parse(localStorage.getItem("board")));
+}
+
 	return (
 		<>
 			<h1>
@@ -37,6 +41,7 @@ const saveBoard = () => {
 				) : (
 					<BoardSizeForm {...{
 						onApply,
+      loadBoard,
 					}} />
 				)}
 			</header>
