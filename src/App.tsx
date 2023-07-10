@@ -14,6 +14,10 @@ const App = () => {
 		setBoard(() => [...Array(K+1).keys()].map((_, k) => [...Array(J+K+1).keys()].map((_, j) => (k==0 && j==J+K) ? 1 : (k==K && j==K) ? -1 : 0)));
 	}, []);
 
+const saveBoard = () => {
+  localStorage.setItem("board", JSON.stringify(board));
+}
+
 	return (
 		<>
 			<h1>
@@ -24,9 +28,12 @@ const App = () => {
 			</h1>
 			<header>
 				{board ? (
+     <>
 					<span>
 						{board.reduce((s, row, k) => s + 2**(-k)*3**k*row.reduce((sr, v, j) => sr + 2**j*v, 0), 0)}
 					</span>
+     <button onClick={saveBoard}>Save</button>
+</>
 				) : (
 					<BoardSizeForm {...{
 						onApply,
