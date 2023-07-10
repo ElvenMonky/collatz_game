@@ -3,6 +3,7 @@ import './BoardSizeForm.css';
 
 interface IBoardSizeFormProps {
 	onApply: (J: number, K: number) => void;
+  loadBoard: () => void;
 };
 
 const BoardSizeForm = ({ onApply }: IBoardSizeFormProps) => {
@@ -25,6 +26,7 @@ const BoardSizeForm = ({ onApply }: IBoardSizeFormProps) => {
 				</li>
 				<li>
 					<button type='submit'>Apply</button>
+     <button onClick={loadBoard}>Load</button>
 				</li>
 			</ul>
 		</form>
