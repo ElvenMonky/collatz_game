@@ -24,7 +24,8 @@ const buttonData: string[][] = [
 interface IToolbarProps {
 	selectedCell: { j: number, k: number } | null,
 	board: number[][],
-	setBoard: React.Dispatch<React.SetStateAction<number[][]>>,
+	
+	setBoard: React.Dispatch<React.SetStateAction<number[][] | null>>,
 };
 
 const Toolbar = ({ selectedCell, board, setBoard }: IToolbarProps) => {
@@ -46,7 +47,7 @@ const Toolbar = ({ selectedCell, board, setBoard }: IToolbarProps) => {
 
 	const updateBoard = (changes: string) => {
 		setBoard(oldBoard => {
-			if (!selectedCell || !canUpdateBoard(oldBoard, changes)) {
+			if (!oldBoard || !selectedCell || !canUpdateBoard(oldBoard, changes)) {
 				return oldBoard;
 			}
 
