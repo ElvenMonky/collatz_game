@@ -2,11 +2,10 @@ import { useState } from 'react';
 import './BoardSizeForm.css';
 
 interface IBoardSizeFormProps {
-	total: number;
 	onApply: (J: number, K: number) => void;
 };
 
-const BoardSizeForm = ({ total, onApply }: IBoardSizeFormProps) => {
+const BoardSizeForm = ({ onApply }: IBoardSizeFormProps) => {
 	const [J, setJ] = useState(1);
 	const [K, setK] = useState(1);
 
@@ -23,11 +22,6 @@ const BoardSizeForm = ({ total, onApply }: IBoardSizeFormProps) => {
 				<li>
 					<label htmlFor="K">Select K</label>
 					<input id="K" type="number" value={K} onChange={e => setK(Math.max(+e.target.value, 1))} />
-				</li>
-				<li>
-					<span>
-						{total}
-					</span>
 				</li>
 				<li>
 					<button type='submit'>Apply</button>

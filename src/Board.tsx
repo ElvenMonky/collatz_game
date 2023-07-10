@@ -61,11 +61,11 @@ const Board = ({
 						<button className="updown-arrow" onClick={() => setJShift(v => v - (v <= -J ? 0 : 1))}>
 							&#x2193;
 						</button>
-					</th>
-					<th scope="col">
 						<button className="updown-arrow" onClick={() => setJShift(v => v + (v >= K ? 0 : 1))}>
 							&#x2192;
 						</button>
+					</th>
+					<th scope="col">
 					</th>
 					{colHeaders.map(colHeader => (
 						<th key={colHeader} scope="col" className="row-header2">
@@ -85,13 +85,15 @@ const Board = ({
 					</th>
 					{row.slice(K-jShift).map((cell, j) => (
 						<td key={j}>
-							<button
-								className={`${isInactive(j, k) ? "inactive" : ""} ${cellClassMap[cell] ?? ""}`}
-								disabled={isInactive(j, k)}
-								onClick={() => setSelectedCell({ j: j+K-jShift, k })}
-							>
-								{ selectedCell && cellDisplayMap[k-selectedCell.k]?.[j+K-jShift-selectedCell.j] || "\u00A0" }
-							</button>
+							{!isInactive(j, k) && (
+								<button
+									className={`${isInactive(j, k) ? "inactive" : ""} ${cellClassMap[cell] ?? ""}`}
+									disabled={isInactive(j, k)}
+									onClick={() => setSelectedCell({ j: j+K-jShift, k })}
+								>
+									{ selectedCell && cellDisplayMap[k-selectedCell.k]?.[j+K-jShift-selectedCell.j] || "\u00A0" }
+								</button>
+							)}
 						</td>
 					))}
 				</tr>

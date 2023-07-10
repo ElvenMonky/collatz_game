@@ -1,5 +1,5 @@
 .updown-arrow {
-	display: block;
+	display: inline-block;
 	font-size: xx-small;
 }
 
@@ -35,7 +35,12 @@ table {
 
 td, th, td *, th * {
 	width: 1rem;
+	height: 1rem;
 	font-size: xx-small !important;
 	padding: 0 !important;
 	margin: 0 !important;
+}
+
+tbody th {
+	width: 2rem;
 }

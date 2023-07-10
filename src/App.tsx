@@ -7,7 +7,7 @@ import BoardSizeForm from './BoardSizeForm';
 
 const App = () => {
 	const [selectedCell, setSelectedCell] = useState<{ j: number, k: number } | null>(null);
-	const [board, setBoard] = useState<number[][]>([]);
+	const [board, setBoard] = useState<number[][] | null>(null);
 
 	const onApply = useCallback((J: number, K: number) => {
 		setSelectedCell(null);
@@ -17,26 +17,37 @@ const App = () => {
 	return (
 		<>
 			<h1>
-				<CollatzLogo className="inline-logo" />
+				<button onClick={() => setBoard(null)}>
+					<CollatzLogo className="inline-logo" />
+				</button>
 				Collatz Cycle Search Game
 			</h1>
 			<header>
-				<BoardSizeForm {...{
-					total: board.reduce((s, row, k) => s + 2**(-k)*3**k*row.reduce((sr, v, j) => sr + 2**j*v, 0), 0),
-					onApply,
-				}} />
+				{board ? (
+					<span>
+						{board.reduce((s, row, k) => s + 2**(-k)*3**k*row.reduce((sr, v, j) => sr + 2**j*v, 0), 0)}
+					</span>
+				) : (
+					<BoardSizeForm {...{
+						onApply,
+					}} />
+				)}
 			</header>
 			<main>
-				<Toolbar {...{
-					selectedCell,
-					board,
-					setBoard,
-				}} />
-				<Board {...{
-					selectedCell,
-					setSelectedCell,
-					board,
-				}} />
+				{board && (
+					<>
+						<Toolbar {...{
+							selectedCell,
+							board,
+							setBoard,
+						}} />
+						<Board {...{
+							selectedCell,
+							setSelectedCell,
+							board,
+						}} />
+					</>
+				)}
 			</main>
 		</>
 	)
