@@ -24,5 +24,6 @@ module.exports = {
 		],
 		'@typescript-eslint/no-non-null-assertion': 'off',
 		"indent": ["error", "tab"],
+		"semi": [ "warn", "always"],
 	},
 }

@@ -3,7 +3,7 @@ import './ToolbarIcon.css';
 
 interface IToolbarIconProps {
 	changes: string,
-};
+}
 
 const ToolbarIcon = ({ changes }: IToolbarIconProps) => {
 	return (

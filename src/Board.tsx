@@ -28,8 +28,8 @@ const cellDisplayMap: { [K: number]: { [K: number]: number } } = {
 interface IBoardProps {
 	board: number[][];
 	selectedCell: { j: number, k: number } | null;
-	setSelectedCell: React.Dispatch<any>;
-};
+	setSelectedCell: React.Dispatch<React.SetStateAction<{ j: number, k: number } | null>>;
+}
 
 const Board = ({
 	board,
@@ -75,32 +75,32 @@ const Board = ({
 				</tr>
 			</thead>
 			<tbody>
-			{board.map((row, k) => (
-				<tr key={k}>
-					<th key="2^" scope="row" className="row-header2">
+				{board.map((row, k) => (
+					<tr key={k}>
+						<th key="2^" scope="row" className="row-header2">
 						2<sup>{rowHeaders2[k]}</sup>
-					</th>
-					<th key="3^" scope="row" className="inactive row-header3">
+						</th>
+						<th key="3^" scope="row" className="inactive row-header3">
 						3<sup>{rowHeaders3[k]}</sup>
-					</th>
-					{row.slice(K-jShift).map((cell, j) => (
-						<td key={j}>
-							{!isInactive(j, k) && (
-								<button
-									className={`${isInactive(j, k) ? "inactive" : ""} ${cellClassMap[cell] ?? ""}`}
-									disabled={isInactive(j, k)}
-									onClick={() => setSelectedCell({ j: j+K-jShift, k })}
-								>
-									{ selectedCell && cellDisplayMap[k-selectedCell.k]?.[j+K-jShift-selectedCell.j] || "\u00A0" }
-								</button>
-							)}
-						</td>
-					))}
-				</tr>
-			))}
+						</th>
+						{row.slice(K-jShift).map((cell, j) => (
+							<td key={j}>
+								{!isInactive(j, k) && (
+									<button
+										className={`${isInactive(j, k) ? "inactive" : ""} ${cellClassMap[cell] ?? ""}`}
+										disabled={isInactive(j, k)}
+										onClick={() => setSelectedCell({ j: j+K-jShift, k })}
+									>
+										{ selectedCell && cellDisplayMap[k-selectedCell.k]?.[j+K-jShift-selectedCell.j] || "\u00A0" }
+									</button>
+								)}
+							</td>
+						))}
+					</tr>
+				))}
 			</tbody>
 		</table>
-	)
+	);
 };
 
 export default Board;

@@ -11,16 +11,17 @@ const App = () => {
 
 	const onApply = useCallback((J: number, K: number) => {
 		setSelectedCell(null);
-		setBoard(() => [...Array(K+1).keys()].map((_, k) => [...Array(J+K+1).keys()].map((_, j) => (k==0 && j==J+K) ? 1 : (k==K && j==K) ? -1 : 0)));
+		setBoard(() => [...Array(K + 1).keys()].map((_, k) => [...Array(J + K + 1).keys()].map((_, j) => (k == 0 && j == J + K) ? 1 : (k == K && j == K) ? -1 : 0)));
 	}, []);
 
-const saveBoard = () => {
-  localStorage.setItem("board", JSON.stringify(board));
-}
+	const saveBoard = () => {
+		localStorage.setItem("board", JSON.stringify(board));
+	};
 
-const loadBoard = () => {
-setBoard(JSON.parse(localStorage.getItem("board")));
-}
+	const loadBoard = () => {
+		const data = localStorage.getItem("board");
+		setBoard(data ? JSON.parse(data) as number[][] : null);
+	};
 
 	return (
 		<>
@@ -32,16 +33,16 @@ setBoard(JSON.parse(localStorage.getItem("board")));
 			</h1>
 			<header>
 				{board ? (
-     <>
-					<span>
-						{board.reduce((s, row, k) => s + 2**(-k)*3**k*row.reduce((sr, v, j) => sr + 2**j*v, 0), 0)}
-					</span>
-     <button onClick={saveBoard}>Save</button>
-</>
+					<>
+						<span>
+							{board.reduce((s, row, k) => s + 2 ** (-k) * 3 ** k * row.reduce((sr, v, j) => sr + 2 ** j * v, 0), 0)}
+						</span>
+						<button onClick={saveBoard}>Save</button>
+					</>
 				) : (
 					<BoardSizeForm {...{
 						onApply,
-      loadBoard,
+						loadBoard,
 					}} />
 				)}
 			</header>
@@ -62,7 +63,7 @@ setBoard(JSON.parse(localStorage.getItem("board")));
 				)}
 			</main>
 		</>
-	)
+	);
 };
 
 export default App;
