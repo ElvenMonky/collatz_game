@@ -30,9 +30,12 @@
 
 table {
 	width: auto;
+	border-spacing: 1px;
 }
 
 td, th, td *, th * {
-	min-width: 3rem;
+	width: 1rem;
 	font-size: xx-small !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }

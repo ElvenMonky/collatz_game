@@ -1,9 +1,19 @@
 menu {
 	display: flex;
 	padding: 0;
+	margin: 0;
+	background: yellowgreen;
+	position: fixed;
+	top:0;
+	left:0;
 }
 
 menu > li {
 	display: flex;
 	flex-direction: column;
+}
+
+menu button {
+	margin: 1px;
+	padding: 0;
 }

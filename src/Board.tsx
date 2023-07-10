@@ -69,7 +69,7 @@ const Board = ({
 					</th>
 					{colHeaders.map(colHeader => (
 						<th key={colHeader} scope="col" className="row-header2">
-							2^{colHeader}
+							2<sup>{colHeader}</sup>
 						</th>
 					))}
 				</tr>
@@ -78,10 +78,10 @@ const Board = ({
 			{board.map((row, k) => (
 				<tr key={k}>
 					<th key="2^" scope="row" className="row-header2">
-						2^{rowHeaders2[k]}
+						2<sup>{rowHeaders2[k]}</sup>
 					</th>
 					<th key="3^" scope="row" className="inactive row-header3">
-						3^{rowHeaders3[k]}
+						3<sup>{rowHeaders3[k]}</sup>
 					</th>
 					{row.slice(K-jShift).map((cell, j) => (
 						<td key={j}>

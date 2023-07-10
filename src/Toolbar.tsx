@@ -1,31 +1,6 @@
 import './Toolbar.css';
-
-const jMap: { [j: number]: number } = {
-	1: 0,
-	2: 1,
-	3: 1,
-	4: 2,
-	6: 2,
-	8: 3,
-	9: 2,
-};
-
-const kMap: { [k: number]: number } = {
-	1: 0,
-	2: 0,
-	3: 1,
-	4: 0,
-	6: 1,
-	8: 0,
-	9: 2,
-};
-
-const dMap: { [d: string]: number } = {
-	'=': -2,
-	'-': -1,
-	'+': 1,
-	'#': 2,
-};
+import { dMap, jMap, kMap } from './ToolbarData';
+import ToolbarIcon from './ToolbarIcon';
 
 const buttonData: string[][] = [
 	[
@@ -93,7 +68,9 @@ const Toolbar = ({ selectedCell, board, setBoard }: IToolbarProps) => {
 							onClick={() => updateBoard(changes)}
 							disabled={!canUpdateBoard(board, changes)}
 						>
-							{changes}
+							<ToolbarIcon {...{
+								changes: canUpdateBoard(board, changes) ? changes : '.1'
+							}}/>
 						</button>
 					))}
 				</li>
