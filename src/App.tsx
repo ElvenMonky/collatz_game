@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import './App.css';
 import { ReactComponent as CollatzLogo } from './assets/collatz.svg';
 import Board from './Board';
+import ScoreBar from './ScoreBar';
 import Toolbar from './Toolbar';
 import BoardSizeForm from './BoardSizeForm';
 
@@ -31,12 +32,17 @@ const App = () => {
 				</button>
 				Collatz Cycle Search Game
 			</h1>
+			<h3>
+				* Remove all "red" cells (plusses) or "blue" cells (minuses) from the board.<br/>
+				* Every column must be either empty or contain only one non-empty cell.<br/>
+				If done, you are half way to finding cycle element in Collatz sequence and thus winning <big>$1000000</big>!
+			</h3>
 			<header>
 				{board ? (
 					<>
-						<span>
-							{board.reduce((s, row, k) => s + 2 ** (-k) * 3 ** k * row.reduce((sr, v, j) => sr + 2 ** j * v, 0), 0)}
-						</span>
+						<ScoreBar {...{
+							board,
+						}} />
 						<button onClick={saveBoard}>Save</button>
 					</>
 				) : (

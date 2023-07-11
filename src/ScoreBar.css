@@ -1,0 +1,20 @@
+section {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	padding: 0;
+	margin: 0;
+	background: lightgray;
+	position: fixed;
+	bottom:0;
+	right:0;
+	width: 10rem;
+}
+
+section table {
+	width: 100%;
+}
+
+section th, section td {
+	text-align: left;
+}

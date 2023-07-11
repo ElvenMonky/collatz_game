@@ -5,6 +5,10 @@ main {
 	align-items: center;
 }
 
+main {
+	width: 100%;
+}
+
 h1 {
 	margin: 0;
 	font-size: 3.2em;
