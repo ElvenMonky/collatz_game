@@ -5,6 +5,7 @@ import Board from './Board';
 import ScoreBar from './ScoreBar';
 import Toolbar from './Toolbar';
 import BoardSizeForm from './BoardSizeForm';
+import HelpTooltip from './HelpTooltip';
 
 const App = () => {
 	const [selectedCell, setSelectedCell] = useState<{ j: number, k: number } | null>(null);
@@ -31,12 +32,9 @@ const App = () => {
 					<CollatzLogo className="inline-logo" />
 				</button>
 				Collatz Cycle Search Game
+				<HelpTooltip />
 			</h1>
-			<h3>
-				* Remove all "red" cells (plusses) or "blue" cells (minuses) from the board.<br/>
-				* Every column must be either empty or contain only one non-empty cell.<br/>
-				If done, you are half way to finding cycle element in Collatz sequence and thus winning <big>$1000000</big>!
-			</h3>
+			
 			<header>
 				{board ? (
 					<>

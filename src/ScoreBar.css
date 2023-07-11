@@ -13,6 +13,7 @@ section {
 
 section table {
 	width: 100%;
+	border-spacing: 1px;
 }
 
 section th, section td {
