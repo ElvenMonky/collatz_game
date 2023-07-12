@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './HamburgerMenu.css';
 import { ReactComponent as CollatzLogo } from './assets/collatz.svg';
 
