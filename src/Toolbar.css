@@ -1,4 +1,4 @@
-menu {
+.toolbar {
 	display: flex;
 	padding: 0;
 	margin: 0;
@@ -9,12 +9,12 @@ menu {
 	transform: translateX(-50%);
 }
 
-menu > li {
+.toolbar > li {
 	display: flex;
 	flex-direction: column;
 }
 
-menu button {
+.toolbar button {
 	margin: 1px;
 	padding: 0;
 }

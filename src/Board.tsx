@@ -54,7 +54,7 @@ const Board = ({
 	const isInactive = (j: number, k: number) => rowHeaders2[k] + colHeaders[j] < 0;
 
 	return (
-		<table>
+		<table className='board'>
 			<thead>
 				<tr>
 					<th scope="col">

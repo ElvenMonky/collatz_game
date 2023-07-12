@@ -28,7 +28,7 @@
 	outline: 0;
 }
 
-main table {
+.board {
 	width: auto;
 	max-width: 100%;
 	border-spacing: 1px;
@@ -36,7 +36,10 @@ main table {
 	overflow: auto;
 }
 
-td, th, td *, th * {
+.board td,
+.board th,
+.board td *,
+.board th * {
 	width: 1rem;
 	height: 1rem;
 	font-size: xx-small !important;
@@ -44,6 +47,6 @@ td, th, td *, th * {
 	margin: 0 !important;
 }
 
-tbody th {
+.board tbody th {
 	width: 2rem;
 }

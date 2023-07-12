@@ -1,7 +1,7 @@
-section {
+.scorebar {
 	display: flex;
 	flex-direction: column;
-	align-items: start;
+	align-items: center;
 	padding: 0;
 	margin: 0;
 	background: lightgray;
@@ -11,11 +11,13 @@ section {
 	width: 10rem;
 }
 
-section table {
+.scorebar table {
 	width: 100%;
 	border-spacing: 1px;
 }
 
-section th, section td {
+.scorebar th, .scorebar td {
 	text-align: left;
+	width: 2rem;
+	max-width: 2rem;
 }

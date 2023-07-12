@@ -59,7 +59,7 @@ const Toolbar = ({ selectedCell, board, setBoard }: IToolbarProps) => {
 	};
 
 	return (
-		<menu className={!selectedCell ? "inactive" : ""}>
+		<menu className={`toolbar ${!selectedCell ? "inactive" : ""}`}>
 			{buttonData.map(column => (
 				<li key={column.join(',')} >
 					{column.map(changes => (
