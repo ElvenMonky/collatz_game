@@ -14,10 +14,12 @@ const HamburgerMenu = ({ board, setBoard }: IHamburgerMenuProps) => {
 	const quickLoad = () => {
 		const data = localStorage.getItem("board");
 		setBoard(data ? JSON.parse(data) as number[][] : null);
+		setMenuExpanded(false);
 	};
 
 	const quickSave = () => {
 		localStorage.setItem("board", JSON.stringify(board));
+		setMenuExpanded(false);
 	};
 
 	const saveGame = async () => {
@@ -26,10 +28,12 @@ const HamburgerMenu = ({ board, setBoard }: IHamburgerMenuProps) => {
 		const writable = await handle.createWritable();
 		await writable.write( JSON.stringify(board) );
 		await writable.close();
+		setMenuExpanded(false);
 	};
 
 	const loadGame = () => {
 		hiddenFileInput.current?.click();
+		setMenuExpanded(false);
 	};
 
 	return (
@@ -70,7 +74,10 @@ const HamburgerMenu = ({ board, setBoard }: IHamburgerMenuProps) => {
 						<>
 							<li><button onClick={quickSave}>Quick Save</button></li>
 							<li><button onClick={saveGame}>Save Game</button></li>
-							<li><button onClick={() => setBoard(null)}>End Game</button></li>
+							<li><button onClick={() => {
+								setBoard(null);
+								setMenuExpanded(false);
+							}}>End Game</button></li>
 						</>
 					)}
 				</menu>
