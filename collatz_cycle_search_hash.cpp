@@ -20,12 +20,12 @@
 */
 // %%writefile main.cpp
 
+#include <algorithm>
 #include <iostream>
 #include <format>
 #include <vector>
 #include <string>
 #include <sstream>
-#include <algorithm>
 #include <thread>
 #include <time.h>
 
@@ -35,6 +35,7 @@
 #define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
 #define PSTLD_HACK_INTO_STD // export into namespace std
 #include "pstld.h"
+#include "unordered_dense.h"
 
 using namespace std;
 
@@ -132,11 +133,13 @@ void print_vector(vector<T>& v) {
 	cout << str.str();
 }
 
-typedef __uint256_t _bigint;
+typedef __uint128_t _bigint;
 
 _bigint y;
 vector< vector<_bigint> > x23;
 vector<_bigint> row;
+ankerl::unordered_dense::map<_bigint, __uint16_t> reminderMap;
+__uint16_t DJ = 2;
 
 void initialize_XY(__uint16_t J, __uint16_t K) {
 	_bigint y3 = 1;
@@ -186,43 +189,28 @@ void initialize_XY(__uint16_t J, __uint16_t K) {
 	}
 
 	// print_matrix(x23);
-
-	row.resize(K-1);
-	for (__uint16_t k = 0; k < K-1; ++k) {
-		row[k] = x23[K-k-2][k];
-	}
-
-	// print_vector(row);
 }
 
-// ###############################################
-// # ___ ___________ ___________ ... 2^(K+J)
-// # ___ 2^K*3^1     2^(K+1)*3^1 ... 2^(K+J-1)*3^1
-// # ___ 2^(K-1)*3^2 2^K*3^2     ... 2^(K+J-2)*3^2
-// # ... ...         ...         ... ...
-// # 3^K 2^1*3^K     2^2*3^K     ... 2^J*3^K
-void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0) {
-	__uint16_t J2 = J0 > 9 ? 9 : J0-1;
-
-	vector<__uint16_t> state;
-	state.resize(J-1);
-	for (__uint16_t j = 0; j < J-1; ++j) {
-		state[j] = j <= J0 ? K0 : 0;
+void initialize_map(__uint16_t J, __uint16_t K) {
+	__uint128_t map_size = 1;
+	DJ = 0;
+	while (map_size < 1000000000 && DJ < J) {
+		DJ += 1;
+		map_size *= (K-1+DJ);
+		map_size /= DJ;
 	}
-	// print_vector(state);
-	// cout << "Initial state" << endl;
+	DJ -= 1;
+
+	cout << "DJ= " << DJ << endl;
 
 	vector< vector<_bigint> > newline;
-	newline.resize(J-1);
+	newline.resize(DJ);
 	newline[0].resize(K);
-	for (__uint16_t j = 1; j < J-1; ++j) {
+	for (__uint16_t j = 1; j < DJ; ++j) {
 		newline[j].resize(K);
 		for (__uint16_t k = 1; k < K; ++k) {
 			newline[j][k] = 0;
-			if (k+K0 < K) {
-				newline[j][k] += newline[j-1][k+K0];
-			}
-			for (__uint16_t dk = 0; dk < K0 && dk + k < K; ++dk) {
+			for (__uint16_t dk = 0; dk + k < K; ++dk) {
 				newline[j][k] += y;
 				newline[j][k] += x23[K-k-dk+j-1][k+dk-1];
 				newline[j][k] -= x23[K-k-dk-1][k+dk-1];
@@ -235,7 +223,7 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 
 	// print_matrix(newline);
 
-	for (__uint16_t j = 1; j < J-1; ++j) {
+	for (__uint16_t j = 1; j < DJ; ++j) {
 		for (__uint16_t k = 1; k < K; ++k) {
 			_bigint temp = newline[j][k];
 			newline[j][k] = 0;
@@ -243,6 +231,109 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 			newline[j][k] += y;
 			newline[j][k] += x23[K-k+j][k-1];
 			newline[j][k] -= x23[K-k-1][k-1];
+			newline[j][k] -= temp;
+			while (newline[j][k] >= y) {
+				newline[j][k] -= y;
+			}
+		}
+	}
+
+	// print_matrix(newline);
+	// cout << "newline!!!" << endl;
+
+	vector<__uint16_t> state;
+	state.resize(DJ+1);
+	for (__uint16_t j = 0; j < DJ; ++j) {
+		state[j] = 0;
+	}
+	state[DJ] = K;
+
+	_bigint x = 0;
+	_bigint temp;
+
+	__uint16_t j = 0;
+	__uint16_t s = state[0];
+	while (j < DJ) {
+		// state[j] = s;
+		// print_vector(state);
+		// cout << x << ", " << y << endl;
+		++s;
+		if (s < K) {
+			x += x23[K-s-1][s-1];
+		} else {
+			++j;
+			while (++state[j] >= K) {
+				if (++j >= DJ) {
+					return;
+				}
+			}
+
+			s = state[j];
+			x += newline[j][s];
+			while (--j > 0) state[j] = s;
+			state[j] = s;
+		}
+
+		if (x >= y) {
+			x -= y;
+		}
+		temp = y;
+		temp -= x;
+		// cout << temp << " " << state[DJ-1] << endl;
+		reminderMap[temp] = state[DJ-1];
+	}
+};
+
+// ###############################################
+// # ___ ___________ ___________ ... 2^(K+J)
+// # ___ 2^K*3^1     2^(K+1)*3^1 ... 2^(K+J-1)*3^1
+// # ___ 2^(K-1)*3^2 2^K*3^2     ... 2^(K+J-2)*3^2
+// # ... ...         ...         ... ...
+// # 3^K 2^1*3^K     2^2*3^K     ... 2^J*3^K
+void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0) {
+	__uint16_t J2 = J0 > 9 ? 9 : J0-1;
+
+	__uint16_t JS = J-1-DJ;
+
+	vector<__uint16_t> state;
+	state.resize(JS);
+	for (__uint16_t j = 0; j < JS; ++j) {
+		state[j] = j <= J0 ? K0 : 0;
+	}
+	// print_vector(state);
+	// cout << "Initial state" << endl;
+
+	vector< vector<_bigint> > newline;
+	newline.resize(JS);
+	newline[0].resize(K);
+	for (__uint16_t j = 1; j < JS; ++j) {
+		newline[j].resize(K);
+		for (__uint16_t k = 1; k < K; ++k) {
+			newline[j][k] = 0;
+			if (k+K0 < K) {
+				newline[j][k] += newline[j-1][k+K0];
+			}
+			for (__uint16_t dk = 0; dk < K0 && dk + k < K; ++dk) {
+				newline[j][k] += y;
+				newline[j][k] += x23[K-k-dk+j-1+DJ][k+dk-1];
+				newline[j][k] -= x23[K-k-dk-1+DJ][k+dk-1];
+				while (newline[j][k] >= y) {
+					newline[j][k] -= y;
+				}
+			}
+		}
+	}
+
+	// print_matrix(newline);
+
+	for (__uint16_t j = 1; j < JS; ++j) {
+		for (__uint16_t k = 1; k < K; ++k) {
+			_bigint temp = newline[j][k];
+			newline[j][k] = 0;
+			newline[j][k] += y;
+			newline[j][k] += y;
+			newline[j][k] += x23[K-k+j+DJ][k-1];
+			newline[j][k] -= x23[K-k-1+DJ][k-1];
 			newline[j][k] -= temp;
 			while (newline[j][k] >= y) {
 				newline[j][k] -= y;
@@ -262,9 +353,9 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 		x -= y;
 	}
 
-	for (__uint16_t j = 0; j < J-1; ++j) {
+	for (__uint16_t j = 0; j < JS; ++j) {
 		for (__uint16_t k = 0; k < state[j]; ++k) {
-			x += x23[K-k+j-2][k];
+			x += x23[K-k+j-2+DJ][k];
 			while (x >= y) {
 				x -= y;
 			}
@@ -276,10 +367,12 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << J0 << " K0= " << K0 << " Xmin= " << x << endl;
 	cout << str.str();
 
-	if (x == 0) {
-		print_vector(state);
-		cout << "Solution!!!" << endl;
-		// return;
+	if (reminderMap.find(x) != reminderMap.end()) {
+		if (reminderMap[x] >= K0) {
+			print_vector(state);
+			cout << reminderMap[x] << " Solution!!!" << endl;
+			// return;
+		}
 	}
 
 	time_t old_time = time(0);
@@ -320,14 +413,15 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 			while (--j > 0) state[j] = s;
 			state[j] = s;
 		}
-			
+
 		if (x >= y) {
 			x -= y;
-			if (x == 0) {
+		}
+		if (reminderMap.find(x) != reminderMap.end()) {
+			if (reminderMap[x] >= s) {
 				state[j] = s;
 				print_vector(state);
-				cout << "Solution!!!" << endl;
-				x += y;
+				cout << reminderMap[x] << " Solution!!!" << endl;
 				// return;
 			}
 		}
@@ -336,12 +430,34 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 
 void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 	initialize_XY(J, K);
-	cout << "J= " << J << " K= " << K << " Y= " << y << endl;
+	initialize_map(J, K);
+	cout << "J= " << J << " K= " << K << " DJ= " << DJ << " Y= " << y << endl;
+
+	_bigint x = 0;
+	x += y;
+	x += x23[K+J-2][0];
+	x += x23[K+J-2][0];
+	x -= x23[K-1][0];
+	while (x >= y) {
+		x -= y;
+	}
+
+	if (reminderMap.find(x) != reminderMap.end()) {
+		cout << reminderMap[x] << " Solution!!!" << endl;
+	}
+
+	row.resize(K-1);
+	for (__uint16_t k = 0; k < K-1; ++k) {
+		row[k] = x23[K-k-2+DJ][k];
+	}
+
+	// print_vector(row);
+
 	vector<__uint32_t> JK;
-	JK.resize((J-1)*(K-1));
-	for (__uint16_t J0 = 0; J0 < J-1; ++J0) {
+	JK.resize((J-1-DJ)*(K-1));
+	for (__uint16_t J0 = 0; J0 < J-1-DJ; ++J0) {
 		for (__uint16_t K0 = 1; K0 < K; ++K0) {
-			JK[J0*(K-1)+K0-1] = ((__uint32_t)(J-J0-2)<<16)+K0-1;
+			JK[J0*(K-1)+K0-1] = ((__uint32_t)(J-J0-2-DJ)<<16)+K0-1;
 			// search_for_JK_J0K0_solution(J, K, J0, K0);
 		}
 	}
@@ -352,12 +468,12 @@ void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 }
 
 int main () {
-	// search_for_JK_solution(8, 8);
-	search_for_JK_solution(16, 28);
-	search_for_JK_solution(15, 30);
-	search_for_JK_solution(23, 23);
+	//search_for_JK_solution(4, 4);
+	// search_for_JK_solution(16, 28);
+	// search_for_JK_solution(15, 30);
+	// search_for_JK_solution(23, 23);
 	// search_for_JK_solution(17, 29);
-	// search_for_JK_solution(24, 41);
+	search_for_JK_solution(24, 41);
 	// search_for_JK_solution(55, 94);
 	// search_for_JK_solution(65, 111);
 	return 0;
