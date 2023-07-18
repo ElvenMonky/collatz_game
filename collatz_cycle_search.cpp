@@ -132,7 +132,7 @@ void print_vector(vector<T>& v) {
 	cout << str.str();
 }
 
-typedef __uint256_t _bigint;
+typedef __uint128_t _bigint;
 
 _bigint y;
 vector< vector<_bigint> > x23;
@@ -261,6 +261,7 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 	while (x >= y) {
 		x -= y;
 	}
+	// cout << x << endl;
 
 	for (__uint16_t j = 0; j < J-1; ++j) {
 		for (__uint16_t k = 0; k < state[j]; ++k) {
@@ -268,6 +269,7 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 			while (x >= y) {
 				x -= y;
 			}
+			// cout << j << " " << k << " " << x << endl;
 		}
 	}
 
@@ -352,7 +354,7 @@ void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 }
 
 int main () {
-	// search_for_JK_solution(8, 8);
+	// search_for_JK_solution(4, 4);
 	search_for_JK_solution(16, 28);
 	search_for_JK_solution(15, 30);
 	search_for_JK_solution(23, 23);
