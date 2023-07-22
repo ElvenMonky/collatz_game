@@ -308,12 +308,11 @@ void initialize_J0K0_map(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K
 
 	__uint16_t j = 0;
 	__uint16_t s = state[0];
-	while (j < J0) {
+	while (1) {
 		// state[j] = s;
 		// print_vector(state);
 		// cout << x << ", " << y << endl;
-		++s;
-		if (s < K) {
+		if (++s < K) {
 			x += y;
 			x -= x23[K-s-1][s-1];
 		} else {
@@ -333,9 +332,7 @@ void initialize_J0K0_map(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K
 			state[j] = s;
 		}
 
-		if (x >= y) {
-			x -= y;
-		}
+		x -= y * (x >= y);
 
 		state[j] = s;
 		mapValue = 0;
@@ -343,6 +340,7 @@ void initialize_J0K0_map(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K
 			mapValue <<= 8;
 			mapValue += i;
 		}
+
 		// cout << x << " " << mapValue << endl;
 
 		reminderMap_mutex.lock();
@@ -380,8 +378,8 @@ void initialize_map(__uint16_t J, __uint16_t K) {
 void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0, __uint16_t DJ) {
 	__uint16_t J2 = J0 > 9 ? 9 : J0;
 
-	vector<__uint16_t> state;
-	state.resize(J);
+	vector<__uint16_t> state_;
+	__uint16_t state[J];
 	for (__uint16_t j = 0; j < J; ++j) {
 		state[j] = j <= J0 ? K0 : 0;
 	}
@@ -421,40 +419,25 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 	cout << str.str();
 
 	if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= K0) {
-		print_solution_vector(state, reminderMap[x]);
+		state_.assign(state,state+J);
+		print_solution_vector(state_, reminderMap[x]);
 		// return;
 	}
 
 	time_t old_time = time(0);
 	__uint16_t j = 0;
 	__uint16_t s = state[0];
-	while (j < J0) {
+	while (1) {
 		// state[j] = s;
 		// print_vector(state);
 		// cout << x << ", " << y << endl;
-		++s;
-		if (s < K && s <= state[j+1] + K0) {
+		if (++s <= std::min(K - 1, state[j+1] + K0)) {
 			x += row[s-1];
 		} else {
 			++j;
-			while (++state[j] > state[j+1] + K0 || state[j] >= K) {
-				if (++j >= J2) {
-					if (j >= J0) {
-						return;
-					}
-					/*double seconds_since_start = difftime(time(0), old_time);
-					if (seconds_since_start >= 300) {
-						cout << seconds_since_start << "s: ";
-						for (auto i: state)
-							cout << min(i, (__uint16_t)(K-1)) << ", ";
-						cout << endl;
-						old_time = time(0);
-						seconds_since_start = difftime(old_time, start_time);
-						// if (seconds_since_start >= 40000) {
-						//    cout << seconds_since_start << " Time is out. Please continue from last known state";
-						//    return;
-						// }
-					}*/
+			while (++state[j] > std::min(state[j+1] + K0, K - 1)) {
+				if (++j >= J0) {
+					return;
 				}
 			}
 
@@ -464,12 +447,11 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 			state[j] = s;
 		}
 
-		if (x >= y) {
-			x -= y;
-		}
+		x -= y*(x >= y);
 		if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= s) {
 			state[j] = s;
-			print_solution_vector(state, reminderMap[x]);
+			state_.assign(state,state+J);
+			print_solution_vector(state_, reminderMap[x]);
 			// return;
 		}
 	}
@@ -547,8 +529,8 @@ int main () {
 	// search_for_JK_solution(3, 5);
 	// search_for_JK_solution(10, 17);
 	// search_for_JK_solution(17, 29);
-	// search_for_JK_solution(24, 41); // ! 23.983462529567403439603296701860476859152390715391723478685858836...
-	search_for_JK_solution(27, 46);
+	search_for_JK_solution(24, 41); // ! 23.983462529567403439603296701860476859152390715391723478685858836...
+	// search_for_JK_solution(31, 53);
 	// search_for_JK_solution(34, 58);
 	// search_for_JK_solution(41, 70);
 	// search_for_JK_solution(48, 82);
