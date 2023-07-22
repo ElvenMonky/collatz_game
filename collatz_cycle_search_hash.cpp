@@ -85,26 +85,26 @@ class __uint256_t {
 
 __uint256_t& operator+=(__uint256_t& a, const __uint256_t& b) {
 	a._[0] += b._[0];
-	a._[1] += b._[1] + (a._[0] < b._[0] ? 1 : 0);
+	a._[1] += b._[1] + (a._[0] < b._[0]);
 	return a;
 }
 
 __uint256_t& operator-=(__uint256_t& a, const __uint256_t& b) {
-	a._[1] -= b._[1] + (a._[0] < b._[0] ? 1 : 0);
+	a._[1] -= b._[1] + (a._[0] < b._[0]);
 	a._[0] -= b._[0];
 	return a;
 }
 
 bool operator>=(const __uint256_t& a, const __uint256_t& b) {
-	return a._[1] == b._[1] ? a._[0] >= b._[0] : a._[1] > b._[1];
+	return (a._[1] == b._[1])*(a._[0] >= b._[0])+(a._[1] > b._[1]);
 }
 
 bool operator==(const __uint256_t& a, const __uint256_t& b) {
-	return a._[1] == b._[1] && a._[0] == b._[0];
+	return (a._[1] == b._[1])*(a._[0] == b._[0]);
 }
 
 bool operator==(const __uint256_t& a, const int& i) {
-	return a._[1] == 0 && a._[0] == i;
+	return (a._[1] == 0)*(a._[0] == i);
 }
 
 std::ostream& operator<<( std::ostream& dest, const __uint256_t value )
