@@ -20,6 +20,13 @@
 */
 // %%writefile main.cpp
 
+// #define VERBOSE_LOGS
+#define PARALLEL_SEARCH
+
+#include "__uint512_t.h"
+#include "parallel_utils.h"
+#include "globals.h"
+
 #include <algorithm>
 #include <iostream>
 #include <format>
@@ -29,109 +36,20 @@
 #include <thread>
 #include <time.h>
 
-/* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
-* This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
-*/
-#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-#define PSTLD_HACK_INTO_STD // export into namespace std
-#include "pstld.h"
 #include "unordered_dense.h"
+
+#include <unistd.h>
+
+__uint64_t getTotalSystemMemory()
+{
+    long pages = sysconf(_SC_PHYS_PAGES);
+    long page_size = sysconf(_SC_PAGE_SIZE);
+    return pages * page_size;
+}
 
 using namespace std;
 
 time_t start_time = time(0);
-
-std::ostream& operator<<( std::ostream& dest, __uint128_t value )
-{
-	__uint8_t base = 10;
-	std::ostream::sentry s( dest );
-	if ( s ) {
-		__uint128_t tmp = value;
-		char buffer[ 128 ];
-		char* d = std::end( buffer );
-		__uint8_t i = 0;
-		do
-		{
-			-- d;
-			*d = "0123456789ABCDEF"[ tmp % base ];
-			tmp /= base;
-			++ i;
-		} while ( tmp != 0 );
-		int len = std::end( buffer ) - d;
-		if ( dest.rdbuf()->sputn( d, len ) != len ) {
-			dest.setstate( std::ios_base::badbit );
-		}
-	}
-	return dest;
-}
-
-class __uint256_t {
-	public:
-	__uint128_t _[2];
-
-	__uint256_t() {
-	}
-
-	__uint256_t(const int& i) {
-		_[0] = i;
-		_[1] = 0;
-	}
-
-	void operator=(const int& i) {
-		_[0] = i;
-		_[1] = 0;
-	}
-};
-
-__uint256_t& operator+=(__uint256_t& a, const __uint256_t& b) {
-	a._[0] += b._[0];
-	a._[1] += b._[1] + (a._[0] < b._[0]);
-	return a;
-}
-
-__uint256_t& operator-=(__uint256_t& a, const __uint256_t& b) {
-	a._[1] -= b._[1] + (a._[0] < b._[0]);
-	a._[0] -= b._[0];
-	return a;
-}
-
-bool operator>=(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] == b._[1])*(a._[0] >= b._[0])+(a._[1] > b._[1]);
-}
-
-bool operator==(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] == b._[1])*(a._[0] == b._[0]);
-}
-
-bool operator==(const __uint256_t& a, const int& i) {
-	return (a._[1] == 0)*(a._[0] == i);
-}
-
-std::ostream& operator<<( std::ostream& dest, const __uint256_t value )
-{
-	dest << value._[1] << "x" << value._[0];
-	return dest;
-}
-
-template<class T>
-void print_matrix(vector< vector<T> >& v) {
-	stringstream str;
-	for (auto j: v) {
-		for (auto k: j)
-			str << k << ' ';
-		str << endl;
-	}
-	cout << str.str();
-}
-
-template<class T>
-void print_vector(vector<T>& v) {
-	stringstream str;
-	for (auto i: v)
-		str << i << ", ";
-	str << endl;
-	cout << str.str();
-}
 
 template<class T>
 void print_solution_vector(vector<T>& v, __uint128_t mapValue) {
@@ -147,143 +65,29 @@ void print_solution_vector(vector<T>& v, __uint128_t mapValue) {
 	cout << str.str();
 }
 
-typedef __uint128_t _bigint;
-
-_bigint y;
-_bigint x0;
-vector< vector<_bigint> > x23;
-vector< vector< vector<_bigint> > > newlines;
 vector<_bigint> row;
 ankerl::unordered_dense::map<_bigint, __uint128_t> reminderMap;
 std::mutex reminderMap_mutex;
 __uint16_t DJ = 2;
 
-void initialize_XY(__uint16_t J, __uint16_t K) {
-	_bigint y3 = 1;
-	_bigint temp;
-
-	for (__uint16_t k = 0; k < K; ++k) {
-		temp = 0;
-		temp += y3;
-		temp += y3;
-		y3 += temp;
-	}
-
-	y = 1;
-	for (__uint16_t j = 0; j < J+K; ++j) {
-		y += y;
-	}
-	if (y >= y3) {
-		y -= y3;
-	} else {
-		y3 -= y;
-		y = y3;
-	}
-
-	x23.resize(J+K-1);
-	for (__uint16_t j = 0; j < J+K-1; ++j) {
-		x23[j].resize(K);
-		if (j > 0) {
-			x23[j][0] = 0;
-			x23[j][0] += x23[j-1][0];
-			x23[j][0] += x23[j-1][0];
-			while (x23[j][0] >= y) {
-				x23[j][0] -= y;
-			}
-		} else {
-			x23[j][0] = 1;
-		}
-		for (__uint16_t k = 1; k < K; ++k) {
-			x23[j][k] = 0;
-			x23[j][k] += x23[j][k-1];
-			x23[j][k] += x23[j][k-1];
-			x23[j][k] += x23[j][k-1];
-			while (x23[j][k] >= y) {
-				x23[j][k] -= y;
-			}
-		}
-	}
-
-	// print_matrix(x23);
-
-	x0 = 0;
-	x0 += y;
-	x0 += x23[K+J-2][0];
-	x0 += x23[K+J-2][0];
-	x0 -= x23[K-1][0];
-	while (x0 >= y) {
-		x0 -= y;
-	}
-	// cout << " x= " << x0 << " y= " << y << endl;
-}
-
-void initialize_newlines(__uint16_t J, __uint16_t K, __uint16_t J0) {
-	newlines.resize(K-1);
-	for (__uint16_t K0 = 1; K0 < K; ++K0) {
-		vector< vector<_bigint> >& newline = newlines[K0-1];
-		newline.resize(J);
-		newline[0].resize(K);
-		for (__uint16_t j = 1; j < J; ++j) {
-			newline[j].resize(K);
-			for (__uint16_t k = 1; k < K; ++k) {
-				newline[j][k] = 0;
-				if (k+K0 < K) {
-					newline[j][k] += newline[j-1][k+K0];
-				}
-				for (__uint16_t dk = 0; dk < K0 && dk + k < K; ++dk) {
-					newline[j][k] += y;
-					newline[j][k] += x23[K-k-dk+j-1+J0][k+dk-1];
-					newline[j][k] -= x23[K-k-dk-1+J0][k+dk-1];
-					while (newline[j][k] >= y) {
-						newline[j][k] -= y;
-					}
-				}
-			}
-		}
-
-		// print_matrix(newline);
-
-		for (__uint16_t j = 1; j < J; ++j) {
-			for (__uint16_t k = 1; k < K; ++k) {
-				_bigint temp = newline[j][k];
-				newline[j][k] = 0;
-				newline[j][k] += y;
-				newline[j][k] += y;
-				newline[j][k] += x23[K-k+j+J0][k-1];
-				newline[j][k] -= x23[K-k-1+J0][k-1];
-				newline[j][k] -= temp;
-				while (newline[j][k] >= y) {
-					newline[j][k] -= y;
-				}
-			}
-		}
-
-		// print_matrix(newline);
-		// cout << "newline!!!" << endl;
-	}
-}
-
-void initialize_J0K0_map(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0) {
+void map_iteration(__uint16_t J1, __uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0) {
 	vector< vector<_bigint> >& newline = newlines[K-2];
-
-	__uint16_t k0 = 1;
 
 	vector<__uint16_t> state;
 	state.resize(J);
 	for (__uint16_t j = 0; j < J; ++j) {
-		state[j] = j <= J0 ? K0 : k0;
+		state[j] = j <= J0 ? K0 : 1;
 	}
 
 	_bigint x = y;
 
 	for (__uint16_t j = 0; j < J; ++j) {
-		for (__uint16_t k = k0; k < state[j]; ++k) {
+		for (__uint16_t k = 1; k < state[j]; ++k) {
 			x += y;
 			x -= x23[K-k+j-2][k];
 			while (x >= y) {
 				x -= y;
 			}
-			// cout << j << " " << k << " " << x << endl;
 		}
 	}
 
@@ -356,17 +160,7 @@ void initialize_map(__uint16_t J, __uint16_t K) {
 	reminderMap.clear();
 	reminderMap[x] = 1;
 
-	vector<__uint32_t> JK;
-	JK.resize(J*(K-2));
-	for (__uint16_t J0 = 0; J0 < J; ++J0) {
-		for (__uint16_t K0 = 2; K0 < K; ++K0) {
-			JK[J0*(K-2)+K0-2] = ((__uint32_t)(J-J0-1)<<16)+K0-2;
-			// initialize_J0K0_map(J, K, J0, K0);
-		}
-	}
-	std::for_each(std::execution::par, JK.begin(), JK.end(), [&](__uint32_t& jk) {
-		initialize_J0K0_map(J, K, jk >> 16, jk - ((jk >> 16) << 16) + 2);
-	});
+	parallel_search(0, J, 2, K, map_iteration);
 }
 
 // ###############################################
@@ -375,16 +169,17 @@ void initialize_map(__uint16_t J, __uint16_t K) {
 // # ___ 2^(K-1)*3^2 2^K*3^2     ... 2^(K+J-2)*3^2
 // # ... ...         ...         ... ...
 // # 3^K 2^1*3^K     2^2*3^K     ... 2^J*3^K
-void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0, __uint16_t DJ) {
-	__uint16_t J2 = J0 > 9 ? 9 : J0;
-
+void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0, __uint16_t K0) {
+	__uint16_t JS = J2-J1;
 	vector<__uint16_t> state_;
-	__uint16_t state[J];
-	for (__uint16_t j = 0; j < J; ++j) {
+	__uint16_t state[JS];
+	for (__uint16_t j = 0; j < JS; ++j) {
 		state[j] = j <= J0 ? K0 : 0;
 	}
-	// print_vector(state);
-	// cout << "Initial state" << endl;
+
+#if defined(VERBOSE_LOGS)
+	print_vector(state, "Initial state");
+#endif
 
 	vector< vector<_bigint> >& newline = newlines[K0-1];
 
@@ -393,7 +188,7 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 	// cout << x << endl;
 
 	// Mapped part shifted by 1 to reduce memory
-	for (__uint16_t j = 0; j < DJ; ++j) {
+	for (__uint16_t j = 0; j < J1; ++j) {
 		for (__uint16_t k = 0; k < 1; ++k) {
 			x += x23[K-k+j-2][k];
 			while (x >= y) {
@@ -403,9 +198,9 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 		}
 	}
 
-	for (__uint16_t j = 0; j < J; ++j) {
+	for (__uint16_t j = 0; j < JS; ++j) {
 		for (__uint16_t k = 0; k < state[j]; ++k) {
-			x += x23[K-k+j-2+DJ][k];
+			x += x23[J1+K-k+j-2][k];
 			while (x >= y) {
 				x -= y;
 			}
@@ -415,11 +210,11 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 
 	stringstream str;
 	double seconds_since_start = difftime(time(0), start_time);
-	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << (J0+DJ) << " K0= " << K0 << " Xmin= " << x << endl;
+	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << (J0+J1) << " K0= " << K0 << " Xmin= " << x << endl;
 	cout << str.str();
 
 	if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= K0) {
-		state_.assign(state,state+J);
+		state_.assign(state,state+JS);
 		print_solution_vector(state_, reminderMap[x]);
 		// return;
 	}
@@ -450,45 +245,38 @@ void search_for_JK_J0K0_solution(__uint16_t J, __uint16_t K, __uint16_t J0, __ui
 		x -= y*(x >= y);
 		if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= s) {
 			state[j] = s;
-			state_.assign(state,state+J);
+			state_.assign(state,state+JS);
 			print_solution_vector(state_, reminderMap[x]);
 			// return;
 		}
 	}
 };
 
-void search_for_JK_DJ_solution(__uint16_t J, __uint16_t K, __uint16_t DJ) {
-	if (DJ == J) {
+void search_for_J1J2K_solution(__uint16_t J1, __uint16_t J2, __uint16_t K) {
+	if (J1 == J2) {
 		return;
 	}
 
 	row.resize(K-1);
 	for (__uint16_t k = 0; k < K-1; ++k) {
-		row[k] = x23[K-k-2+DJ][k];
+		row[k] = x23[K-k-2+J1][k];
 	}
-	// print_vector(row);
+#if defined(VERBOSE_LOGS)
+	print_vector(row, "last row");
+#endif
 
-	initialize_newlines(J-DJ, K, DJ);
+	initialize_newlines(J2-J1-1, K, J1);
 
-	vector<__uint32_t> JK;
-	JK.resize((J-1-DJ)*(K-1));
-	for (__uint16_t J0 = 0; J0 < J-1-DJ; ++J0) {
-		for (__uint16_t K0 = 1; K0 < K; ++K0) {
-			JK[J0*(K-1)+K0-1] = ((__uint32_t)(J-J0-2-DJ)<<16)+K0-1;
-			// search_for_JK_J0K0_solution(J-1-DJ, K, J0, K0, DJ);
-		}
-	}
-	std::for_each(std::execution::par, JK.begin(), JK.end(), [&](__uint32_t& jk) {
-		search_for_JK_J0K0_solution(J-1-DJ, K, jk >> 16, jk - ((jk >> 16) << 16) + 1, DJ);
-	});
+	parallel_search(J1, J2, 1, K, search_iteration);
 }
 
 
 void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 	__uint128_t map_size = 1;
 	DJ = 0;
-	__uint64_t total_memory = 500000000;
-	while (map_size < total_memory && DJ < J) {
+	__uint64_t total_memory = getTotalSystemMemory() >> 5; // _bigint + __uint128
+	cout << "total_memory: " << total_memory << endl;
+	while (map_size < total_memory && DJ < 0.5*J) {
 		DJ += 1;
 		map_size *= (K-1+DJ);
 		map_size /= DJ;
@@ -507,7 +295,7 @@ void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 		cout << "All 0 Solution!!! This is impossible, check for errors" << endl;
 	}
 
-	search_for_JK_DJ_solution(DJ+1, K, 0);
+	search_for_J1J2K_solution(0, DJ, K);
 
 	cout << "Verified up to J= " << DJ << endl;
 
@@ -515,9 +303,12 @@ void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 
 	cout << "Initialized hash map up to J= " << DJ << endl;
 
-	search_for_JK_DJ_solution(J, K, DJ);
+	search_for_J1J2K_solution(DJ, J-1, K);
 
-	cout << J << ' ' << K << " End of search space" << endl;
+	stringstream str;
+	double seconds_since_start = difftime(time(0), start_time);
+	str << seconds_since_start << "s " << std::this_thread::get_id() << " J= " << J << " K= " << K << "  End of search space" << endl;
+	cout << str.str();
 }
 
 int main () {
@@ -529,6 +320,7 @@ int main () {
 	// search_for_JK_solution(3, 5);
 	// search_for_JK_solution(10, 17);
 	// search_for_JK_solution(17, 29);
+	search_for_JK_solution(24, 42);
 	search_for_JK_solution(24, 41); // ! 23.983462529567403439603296701860476859152390715391723478685858836...
 	// search_for_JK_solution(31, 53);
 	// search_for_JK_solution(34, 58);
