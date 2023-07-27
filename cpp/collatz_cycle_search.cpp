@@ -43,6 +43,8 @@ time_t start_time = time(0);
 typedef __uint128_t _bigint;
 
 vector<_bigint> row;
+__uint16_t KReal;
+vector<__uint32_t> KKMap;
 
 // ###############################################
 // # ___ ___________ ___________ ... 2^(K+J)
@@ -50,12 +52,16 @@ vector<_bigint> row;
 // # ___ 2^(K-1)*3^2 2^K*3^2     ... 2^(K+J-2)*3^2
 // # ... ...         ...         ... ...
 // # 3^K 2^1*3^K     2^2*3^K     ... 2^J*3^K
-void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0, __uint16_t K0) {
+void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0, __uint16_t KK) {
+	__uint16_t K1 = KKMap[KK] & 0xFFFF;
+	__uint16_t K0 = KKMap[KK]>>16;
+	__uint16_t K = KReal;
+
 	vector<__uint16_t> state_vector;
 	__uint16_t JS = J2-J1;
 	__uint16_t state[JS];
 	for (__uint16_t j = 0; j < JS; ++j) {
-		state[j] = j <= J0 ? K0 : 0;
+		state[j] = j < J0 ? K1+K0 : (j == J0 ? K0 : 0);
 	}
 
 #if defined(VERBOSE_LOGS)
@@ -80,7 +86,7 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0,
 
 	stringstream str;
 	double seconds_since_start = difftime(time(0), start_time);
-	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << J0 << " K0= " << K0 << " Xmin= " << x << endl;
+	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << J0 << " K0= " << K0 << " K1= " << K1 << " Xmin= " << x << endl;
 	cout << str.str();
 
 	if (x == 0) {
@@ -88,10 +94,12 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0,
 		print_vector(state_vector, "Solution!!!");
 	}
 
+	if (J0 < 2) return;
+
 	time_t old_time = time(0);
 	__uint16_t j = 0;
 	__uint16_t s = state[0];
-	while (j < J0) {
+	while (1) {
 #if defined(VERBOSE_LOGS)
 		state[j] = s;
 		state_vector.assign(state, state + JS);
@@ -104,7 +112,7 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0,
 		} else {
 			++j;
 			while (++state[j] > state[j+1] + K0 || state[j] >= K) {
-				if (++j >= J0) {
+				if (++j >= J0 - 1) {
 					return;
 				}					
 #if defined(VERBOSE_LOGS)			
@@ -153,7 +161,16 @@ void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 
 	initialize_newlines(J, K, 0);
 
-	parallel_search(0, J-1, 1, K, search_iteration);
+	KReal = K;
+	KKMap.clear();
+
+	for (__uint32_t K0 = 1; K0 < K; ++K0) {
+		for (__uint16_t K1 = 0; K1 <= K0 && K1+K0 < K; ++K1) {
+			KKMap.push_back((K0<<16)+K1);
+		}
+	}
+
+	parallel_search(0, J-1, 0, KKMap.size(), search_iteration);
 
 	stringstream str;
 	double seconds_since_start = difftime(time(0), start_time);

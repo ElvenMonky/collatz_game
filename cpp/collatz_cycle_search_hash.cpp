@@ -69,6 +69,8 @@ vector<_bigint> row;
 ankerl::unordered_dense::map<_bigint, __uint128_t> reminderMap;
 std::mutex reminderMap_mutex;
 __uint16_t DJ = 2;
+__uint16_t KReal;
+vector<__uint32_t> KKMap;
 
 void map_iteration(__uint16_t J1, __uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0) {
 	vector< vector<_bigint> >& newline = newlines[K-2];
@@ -169,12 +171,16 @@ void initialize_map(__uint16_t J, __uint16_t K) {
 // # ___ 2^(K-1)*3^2 2^K*3^2     ... 2^(K+J-2)*3^2
 // # ... ...         ...         ... ...
 // # 3^K 2^1*3^K     2^2*3^K     ... 2^J*3^K
-void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0, __uint16_t K0) {
+void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0, __uint16_t KK) {
+	__uint16_t K1 = KKMap[KK] & 0xFFFF;
+	__uint16_t K0 = KKMap[KK]>>16;
+	__uint16_t K = KReal;
+
+	vector<__uint16_t> state_vector;
 	__uint16_t JS = J2-J1;
-	vector<__uint16_t> state_;
 	__uint16_t state[JS];
 	for (__uint16_t j = 0; j < JS; ++j) {
-		state[j] = j <= J0 ? K0 : 0;
+		state[j] = j < J0 ? K1+K0 : (j == J0 ? K0 : 0);
 	}
 
 #if defined(VERBOSE_LOGS)
@@ -210,14 +216,16 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0,
 
 	stringstream str;
 	double seconds_since_start = difftime(time(0), start_time);
-	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << (J0+J1) << " K0= " << K0 << " Xmin= " << x << endl;
+	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << (J0+J1) << " K0= " << K0 << " K1= " << K1 << " Xmin= " << x << endl;
 	cout << str.str();
 
 	if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= K0) {
-		state_.assign(state,state+JS);
-		print_solution_vector(state_, reminderMap[x]);
+		state_vector.assign(state,state+JS);
+		print_solution_vector(state_vector, reminderMap[x]);
 		// return;
 	}
+
+	if (J0 < 2) return;
 
 	time_t old_time = time(0);
 	__uint16_t j = 0;
@@ -231,7 +239,7 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0,
 		} else {
 			++j;
 			while (++state[j] > std::min(state[j+1] + K0, K - 1)) {
-				if (++j >= J0) {
+				if (++j >= J0-1) {
 					return;
 				}
 			}
@@ -245,8 +253,8 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t K, __uint16_t J0,
 		x -= y*(x >= y);
 		if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= s) {
 			state[j] = s;
-			state_.assign(state,state+JS);
-			print_solution_vector(state_, reminderMap[x]);
+			state_vector.assign(state,state+JS);
+			print_solution_vector(state_vector, reminderMap[x]);
 			// return;
 		}
 	}
@@ -267,7 +275,16 @@ void search_for_J1J2K_solution(__uint16_t J1, __uint16_t J2, __uint16_t K) {
 
 	initialize_newlines(J2-J1-1, K, J1);
 
-	parallel_search(J1, J2, 1, K, search_iteration);
+	KReal = K;
+	KKMap.clear();
+
+	for (__uint32_t K0 = 1; K0 < K; ++K0) {
+		for (__uint16_t K1 = 0; K1 <= K0 && K1+K0 < K; ++K1) {
+			KKMap.push_back((K0<<16)+K1);
+		}
+	}
+
+	parallel_search(J1, J2, 0, KKMap.size(), search_iteration);
 }
 
 
