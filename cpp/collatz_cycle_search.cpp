@@ -12,7 +12,7 @@
 */
 
 /* Usage:
-* clang++ collatz_cycle_search.cpp -Ofast -o collatz_cycle_search -std=c++2b
+* clang++ cpp/collatz_cycle_search.cpp -Ofast -o collatz_cycle_search -std=c++2b
 * ./collatz_cycle_search
 */
 
@@ -45,6 +45,7 @@ typedef __uint128_t _bigint;
 vector<_bigint> row;
 __uint16_t KReal;
 vector<__uint32_t> KKMap;
+vector< vector<__uint16_t> > solutions;
 
 // ###############################################
 // # ___ ___________ ___________ ... 2^(K+J)
@@ -91,6 +92,7 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0,
 
 	if (x == 0) {
 		state_vector.assign(state, state + JS);
+		solutions.push_back(state_vector);
 		print_vector(state_vector, "Solution!!!");
 	}
 
@@ -140,6 +142,7 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0,
 			if (x == 0) {
 				state[j] = s;
 				state_vector.assign(state, state + JS);
+				solutions.push_back(state_vector);
 				print_vector(state_vector, "Solution!!!");
 				x += y;
 			}
@@ -148,6 +151,8 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0,
 };
 
 void search_for_JK_solution(__uint16_t J, __uint16_t K) {
+	solutions.clear();
+
 	initialize_XY(J, K);
 	cout << "J= " << J << " K= " << K << " Y= " << y << endl;
 
@@ -176,6 +181,10 @@ void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 	double seconds_since_start = difftime(time(0), start_time);
 	str << seconds_since_start << "s " << std::this_thread::get_id() << " J= " << J << " K= " << K << "  End of search space" << endl;
 	cout << str.str();
+	for (auto s: solutions) {
+		print_vector(s, "Solution");
+	}
+	cout << endl;
 }
 
 int main () {

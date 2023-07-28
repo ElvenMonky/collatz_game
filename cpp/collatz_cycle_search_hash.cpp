@@ -12,7 +12,7 @@
 */
 
 /* Usage:
-* clang++ collatz_cycle_search.cpp -Ofast -o collatz_cycle_search -std=c++2b
+* clang++ cpp/collatz_cycle_search_hash.cpp -Ofast -o collatz_cycle_search -std=c++2b
 * ./collatz_cycle_search
 */
 
@@ -51,26 +51,13 @@ using namespace std;
 
 time_t start_time = time(0);
 
-template<class T>
-void print_solution_vector(vector<T>& v, __uint128_t mapValue) {
-	stringstream str;
-	for (auto i: v) {
-		str << i << ", ";
-	}
-	while (mapValue != 0) {
-		str << (mapValue & 0xFF) << ", ";
-		mapValue >>= 8;
-	}
-	str << " Solution!!!" << endl;
-	cout << str.str();
-}
-
 vector<_bigint> row;
 ankerl::unordered_dense::map<_bigint, __uint128_t> reminderMap;
 std::mutex reminderMap_mutex;
 __uint16_t DJ = 2;
 __uint16_t KReal;
 vector<__uint32_t> KKMap;
+vector< vector<__uint16_t> > solutions;
 
 void map_iteration(__uint16_t J1, __uint16_t J, __uint16_t K, __uint16_t J0, __uint16_t K0) {
 	vector< vector<_bigint> >& newline = newlines[K-2];
@@ -221,8 +208,13 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0,
 
 	if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= K0) {
 		state_vector.assign(state,state+JS);
-		print_solution_vector(state_vector, reminderMap[x]);
-		// return;
+		__uint128_t mapValue = reminderMap[x];
+		while (mapValue != 0) {
+			state_vector.insert(state_vector.begin(), mapValue & 0xFF);
+			mapValue >>= 8;
+		}
+		solutions.push_back(state_vector);
+		print_vector(state_vector, "Solution!!!");
 	}
 
 	if (J0 < 2) return;
@@ -254,8 +246,13 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0,
 		if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= s) {
 			state[j] = s;
 			state_vector.assign(state,state+JS);
-			print_solution_vector(state_vector, reminderMap[x]);
-			// return;
+			__uint128_t mapValue = reminderMap[x];
+			while (mapValue != 0) {
+				state_vector.insert(state_vector.begin(), mapValue & 0xFF);
+				mapValue >>= 8;
+			}
+			solutions.push_back(state_vector);
+			print_vector(state_vector, "Solution!!!");
 		}
 	}
 };
@@ -289,6 +286,8 @@ void search_for_J1J2K_solution(__uint16_t J1, __uint16_t J2, __uint16_t K) {
 
 
 void search_for_JK_solution(__uint16_t J, __uint16_t K) {
+	solutions.clear();
+
 	__uint128_t map_size = 1;
 	DJ = 0;
 	__uint64_t total_memory = getTotalSystemMemory() >> 5; // _bigint + __uint128
@@ -326,6 +325,10 @@ void search_for_JK_solution(__uint16_t J, __uint16_t K) {
 	double seconds_since_start = difftime(time(0), start_time);
 	str << seconds_since_start << "s " << std::this_thread::get_id() << " J= " << J << " K= " << K << "  End of search space" << endl;
 	cout << str.str();
+	for (auto s: solutions) {
+		print_vector(s, "Solution");
+	}
+	cout << endl;
 }
 
 int main () {
@@ -337,7 +340,7 @@ int main () {
 	// search_for_JK_solution(3, 5);
 	// search_for_JK_solution(10, 17);
 	// search_for_JK_solution(17, 29);
-	search_for_JK_solution(24, 42);
+	// search_for_JK_solution(24, 42);
 	search_for_JK_solution(24, 41); // ! 23.983462529567403439603296701860476859152390715391723478685858836...
 	// search_for_JK_solution(31, 53);
 	// search_for_JK_solution(34, 58);
