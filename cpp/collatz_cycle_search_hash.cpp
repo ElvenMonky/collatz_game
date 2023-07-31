@@ -1,6 +1,6 @@
 /* Copyright Serhii Hrynko (Date of Birth: 06/10/1982) - All Rights Reserved
 * Unauthorized copying of this file, via any medium is strictly prohibited
-* Written by Serhii Hrynko <sergey.greenko@gmail.com>, Jun 2023
+* Written by Serhii Hrynko <sergey.greenko@gmail.com>, June 2023
 */
 
 /* Based on my previous article researching specifics of explicit formula
