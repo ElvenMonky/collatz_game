@@ -103,6 +103,34 @@ std::ostream& operator<<( std::ostream& dest, __uint128_t value )
 	return dest;
 }
 
+std::ostream& operator<<( std::ostream& dest, __int128_t value )
+{
+	__uint8_t base = 2;
+	std::ostream::sentry s( dest );
+	if ( s ) {
+		__int128_t tmp = value;
+		if (value < 0) {
+			dest << "-";
+			tmp = -value;
+		}
+		char buffer[ 128 ];
+		char* d = std::end( buffer );
+		__uint8_t i = 0;
+		do
+		{
+			-- d;
+			*d = "0123456789ABCDEF"[ tmp % base ];
+			tmp /= base;
+			++ i;
+		} while ( tmp != 0 );
+		int len = std::end( buffer ) - d;
+		if ( dest.rdbuf()->sputn( d, len ) != len ) {
+			dest.setstate( std::ios_base::badbit );
+		}
+	}
+	return dest;
+}
+
 std::ostream& operator<<( std::ostream& dest, const __uint512_t value )
 {
 	dest << value._[3] << "x" << value._[2] << "x" << value._[1] << "x" << value._[0];
