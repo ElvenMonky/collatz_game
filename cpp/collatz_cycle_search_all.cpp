@@ -28,8 +28,8 @@ __int128_t p2[M+1];
 __int128_t p3[M+1];
 __int128_t dx[M+1];
 __int128_t y[M+1];
-__uint16_t m = 44;
-__uint16_t T = 3;
+__uint16_t m = 2;
+__uint16_t T = 1;
 
 int main () {
 	p2[0] = 1;
