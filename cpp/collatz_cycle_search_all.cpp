@@ -14,9 +14,9 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-#define PSTLD_HACK_INTO_STD // export into namespace std
-#include "pstld.h"
+//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+//#define PSTLD_HACK_INTO_STD // export into namespace std
+//#include "pstld.h"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ __int128_t p2[M+1];
 __int128_t p3[M+1];
 __int128_t dx[M+1];
 __int128_t y[M+1];
-__uint16_t m = 43;
+__uint16_t m = 44;
 __uint16_t T = 3;
 
 int main () {
