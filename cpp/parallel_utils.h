@@ -1,6 +1,6 @@
 /* Copyright Serhii Hrynko (Date of Birth: 06/10/1982) - All Rights Reserved
 * Unauthorized copying of this file, via any medium is strictly prohibited
-* Written by Serhii Hrynko <sergey.greenko@gmail.com>, Jun 2023
+* Written by Serhii Hrynko <sergey.greenko@gmail.com>, June 2023
 */
 #pragma once
 
@@ -38,4 +38,3 @@ void parallel_search(__uint16_t J1, __uint16_t J2, __uint16_t K1, __uint16_t K2,
 	});
 #endif
 }
-
