@@ -5,6 +5,7 @@
 #include "__uint512_t.h"
 
 #include <bit>
+#include <execution>
 #include <iostream>
 #include <sstream>
 #include <thread>
