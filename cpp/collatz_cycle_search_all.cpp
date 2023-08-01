@@ -76,7 +76,7 @@ int main () {
 			// str << m << " " << l << " " << t << " " << x << endl;
 			// cout << str.str();
 			for (; s < e; ++s) {
-				__uint16_t d = std::countr_zero(s);
+				__uint16_t d = std::countr_zero((__uint64_t)s);
 				l -= d;
 				x += dx[d]*p3[l++];
 				if (x%y[l] == 0) {
