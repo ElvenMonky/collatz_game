@@ -27,7 +27,7 @@ __int128_t p2[M+1];
 __int128_t p3[M+1];
 __int128_t dx[M+1];
 __int128_t y[M+1];
-__uint16_t m = 34;
+__uint16_t m = 43;
 __uint16_t T = 3;
 
 int main () {
@@ -65,6 +65,7 @@ int main () {
 			__uint16_t l = 0;
 			__uint128_t x = 0;
 			__uint128_t s = p2[m-1]+t*p2[m0];
+			__uint128_t e = s+p2[m0];
 			for (__uint16_t i=m; i>0; --i) {
 				__uint16_t d = ((s-1)>>(i-1)) & 1;
 				x += p2[i-1]*p3[l]*d;
@@ -73,7 +74,7 @@ int main () {
 			// stringstream str;
 			// str << m << " " << l << " " << t << " " << x << endl;
 			// cout << str.str();
-			for (; s < p2[m-1]+(t+1)*p2[m0]; ++s) {
+			for (; s < e; ++s) {
 				__uint16_t d = std::countr_zero(s);
 				l -= d;
 				x += dx[d]*p3[l++];
