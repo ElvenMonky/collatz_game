@@ -29,7 +29,6 @@
 
 #include <algorithm>
 #include <iostream>
-#include <format>
 #include <vector>
 #include <string>
 #include <sstream>
