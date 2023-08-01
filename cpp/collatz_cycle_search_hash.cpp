@@ -341,8 +341,8 @@ int main () {
 	// search_for_JK_solution(10, 17);
 	// search_for_JK_solution(17, 29);
 	// search_for_JK_solution(24, 42);
-	search_for_JK_solution(24, 41); // ! 23.983462529567403439603296701860476859152390715391723478685858836...
-	// search_for_JK_solution(31, 53);
+	// search_for_JK_solution(24, 41); // ! 23.983462529567403439603296701860476859152390715391723478685858836...
+	search_for_JK_solution(31, 53);
 	// search_for_JK_solution(34, 58);
 	// search_for_JK_solution(41, 70);
 	// search_for_JK_solution(48, 82);

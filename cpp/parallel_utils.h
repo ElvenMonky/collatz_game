@@ -5,14 +5,15 @@
 #pragma once
 
 #include <algorithm>
+#include <execution>
 #include <vector>
 
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-#define PSTLD_HACK_INTO_STD // export into namespace std
-#include "pstld.h"
+//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+//#define PSTLD_HACK_INTO_STD // export into namespace std
+//#include "pstld.h"
 
 using namespace std;
 
