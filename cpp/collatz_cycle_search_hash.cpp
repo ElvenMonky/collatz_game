@@ -159,6 +159,8 @@ void map_iteration(__uint16_t J1, __uint16_t J, __uint16_t K, __uint16_t J0, __u
 void initialize_map(__uint16_t J, __uint16_t K) {
 	_bigint x = 0;
 	reminderMap.clear();
+	__uint64_t half_total_memory = getTotalSystemMemory() >> 6;
+	reminderMap.reserve(half_total_memory);
 	reminderMap[x] = 1;
 
 	parallel_search(0, J, 2, K, map_iteration);
