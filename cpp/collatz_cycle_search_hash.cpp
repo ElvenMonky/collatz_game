@@ -35,6 +35,19 @@
 #include <thread>
 #include <time.h>
 
+// g++ on linux does not have hash for __uint128_t
+namespace std {
+	template<>
+	struct hash<__uint128_t> {
+		size_t operator()(__uint128_t var) const {
+			std::hash<uint64_t> hasher = std::hash<uint64_t>{};
+			size_t seed = hasher((uint64_t)var);
+			seed ^= hasher((uint64_t)(var >> 64)) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+			return seed;
+		}
+	};
+}
+
 #include "unordered_dense.h"
 
 #include <unistd.h>
