@@ -50,8 +50,6 @@ namespace std {
 
 #include "unordered_dense.h"
 
-#include <unistd.h>
-
 __uint64_t getTotalSystemMemory()
 {
     long pages = sysconf(_SC_PHYS_PAGES);

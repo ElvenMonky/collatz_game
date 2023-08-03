@@ -2,6 +2,12 @@
 * Unauthorized copying of this file, via any medium is strictly prohibited
 * Written by Serhii Hrynko <sergey.greenko@gmail.com>, July 2023
 */
+
+/* Usage:
+* clang++ cpp/collatz_cycle_search_all.cpp -Ofast -o collatz_cycle_search -std=c++2b
+* ./collatz_cycle_search
+*/
+
 #include "__uint512_t.h"
 
 #include <bit>
@@ -28,8 +34,8 @@ __int128_t p2[M+1];
 __int128_t p3[M+1];
 __int128_t dx[M+1];
 __int128_t y[M+1];
-__uint16_t m = 45;
-__uint16_t T = 10;
+__uint16_t m = 46;
+__uint16_t T = 16;
 
 int main () {
 	p2[0] = 1;
@@ -49,7 +55,7 @@ int main () {
 
 	vector<__uint128_t> range;
 	range.resize(p2[T]);
-	for (__uint16_t t = 0; t < p2[T]; ++t) {
+	for (__uint128_t t = 0; t < p2[T]; ++t) {
 		range[t] = t;
 	}
 
