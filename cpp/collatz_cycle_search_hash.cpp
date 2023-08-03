@@ -90,10 +90,10 @@ void map_iteration(__uint16_t J1, __uint16_t J, __uint16_t K, __uint16_t J0, __u
 		}
 	}
 
-	stringstream str;
-	double seconds_since_start = difftime(time(0), start_time);
-	str << seconds_since_start << "s " << std::this_thread::get_id() << " Map J0= " << J0 << " K0= " << K0 << " X= " << x << endl;
-	cout << str.str();
+	// stringstream str;
+	// double seconds_since_start = difftime(time(0), start_time);
+	// str << seconds_since_start << "s " << std::this_thread::get_id() << " Map J0= " << J0 << " K0= " << K0 << " X= " << x << endl;
+	// cout << str.str();
 
 	__uint128_t mapValue = 0;
 	for (auto i: state) {
@@ -157,8 +157,8 @@ void map_iteration(__uint16_t J1, __uint16_t J, __uint16_t K, __uint16_t J0, __u
 void initialize_map(__uint16_t J, __uint16_t K) {
 	_bigint x = 0;
 	reminderMap.clear();
-	__uint64_t half_total_memory = getTotalSystemMemory() >> 6;
-	reminderMap.reserve(half_total_memory);
+	__uint64_t total_memory = getTotalSystemMemory() >> 5;
+	reminderMap.reserve(total_memory);
 	reminderMap[x] = 1;
 
 	parallel_search(0, J, 2, K, map_iteration);
@@ -213,10 +213,10 @@ void search_iteration(__uint16_t J1, __uint16_t J2, __uint16_t _, __uint16_t J0,
 		}
 	}
 
-	stringstream str;
-	double seconds_since_start = difftime(time(0), start_time);
-	str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << (J0+J1) << " K0= " << K0 << " K1= " << K1 << " Xmin= " << x << endl;
-	cout << str.str();
+	// stringstream str;
+	// double seconds_since_start = difftime(time(0), start_time);
+	// str << seconds_since_start << "s " << std::this_thread::get_id() << " J0= " << (J0+J1) << " K0= " << K0 << " K1= " << K1 << " Xmin= " << x << endl;
+	// cout << str.str();
 
 	if (reminderMap.find(x) != reminderMap.end() && (reminderMap[x] & 0xFF) >= K0) {
 		state_vector.assign(state,state+JS);
