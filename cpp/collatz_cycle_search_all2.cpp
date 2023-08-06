@@ -32,9 +32,7 @@ using namespace std;
 time_t start_time = time(0);
 
 constexpr __uint16_t M=127;
-__uint16_t m = 80;
-__uint16_t m1;
-__uint16_t m2;
+__uint16_t m = 1;
 __uint16_t T = 11;
 
 __int128_t p2[M+1];
@@ -83,49 +81,60 @@ int main () {
 				ymin = yy[l];
 		}
 
-		// 3^m1 - 2^m1 < 2^m - 3^l
-		for (m1 = 1; p3[m1+1] - p2[m1+1] < ymin; ++m1);
-		m2 = m - m1 - 1;
-
 		stringstream str;
 		double seconds_since_start = difftime(time(0), start_time);
 		str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-		str << "\t m m1 m2 ymin " << m << " " << m1 << " " << m2 << " " << ymin << endl;
+		str << "\t m ymin " << m << " " << ymin << endl;
 		cout << str.str();
 
 		std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint64_t& t) {
-			__uint16_t m0 = m2-T;
-			__uint16_t l2 = 0;
-			__int128_t x = 0;
-			__uint64_t s = t*p2[m0];
-			__uint64_t e = s+p2[m0];
-			for (__uint16_t i=m2; i>0; --i) {
-				__uint16_t d = ((s-1)>>(i-1)) & 1;
-				x += p2[i-1]*p3[l2]*d;
-				l2 += d;
-			}
-			if (t == 0) {
-				x -= p2[m2];
-			}
-			/*stringstream str;
-			double seconds_since_start = difftime(time(0), start_time);
-			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-			str << "\t" << m2 << " " << l2 << " " << t << " " << x << endl;
-			cout << str.str();*/
-			__uint16_t d = std::countr_zero((__uint64_t)(s+p2[m2]));
-			for (; s < e; ++s, d = std::countr_zero(s)) {
-				l2 -= d;
-				x += dx[d] * p3[l2];
-				l2 += (s > 0);
+			for (__uint16_t l=1; l <= m; ++l) {
+				__int128_t& y = yy[l];
+
+				// 3^m1 - 2^m1 < 2^m - 3^l
+				__uint16_t m1;
+				for (m1 = 1; p3[m1+1] - p2[m1+1] < y; ++m1);
+				__uint16_t m2 = m - m1 - 1;
+
 				/*stringstream str;
 				double seconds_since_start = difftime(time(0), start_time);
 				str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-				str << "\t" << m2 << " " << l2 << " " << d << " " << (__uint128_t)(s+p2[m2]) << " " << x << endl;
+				str << "\t t l m1 m2 y " << t << " " << l << " " << m1 << " " << m2 << " " << y << endl;
 				cout << str.str();*/
-				for (__uint16_t l1=1; l1 <= m1; ++l1) {
-					__int128_t& y = yy[l1+l2];
-					__int128_t z = (x * p3[l1]) % y;
-					z = (y - z);
+
+				__uint16_t m0 = m2-T*(m2>T);
+				if (t >= p2[m2-m0]) continue;
+				__uint16_t l2 = 0;
+				__int128_t x = 0;
+				__uint64_t s = t*p2[m0];
+				__uint64_t e = s+p2[m0];
+				for (__uint16_t i=m2; i>0; --i) {
+					__uint16_t d = ((s-1)>>(i-1)) & 1;
+					x += p2[i-1]*p3[l2]*d;
+					l2 += d;
+				}
+				if (t == 0) {
+					x -= p2[m2];
+				}
+				/*stringstream str;
+				double seconds_since_start = difftime(time(0), start_time);
+				str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+				str << "\t" << m2 << " " << l2 << " " << t << " " << x << endl;
+				cout << str.str();*/
+				__uint16_t d = std::countr_zero((__uint64_t)(s+p2[m2]));
+				for (; s < e; ++s, d = std::countr_zero(s)) {
+					l2 -= d;
+					x += dx[d] * p3[l2];
+					l2 += (s > 0);
+					/*stringstream str;
+					double seconds_since_start = difftime(time(0), start_time);
+					str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+					str << "\t" << m2 << " " << l2 << " " << d << " " << (__uint128_t)(s+p2[m2]) << " " << x << endl;
+					cout << str.str();*/
+					if (l > m1 + l2 || l < l2)
+						continue;
+					__uint16_t l1 = l - l2;
+					__int128_t z = y - (x * p3[l1]) % y;
 
 					// n*y = z * 2^m2 + x * 3^l1
 					// z * 2^m2 = n * y - x * 3^l1
