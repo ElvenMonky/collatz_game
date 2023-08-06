@@ -46,6 +46,16 @@ namespace std {
 			return seed;
 		}
 	};
+
+	template<>
+	struct hash<__int128_t> {
+		size_t operator()(__int128_t var) const {
+			std::hash<uint64_t> hasher = std::hash<uint64_t>{};
+			size_t seed = hasher((uint64_t)var);
+			seed ^= hasher((uint64_t)(var >> 64)) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+			return seed;
+		}
+	};
 }
 
 #include "unordered_dense.h"

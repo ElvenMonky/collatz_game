@@ -11,7 +11,7 @@
 #include "__uint512_t.h"
 
 #include <bit>
-#include <execution>
+//#include <execution>
 #include <iostream>
 #include <sstream>
 #include <thread>
@@ -21,11 +21,12 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-// #define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-// #define PSTLD_HACK_INTO_STD // export into namespace std
-// #include "pstld.h"
+#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+#define PSTLD_HACK_INTO_STD // export into namespace std
+#include "pstld.h"
 
 // g++ on linux does not have hash for __uint128_t
+/*
 namespace std {
 	template<>
 	struct hash<__uint128_t> {
@@ -47,6 +48,7 @@ namespace std {
 		}
 	};
 }
+*/
 
 #include "unordered_dense.h"
 
@@ -59,8 +61,8 @@ __int128_t p2[M+1];
 __int128_t p3[M+1];
 __int128_t dx[M+1];
 __int128_t y[M+1];
-__uint16_t m = 62;
-__uint16_t m1 = 28;
+__uint16_t m = 68;
+__uint16_t m1 = 23;
 __uint16_t T = 11;
 
 ankerl::unordered_dense::map<__int128_t, __int128_t> reminderMap[M+1][M+1];

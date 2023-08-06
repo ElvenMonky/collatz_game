@@ -80,7 +80,7 @@ bool operator==(const __uint512_t& a, const int& i) {
 
 std::ostream& operator<<( std::ostream& dest, __uint128_t value )
 {
-	__uint8_t base = 10;
+	__uint8_t base = 2;
 	std::ostream::sentry s( dest );
 	if ( s ) {
 		__uint128_t tmp = value;
@@ -104,7 +104,7 @@ std::ostream& operator<<( std::ostream& dest, __uint128_t value )
 
 std::ostream& operator<<( std::ostream& dest, __int128_t value )
 {
-	__uint8_t base = 2;
+	__uint8_t base = 10;
 	std::ostream::sentry s( dest );
 	if ( s ) {
 		__int128_t tmp = value;
