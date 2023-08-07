@@ -45,6 +45,10 @@ class __uint512_t {
 		_[2] = i._[2];
 		_[3] = i._[3];
 	}
+
+	operator __uint128_t() {
+        return _[0];
+    }
 };
 
 __uint512_t& operator+=(__uint512_t& a, const __uint512_t& b) {
@@ -78,9 +82,33 @@ bool operator==(const __uint512_t& a, const int& i) {
 	return ((a._[3] | a._[2] | a._[1]) == 0) * (a._[0] == i);
 }
 
-std::ostream& operator<<( std::ostream& dest, __uint128_t value )
+std::ostream& operator>>( std::ostream& dest, __uint128_t value )
 {
 	__uint8_t base = 2;
+	std::ostream::sentry s( dest );
+	if ( s ) {
+		__uint128_t tmp = value;
+		char buffer[ 128 ];
+		char* d = std::end( buffer );
+		__uint8_t i = 0;
+		do
+		{
+			-- d;
+			*d = "0123456789ABCDEF"[ tmp % base ];
+			tmp /= base;
+			++ i;
+		} while ( tmp != 0 );
+		int len = std::end( buffer ) - d;
+		if ( dest.rdbuf()->sputn( d, len ) != len ) {
+			dest.setstate( std::ios_base::badbit );
+		}
+	}
+	return dest;
+}
+
+std::ostream& operator<<( std::ostream& dest, __uint128_t value )
+{
+	__uint8_t base = 10;
 	std::ostream::sentry s( dest );
 	if ( s ) {
 		__uint128_t tmp = value;
@@ -132,7 +160,16 @@ std::ostream& operator<<( std::ostream& dest, __int128_t value )
 
 std::ostream& operator<<( std::ostream& dest, const __uint512_t value )
 {
-	dest << value._[3] << "x" << value._[2] << "x" << value._[1] << "x" << value._[0];
+	bool nz = 0;
+	for (__uint128_t i = 3; i > 0; --i) {
+		if (value._[i]) {
+			nz = 1;
+		}
+		if (nz) {
+			dest << value._[i] << "'";
+		}
+	}
+	dest << value._[0];
 	return dest;
 }
 
