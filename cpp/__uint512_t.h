@@ -67,6 +67,16 @@ __uint512_t& operator-=(__uint512_t& a, const __uint512_t& b) {
 	return a;
 }
 
+__uint512_t operator*(__uint128_t x, const __uint512_t& a)
+{
+    __uint512_t r = a;
+	r._[0] *= x;
+	r._[1] *= x;
+	r._[2] *= x;
+	r._[3] *= x;
+	return r;
+}
+
 bool operator>=(const __uint512_t& a, const __uint512_t& b) {
 	return
 		(a._[3] > b._[3]) + (a._[3] == b._[3]) * (

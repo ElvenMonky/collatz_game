@@ -114,8 +114,8 @@ int main () {
 				__uint16_t m0 = (m2-T)*(m2>T);
 				if (t >= (__uint128_t)p2[m2-m0]) return;
 				__uint16_t l2 = 0;
-				__int128_t x = 0;
-				__uint64_t s = t*p2[m0];
+				__uint128_t x = 0;
+				__uint64_t s = t*(__uint128_t)p2[m0];
 				__uint64_t e = s+p2[m0];
 				for (__uint16_t i=m2; i>0; --i) {
 					__uint16_t d = ((s-1)>>(i-1)) & 1;
@@ -143,7 +143,7 @@ int main () {
 					if (l > m1 + l2 || l < l2)
 						continue;
 					__uint16_t l1 = l - l2;
-					__int128_t z = y;
+					__uint128_t z = y;
 					z -= (x * p3[l1]) % y;
 
 					// n*y = z * 2^m2 + x * 3^l1
