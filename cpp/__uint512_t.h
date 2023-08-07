@@ -67,13 +67,41 @@ __uint512_t& operator-=(__uint512_t& a, const __uint512_t& b) {
 	return a;
 }
 
-__uint512_t operator*(__uint128_t x, const __uint512_t& a)
+__uint512_t& operator>>=(__uint512_t& a, const long s) {
+	a._[0] >>= s;
+	a._[0] += a._[1] << (128-s);
+	a._[1] >>= s;
+	a._[1] += a._[2] << (128-s);
+	a._[2] >>= s;
+	a._[2] += a._[3] << (128-s);
+	a._[3] >>= s;
+	return a;
+}
+
+__uint512_t& operator<<=(__uint512_t& a, const long s) {
+	a._[3] <<= s;
+	a._[3] += a._[2] >> (128-s);
+	a._[2] <<= s;
+	a._[2] += a._[1] >> (128-s);
+	a._[1] <<= s;
+	a._[1] += a._[0] >> (128-s);
+	a._[0] <<= s;
+	return a;
+}
+
+__uint512_t operator*(__uint64_t x, const __uint512_t& a)
 {
-    __uint512_t r = a;
+ __uint512_t r = a;
 	r._[0] *= x;
 	r._[1] *= x;
+	__uint128_t h = x * (a[0] >> 64);
+	r._[1] += h >> 64 + ((__uint64_t)h > (r[0] >> 64));
 	r._[2] *= x;
+	h = x * (a[1] >> 64);
+	r._[2] += h >> 64 + ((__uint64_t)h > (r[1] >> 64));
 	r._[3] *= x;
+	h = x * (a[2] >> 64);
+	r._[3] += h >> 64 + ((__uint64_t)h > (r[2] >> 64));
 	return r;
 }
 
