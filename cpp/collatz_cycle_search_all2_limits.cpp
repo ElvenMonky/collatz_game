@@ -38,7 +38,7 @@ constexpr __uint16_t M3=324;
 __uint16_t m = 1;
 __uint16_t T = 11;
 
-__uint16_t MIN_N_BITS = 60;
+__uint16_t MIN_N_BITS = 1;
 
 _bigint p23[M2][M3];
 _bigint dx[M3];
@@ -102,7 +102,8 @@ int main () {
 		for (__uint16_t l=1; l < m; ++l) {
 			_bigint& y = yy[l];
 			if (y == 0) continue;
-			_bigint limit = p23[MIN_N_BITS][0] * y;
+			_bigint limit = y;
+			limit <<= MIN_N_BITS;
 			limit += p23[m][0];
 			if (limit >= p23[m-l][l]) continue;
 
@@ -120,16 +121,16 @@ int main () {
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
 			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-			str << "\t l m1 m2 y " << l << " " << m1 << " " << m2 << " " << y << endl;
+			str << "\t l m1 m2 y " << l << " " << m1 << " " << m2 << " " << y << " " << limit << endl;
 			cout << str.str();
 
 			std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint64_t& t) {
 				__uint16_t m0 = (m2-T)*(m2>T);
-				if (t >= (__uint64_t)p23[m2-m0][0]) return;
+				if (t >= (__uint128_t)p23[m2-m0][0]) return;
 				__uint16_t l2 = 0;
 				_bigint x = 0;
-				__uint64_t s = t*(__uint64_t)p23[m0][0];
-				__uint64_t e = s+(__uint64_t)p23[m0][0];
+				__uint64_t s = t*(__uint128_t)p23[m0][0];
+				__uint64_t e = s+(__uint128_t)p23[m0][0];
 				for (__uint16_t i=m2; i>0; --i) {
 					bool d = ((s-1)>>(i-1)) & 1;
 					x += d*p23[i-1][l2];

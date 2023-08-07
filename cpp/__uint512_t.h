@@ -238,7 +238,7 @@ std::ostream& operator<<( std::ostream& dest, __int128_t value )
 	return dest;
 }
 
-std::ostream& operator<<( std::ostream& dest, const __uint512_t value )
+std::ostream& operator<<(std::ostream& dest, const __uint512_t value)
 {
 	bool nz = 0;
 	for (__uint16_t i = 3; i > 0; --i) {
@@ -250,6 +250,21 @@ std::ostream& operator<<( std::ostream& dest, const __uint512_t value )
 		}
 	}
 	dest << value._[0];
+	return dest;
+}
+
+std::ostream& operator>>(std::ostream& dest, const __uint512_t value)
+{
+	bool nz = 0;
+	for (__uint16_t i = 3; i > 0; --i) {
+		if (value._[i]) {
+			nz = 1;
+		}
+		if (nz) {
+			dest >> value._[i] << "'";
+		}
+	}
+	dest >> value._[0];
 	return dest;
 }
 

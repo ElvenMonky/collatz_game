@@ -48,11 +48,11 @@ int main () {
 	// powers of 2 and 3
 	p23[0][0] = 1;
 	for (__uint16_t m2 = 1; m2 < M2; ++m2) {
-		p23[m2][0] = (__uint128_t)2 * p23[m2-1][0];
+		p23[m2][0] = 2 * p23[m2-1][0];
 	}
 	for (__uint16_t m2 = 0; m2 < M3; ++m2) {
 		for (__uint16_t m3 = 1; m3 < M3; ++m3) {
-			p23[m2][m3] = (__uint128_t)3 * p23[m2][m3-1];
+			p23[m2][m3] = 3 * p23[m2][m3-1];
 		}
 		// dest.assign(p23[m2], p23[m2] + M3);
 		// print_vector(dest);
@@ -112,11 +112,11 @@ int main () {
 
 			std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint64_t& t) {
 				__uint16_t m0 = (m2-T)*(m2>T);
-				if (t >= (__uint64_t)p23[m2-m0][0]) return;
+				if (t >= (__uint128_t)p23[m2-m0][0]) return;
 				__uint16_t l2 = 0;
 				_bigint x = 0;
-				__uint64_t s = t*(__uint64_t)p23[m0][0];
-				__uint64_t e = s+(__uint64_t)p23[m0][0];
+				__uint64_t s = t*(__uint128_t)p23[m0][0];
+				__uint64_t e = s+(__uint128_t)p23[m0][0];
 				for (__uint16_t i=m2; i>0; --i) {
 					bool d = ((s-1)>>(i-1)) & 1;
 					x += d*p23[i-1][l2];
@@ -160,6 +160,7 @@ int main () {
 						z += d * y;
 						z >>= 1;
 					}
+					q = z;
 
 					/*stringstream str;
 					double seconds_since_start = difftime(time(0), start_time);
@@ -169,15 +170,23 @@ int main () {
 
 					__uint16_t k = 0;
 					__int16_t ll = l1;
-					__uint128_t ss = s;
 					for (; k < m1 && ll > 0 && z > 0; ++k) {
 						bool d = z & 1;
 						ll -= d * (ll > 0);
-						ss += d * p23[m2 + k][0];
 						z -= d * p23[0][ll];
 						z >>= 1;
 					}
 					if (z == 0 && ll == 0 && k == m1) {
+						__uint16_t k = 0;
+						__int16_t ll = l1;
+						_bigint ss = s;
+						for (; k < m1 && ll > 0 && q > 0; ++k) {
+							bool d = q & 1;
+							ll -= d * (ll > 0);
+							ss += d * p23[m2 + k][0];
+							q -= d * p23[0][ll];
+							q >>= 1;
+						}
 						_bigint xx = 0;
 						__uint16_t l = 0;
 						for (__uint16_t i=m; i>0; --i) {
