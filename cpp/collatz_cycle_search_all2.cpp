@@ -8,7 +8,7 @@
 * ./collatz_cycle_search
 */
 
-#include "__uint512_t.h"
+#include "__uint256_t.h"
 
 #include <bit>
 //#include <execution>
@@ -31,10 +31,10 @@ using namespace std;
 
 time_t start_time = time(0);
 
-typedef __uint512_t _bigint;
+typedef __uint256_t _bigint;
 
-constexpr __uint16_t M2=512;
-constexpr __uint16_t M3=324;
+constexpr __uint16_t M2=256;
+constexpr __uint16_t M3=162;
 __uint16_t m = 1;
 __uint16_t T = 11;
 

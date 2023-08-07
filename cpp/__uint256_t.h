@@ -11,39 +11,31 @@
 
 using namespace std;
 
-class __uint512_t {
+class __uint256_t {
 	public:
-	__uint128_t _[4];
+	__uint128_t _[2];
 
-	__uint512_t() {
+	__uint256_t() {
 	}
 
-	__uint512_t(const __uint128_t& i) {
+	__uint256_t(const __uint128_t& i) {
 		_[0] = i;
 		_[1] = 0;
-		_[2] = 0;
-		_[3] = 0;
 	}
 
 	void operator=(const __uint128_t& i) {
 		_[0] = i;
 		_[1] = 0;
-		_[2] = 0;
-		_[3] = 0;
 	}
 
-	__uint512_t(const __uint512_t& i) {
+	__uint256_t(const __uint256_t& i) {
 		_[0] = i._[0];
 		_[1] = i._[1];
-		_[2] = i._[2];
-		_[3] = i._[3];
 	}
 
-	void operator=(const __uint512_t& i) {
+	void operator=(const __uint256_t& i) {
 		_[0] = i._[0];
 		_[1] = i._[1];
-		_[2] = i._[2];
-		_[3] = i._[3];
 	}
 
 	operator __uint128_t() {
@@ -51,7 +43,7 @@ class __uint512_t {
     }
 
 	__uint16_t bit() const {
-		__uint16_t i = 3 - (_[3] == 0) * (1 + (_[2] == 0) * (1 + (_[1] == 0)));
+		__uint16_t i = 1 - (_[1] == 0);
 		__uint16_t j = 64 * ((_[i] >> 64) > 0);
 		j += 32 * ((_[i] >> (32 + j)) > 0);
 		j += 16 * ((_[i] >> (16 + j)) > 0);
@@ -63,94 +55,74 @@ class __uint512_t {
 	}
 };
 
-__uint512_t& operator+=(__uint512_t& a, const __uint512_t& b) {
+__uint256_t& operator+=(__uint256_t& a, const __uint256_t& b) {
 	a._[0] += b._[0];
 	a._[1] += b._[1] + (a._[0] < b._[0]);
-	a._[2] += b._[2] + (a._[1] < b._[1]);
-	a._[3] += b._[3] + (a._[2] < b._[2]);
 	return a;
 }
 
-__uint512_t& operator-=(__uint512_t& a, const __uint512_t& b) {
+__uint256_t& operator-=(__uint256_t& a, const __uint256_t& b) {
 	a._[0] -= b._[0];
 	a._[1] -= b._[1] + (~a._[0] < b._[0]);
-	a._[2] -= b._[2] + (~a._[1] < b._[1]);
-	a._[3] -= b._[3] + (~a._[2] < b._[2]);
 	return a;
 }
 
-__uint512_t& operator>>=(__uint512_t& a, const long s) {
+__uint256_t& operator>>=(__uint256_t& a, const long s) {
 	a._[0] >>= s;
 	a._[0] += a._[1] << (128-s);
 	a._[1] >>= s;
-	a._[1] += a._[2] << (128-s);
-	a._[2] >>= s;
-	a._[2] += a._[3] << (128-s);
-	a._[3] >>= s;
 	return a;
 }
 
-__uint512_t& operator<<=(__uint512_t& a, const long s) {
-	a._[3] <<= s;
-	a._[3] += a._[2] >> (128-s);
-	a._[2] <<= s;
-	a._[2] += a._[1] >> (128-s);
+__uint256_t& operator<<=(__uint256_t& a, const long s) {
 	a._[1] <<= s;
 	a._[1] += a._[0] >> (128-s);
 	a._[0] <<= s;
 	return a;
 }
 
-__uint128_t operator&(const __uint512_t& a, const int x)
+__uint128_t operator&(const __uint256_t& a, const int x)
 {
 	return a._[0] & x;
 }
 
-__uint512_t operator*(const bool x, const __uint512_t& a)
+__uint256_t operator*(const bool x, const __uint256_t& a)
 {
 	return x ? a : 0;
 }
 
-__uint512_t operator*(const __uint128_t x, const __uint512_t& a)
+__uint256_t operator*(const __uint128_t x, const __uint256_t& a)
 {
-	__uint512_t r = a;
+	__uint256_t r = a;
 	r._[0] *= x;
 	r._[1] *= x;
 	__uint128_t h = x * (a._[0] >> 64);
 	r._[1] += (h >> 64) + ((__uint64_t)h > (r._[0] >> 64));
-	r._[2] *= x;
-	h = x * (a._[1] >> 64);
-	r._[2] += (h >> 64) + ((__uint64_t)h > (r._[1] >> 64));
-	r._[3] *= x;
-	h = x * (a._[2] >> 64);
-	r._[3] += (h >> 64) + ((__uint64_t)h > (r._[2] >> 64));
 	return r;
 }
 
-__uint512_t operator*(const int x, const __uint512_t& a)
+__uint256_t operator*(const int x, const __uint256_t& a)
 {
 	return (__uint128_t)x * a;
 }
 
-bool operator>=(const __uint512_t& a, const __uint512_t& b) {
+bool operator>=(const __uint256_t& a, const __uint256_t& b) {
 	return
-		(a._[3] > b._[3]) + (a._[3] == b._[3]) * (
-		(a._[2] > b._[2]) + (a._[2] == b._[2]) * (
-		(a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] >= b._[0])));
+		(a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] >= b._[0]);
 }
 
-bool operator==(const __uint512_t& a, const __uint512_t& b) {
-	return (a._[3] == b._[3]) * (a._[2] == b._[2]) * (a._[1] == b._[1]) * (a._[0] == b._[0]);
+bool operator==(const __uint256_t& a, const __uint256_t& b) {
+	return (a._[1] == b._[1]) * (a._[0] == b._[0]);
 }
 
-bool operator==(const __uint512_t& a, const int& i) {
-	return ((a._[3] | a._[2] | a._[1]) == 0) * (a._[0] == i);
+bool operator==(const __uint256_t& a, const int& i) {
+	return (a._[1] == 0) * (a._[0] == i);
 }
 
-__uint512_t& operator%=(__uint512_t& a, const __uint512_t& b)
+__uint256_t& operator%=(__uint256_t& a, const __uint256_t& b)
 {
 	if (a >= b) {
-		__uint512_t c = b;
+		__uint256_t c = b;
 		c <<= a.bit() - b.bit();
 		while (a >= b) {
 			a -= (a >= c) * c;
@@ -236,31 +208,19 @@ std::ostream& operator<<( std::ostream& dest, __int128_t value )
 	return dest;
 }
 
-std::ostream& operator<<(std::ostream& dest, const __uint512_t value)
+std::ostream& operator<<(std::ostream& dest, const __uint256_t value)
 {
-	bool nz = 0;
-	for (__uint16_t i = 3; i > 0; --i) {
-		if (value._[i]) {
-			nz = 1;
-		}
-		if (nz) {
-			dest << value._[i] << "'";
-		}
+	if (value._[1]) {
+		dest << value._[1] << "'";
 	}
 	dest << value._[0];
 	return dest;
 }
 
-std::ostream& operator>>(std::ostream& dest, const __uint512_t value)
+std::ostream& operator>>(std::ostream& dest, const __uint256_t value)
 {
-	bool nz = 0;
-	for (__uint16_t i = 3; i > 0; --i) {
-		if (value._[i]) {
-			nz = 1;
-		}
-		if (nz) {
-			dest >> value._[i] << "'";
-		}
+	if (value._[1]) {
+		dest >> value._[1] << "'";
 	}
 	dest >> value._[0];
 	return dest;
