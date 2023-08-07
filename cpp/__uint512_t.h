@@ -49,7 +49,21 @@ class __uint512_t {
 	operator __uint128_t() {
         return _[0];
     }
+
+	__uint16_t bit() const {
+		__uint16_t i = 3 - (_[3] == 0) * (1 + (_[2] == 0) * (1 + (_[1] == 0)));
+		__uint16_t j = 64 * ((_[i] >> 64) > 0);
+		j += 32 * ((_[i] >> (32 + j)) > 0);
+		j += 16 * ((_[i] >> (16 + j)) > 0);
+		j += 8 * ((_[i] >> (8 + j)) > 0);
+		j += 4 * ((_[i] >> (4 + j)) > 0);
+		j += 2 * ((_[i] >> (2 + j)) > 0);
+		j += ((_[i] >> (1 + j)) > 0);
+		return (i << 7) + j;
+	}
 };
+
+const __uint512_t __uint512_0;
 
 __uint512_t& operator+=(__uint512_t& a, const __uint512_t& b) {
 	a._[0] += b._[0];
@@ -89,19 +103,29 @@ __uint512_t& operator<<=(__uint512_t& a, const long s) {
 	return a;
 }
 
-__uint512_t operator*(__uint64_t x, const __uint512_t& a)
+__uint128_t operator&(const __uint512_t& a, const int x)
 {
- __uint512_t r = a;
+	return a._[0] & x;
+}
+
+__uint512_t operator*(const bool x, const __uint512_t& a)
+{
+	return x ? a : 0;
+}
+
+__uint512_t operator*(const __uint128_t x, const __uint512_t& a)
+{
+	__uint512_t r = a;
 	r._[0] *= x;
 	r._[1] *= x;
-	__uint128_t h = x * (a[0] >> 64);
-	r._[1] += h >> 64 + ((__uint64_t)h > (r[0] >> 64));
+	__uint128_t h = x * (a._[0] >> 64);
+	r._[1] += (h >> 64) + ((__uint64_t)h > (r._[0] >> 64));
 	r._[2] *= x;
-	h = x * (a[1] >> 64);
-	r._[2] += h >> 64 + ((__uint64_t)h > (r[1] >> 64));
+	h = x * (a._[1] >> 64);
+	r._[2] += (h >> 64) + ((__uint64_t)h > (r._[1] >> 64));
 	r._[3] *= x;
-	h = x * (a[2] >> 64);
-	r._[3] += h >> 64 + ((__uint64_t)h > (r[2] >> 64));
+	h = x * (a._[2] >> 64);
+	r._[3] += (h >> 64) + ((__uint64_t)h > (r._[2] >> 64));
 	return r;
 }
 
@@ -118,6 +142,19 @@ bool operator==(const __uint512_t& a, const __uint512_t& b) {
 
 bool operator==(const __uint512_t& a, const int& i) {
 	return ((a._[3] | a._[2] | a._[1]) == 0) * (a._[0] == i);
+}
+
+__uint512_t& operator%=(__uint512_t& a, const __uint512_t& b)
+{
+	if (a >= b) {
+		__uint512_t c = b;
+		c <<= a.bit() - b.bit();
+		while (a >= b) {
+			a -= (a >= c) * c;
+			c >>= 1;
+		}
+	}
+	return a;
 }
 
 std::ostream& operator>>( std::ostream& dest, __uint128_t value )
@@ -199,7 +236,7 @@ std::ostream& operator<<( std::ostream& dest, __int128_t value )
 std::ostream& operator<<( std::ostream& dest, const __uint512_t value )
 {
 	bool nz = 0;
-	for (__uint128_t i = 3; i > 0; --i) {
+	for (__uint16_t i = 3; i > 0; --i) {
 		if (value._[i]) {
 			nz = 1;
 		}
