@@ -207,7 +207,7 @@ int main () {
 							stringstream str;
 							double seconds_since_start = difftime(time(0), start_time);
 							str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-							str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << endl;
+							str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << ",\tx=" << xx << endl;
 							cout << str.str();
 						}
 
