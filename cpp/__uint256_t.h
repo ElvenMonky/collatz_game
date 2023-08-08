@@ -76,6 +76,14 @@ __uint256_t& operator>>=(__uint256_t& a, const long s) {
 	return a;
 }
 
+__uint256_t operator>>(const __uint256_t& a, const long s) {
+	__uint256_t r = a;
+	r._[0] >>= s;
+	r._[0] += a._[1] << (128-s);
+	r._[1] >>= s;
+	return r;
+}
+
 __uint256_t& operator<<=(__uint256_t& a, const long s) {
 	a._[1] <<= s;
 	a._[1] += a._[0] >> (128-s);
