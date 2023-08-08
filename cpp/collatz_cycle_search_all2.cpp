@@ -25,8 +25,6 @@
 #define PSTLD_HACK_INTO_STD // export into namespace std
 #include "pstld.h"
 
-#include "unordered_dense.h"
-
 using namespace std;
 
 time_t start_time = time(0);
