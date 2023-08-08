@@ -1,6 +1,6 @@
 /* Copyright Serhii Hrynko (Date of Birth: 06/10/1982) - All Rights Reserved
 * Unauthorized copying of this file, via any medium is strictly prohibited
-* Written by Serhii Hrynko <sergey.greenko@gmail.com>, July 2023
+* Written by Serhii Hrynko <sergey.greenko@gmail.com>, August 2023
 */
 
 /* Usage:
@@ -194,13 +194,12 @@ int main () {
 							xx += d*p23[i-1][l];
 							l += d;
 						}
-						_bigint r = xx;
-						r %= y;
+						pair<_bigint, _bigint> qr = divmod(xx, y);
 						std::string sign = p23[m][0] >= p23[0][l] ? "" : "-";
 						stringstream str;
 						double seconds_since_start = difftime(time(0), start_time);
 						str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-						str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << r << ",\tn=" << sign << (__uint128_t)xx/(__uint128_t)y << ",\ty=" << sign << y << endl;
+						str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << endl;
 						cout << str.str();
 					}
 				}

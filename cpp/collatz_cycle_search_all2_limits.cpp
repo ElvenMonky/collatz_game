@@ -1,14 +1,14 @@
 /* Copyright Serhii Hrynko (Date of Birth: 06/10/1982) - All Rights Reserved
 * Unauthorized copying of this file, via any medium is strictly prohibited
-* Written by Serhii Hrynko <sergey.greenko@gmail.com>, July 2023
+* Written by Serhii Hrynko <sergey.greenko@gmail.com>, August 2023
 */
 
 /* Usage:
-* clang++ cpp/collatz_cycle_search_all2.cpp -Ofast -o collatz_cycle_search -std=c++2b
+* clang++ cpp/collatz_cycle_search_all2_limits.cpp -Ofast -o collatz_cycle_search -std=c++2b
 * ./collatz_cycle_search
 */
 
-#include "__uint512_t.h"
+#include "__uint256_t.h"
 
 #include <bit>
 //#include <execution>
@@ -31,14 +31,15 @@ using namespace std;
 
 time_t start_time = time(0);
 
-typedef __uint512_t _bigint;
+typedef __uint256_t _bigint;
 
-constexpr __uint16_t M2=512;
-constexpr __uint16_t M3=324;
+constexpr __uint16_t M2=256;
+constexpr __uint16_t M3=162;
 __uint16_t m = 1;
 __uint16_t T = 11;
 
-__uint16_t MIN_N_BITS = 1;
+__uint16_t MIN_N_BITS = 60;
+_bigint limits[M3];
 
 _bigint p23[M2][M3];
 _bigint dx[M3];
@@ -102,6 +103,7 @@ int main () {
 		for (__uint16_t l=1; l < m; ++l) {
 			_bigint& y = yy[l];
 			if (y == 0) continue;
+
 			_bigint limit = y;
 			limit <<= MIN_N_BITS;
 			limit += p23[m][0];
@@ -112,10 +114,13 @@ int main () {
 			for (m1 = 1; y >= dx[m1+1]; ++m1);
 			__uint16_t m2 = m - m1 - 1;
 
-			if (limit >= p23[m-m1][m1]) {
-				limit -= p23[m-m1][m1];
-			} else {
-				limit = 0;
+			for (__uint16_t l1=1; l1 <= m1; ++l1) {
+				if (limit >= p23[m-l1][l1]) {
+					limits[l1] = limit;
+					limits[l1] -= p23[m-l1][l1];
+				} else {
+					limits[l1] = 0;
+				}
 			}
 
 			stringstream str;
@@ -139,11 +144,11 @@ int main () {
 				if (t == 0) {
 					x -= p23[m2][0];
 				}
-				/*stringstream str;
+				stringstream str;
 				double seconds_since_start = difftime(time(0), start_time);
 				str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-				str << "\t" << m2 << " " << l2 << " " << t << " " << x << endl;
-				cout << str.str();*/
+				str << "\t t l2 x " << t << " " << l2 << " " << x << endl;
+				cout << str.str();
 				__uint16_t d = std::countr_zero(s+(__uint64_t)p23[m2][0]);
 				for (; s < e; ++s, d = std::countr_zero(s)) {
 					l2 -= d;
@@ -154,7 +159,7 @@ int main () {
 						continue;
 					__uint16_t l1 = l - l2;
 					_bigint q = (__uint128_t)p23[0][l1] * x;
-					if (limit >= q)
+					if (limits[l1] >= q)
 						continue;
 					q %= y;
 					_bigint z = y;
@@ -176,6 +181,7 @@ int main () {
 						z += d * y;
 						z >>= 1;
 					}
+					q = z;
 
 					/*stringstream str;
 					double seconds_since_start = difftime(time(0), start_time);
@@ -185,15 +191,23 @@ int main () {
 
 					__uint16_t k = 0;
 					__int16_t ll = l1;
-					__uint128_t ss = s;
 					for (; k < m1 && ll > 0 && z > 0; ++k) {
 						bool d = z & 1;
 						ll -= d * (ll > 0);
-						ss += d * p23[m2 + k][0];
 						z -= d * p23[0][ll];
 						z >>= 1;
 					}
 					if (z == 0 && ll == 0 && k == m1) {
+						__uint16_t k = 0;
+						__int16_t ll = l1;
+						_bigint ss = s;
+						for (; k < m1 && ll > 0 && q > 0; ++k) {
+							bool d = q & 1;
+							ll -= d * (ll > 0);
+							ss += d * p23[m2 + k][0];
+							q -= d * p23[0][ll];
+							q >>= 1;
+						}
 						_bigint xx = 0;
 						__uint16_t l = 0;
 						for (__uint16_t i=m; i>0; --i) {
@@ -201,13 +215,12 @@ int main () {
 							xx += d*p23[i-1][l];
 							l += d;
 						}
-						_bigint r = xx;
-						r %= y;
+						pair<_bigint, _bigint> qr = divmod(xx, y);
 						std::string sign = p23[m][0] >= p23[0][l] ? "" : "-";
 						stringstream str;
 						double seconds_since_start = difftime(time(0), start_time);
 						str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-						str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << r << ",\tn=" << sign << (__uint128_t)xx/(__uint128_t)y << ",\ty=" << sign << y << endl;
+						str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << endl;
 						cout << str.str();
 					}
 				}

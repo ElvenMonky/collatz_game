@@ -1,6 +1,6 @@
 /* Copyright Serhii Hrynko (Date of Birth: 06/10/1982) - All Rights Reserved
 * Unauthorized copying of this file, via any medium is strictly prohibited
-* Written by Serhii Hrynko <sergey.greenko@gmail.com>, July 2023
+* Written by Serhii Hrynko <sergey.greenko@gmail.com>, August 2023
 */
 #pragma once
 
@@ -53,6 +53,8 @@ class __uint256_t {
 		j += ((_[i] >> (1 + j)) > 0);
 		return (i << 7) + j;
 	}
+
+	friend pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b);
 };
 
 __uint256_t& operator+=(__uint256_t& a, const __uint256_t& b) {
@@ -130,6 +132,27 @@ __uint256_t& operator%=(__uint256_t& a, const __uint256_t& b)
 		}
 	}
 	return a;
+}
+
+pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b)
+{
+	__uint256_t q = 0;
+	__uint256_t r = a;
+	if (a >= b) {
+		__uint256_t c = b;
+		__uint256_t s = 1;
+		__uint16_t i = a.bit() - b.bit();
+		c <<= i;
+		s <<= i;
+		while (r >= b) {
+			bool d = r >= c;
+			q += d * s;
+			r -= d * c;
+			c >>= 1;
+			s >>= 1;
+		}
+	}
+	return pair<__uint256_t,__uint256_t>(q, r);
 }
 
 std::ostream& operator>>( std::ostream& dest, __uint128_t value )

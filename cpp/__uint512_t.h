@@ -61,6 +61,8 @@ class __uint512_t {
 		j += ((_[i] >> (1 + j)) > 0);
 		return (i << 7) + j;
 	}
+
+	friend pair<__uint512_t,__uint512_t> divmod(const __uint512_t& a, const __uint512_t& b);
 };
 
 __uint512_t& operator+=(__uint512_t& a, const __uint512_t& b) {
@@ -158,6 +160,27 @@ __uint512_t& operator%=(__uint512_t& a, const __uint512_t& b)
 		}
 	}
 	return a;
+}
+
+pair<__uint512_t,__uint512_t> divmod(const __uint512_t& a, const __uint512_t& b)
+{
+	__uint512_t q = 0;
+	__uint512_t r = a;
+	if (a >= b) {
+		__uint512_t c = b;
+		__uint512_t s = 1;
+		__uint16_t i = a.bit() - b.bit();
+		c <<= i;
+		s <<= i;
+		while (r >= b) {
+			bool d = r >= c;
+			q += d * s;
+			r -= d * c;
+			c >>= 1;
+			s >>= 1;
+		}
+	}
+	return pair<__uint512_t,__uint512_t>(q, r);
 }
 
 std::ostream& operator>>( std::ostream& dest, __uint128_t value )
