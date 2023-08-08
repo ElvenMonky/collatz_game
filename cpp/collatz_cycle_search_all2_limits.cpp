@@ -142,11 +142,11 @@ int main () {
 				if (t == 0) {
 					x -= p23[m2][0];
 				}
-				stringstream str;
+				/*stringstream str;
 				double seconds_since_start = difftime(time(0), start_time);
 				str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
 				str << "\t t l2 x " << t << " " << l2 << " " << x << endl;
-				cout << str.str();
+				cout << str.str();*/
 				__uint16_t d = std::countr_zero(s+(__uint64_t)p23[m2][0]);
 				for (; s < e; ++s, d = std::countr_zero(s)) {
 					l2 -= d;
