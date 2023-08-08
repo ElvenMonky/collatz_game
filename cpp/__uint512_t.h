@@ -92,6 +92,20 @@ __uint512_t& operator>>=(__uint512_t& a, const long s) {
 	return a;
 }
 
+__uint512_t operator>>(const __uint512_t& a, const int s) {
+	__uint512_t r = a;
+	if (s > 0) {
+		r._[0] >>= s;
+		r._[0] += a._[1] << (128-s);
+		r._[1] >>= s;
+		r._[1] += a._[2] << (128-s);
+		r._[2] >>= s;
+		r._[2] += a._[3] << (128-s);
+		r._[3] >>= s;
+	}
+	return r;
+}
+
 __uint512_t& operator<<=(__uint512_t& a, const long s) {
 	a._[3] <<= s;
 	a._[3] += a._[2] >> (128-s);
@@ -153,7 +167,10 @@ __uint512_t& operator%=(__uint512_t& a, const __uint512_t& b)
 {
 	if (a >= b) {
 		__uint512_t c = b;
-		c <<= a.bit() - b.bit();
+		__uint16_t i = a.bit() - b.bit();
+		if (i) {
+			c <<= i;
+		}
 		while (a >= b) {
 			a -= (a >= c) * c;
 			c >>= 1;
@@ -170,8 +187,10 @@ pair<__uint512_t,__uint512_t> divmod(const __uint512_t& a, const __uint512_t& b)
 		__uint512_t c = b;
 		__uint512_t s = 1;
 		__uint16_t i = a.bit() - b.bit();
-		c <<= i;
-		s <<= i;
+		if (i) {
+			c <<= i;
+			s <<= i;
+		}
 		while (r >= b) {
 			bool d = r >= c;
 			q += d * s;

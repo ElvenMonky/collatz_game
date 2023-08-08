@@ -78,9 +78,11 @@ __uint256_t& operator>>=(__uint256_t& a, const long s) {
 
 __uint256_t operator>>(const __uint256_t& a, const int s) {
 	__uint256_t r = a;
-	r._[0] >>= s;
-	r._[0] += a._[1] << (128-s);
-	r._[1] >>= s;
+	if (s > 0) {
+		r._[0] >>= s;
+		r._[0] += a._[1] << (128-s);
+		r._[1] >>= s;
+	}
 	return r;
 }
 
@@ -133,7 +135,10 @@ __uint256_t& operator%=(__uint256_t& a, const __uint256_t& b)
 {
 	if (a >= b) {
 		__uint256_t c = b;
-		c <<= a.bit() - b.bit();
+		__uint16_t i = a.bit() - b.bit();
+		if (i) {
+			c <<= i;
+		}
 		while (a >= b) {
 			a -= (a >= c) * c;
 			c >>= 1;
@@ -150,8 +155,10 @@ pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b)
 		__uint256_t c = b;
 		__uint256_t s = 1;
 		__uint16_t i = a.bit() - b.bit();
-		c <<= i;
-		s <<= i;
+		if (i) {
+			c <<= i;
+			s <<= i;
+		}
 		while (r >= b) {
 			bool d = r >= c;
 			q += d * s;
