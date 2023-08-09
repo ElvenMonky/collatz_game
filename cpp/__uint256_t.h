@@ -69,27 +69,43 @@ __uint256_t& operator-=(__uint256_t& a, const __uint256_t& b) {
 	return a;
 }
 
-__uint256_t& operator>>=(__uint256_t& a, const long s) {
-	a._[0] >>= s;
-	a._[0] += a._[1] << (128-s);
-	a._[1] >>= s;
+__uint256_t& operator>>=(__uint256_t& a, const int s) {
+	if (s > 0) {
+		if (s >= 128) {
+			a._[0] = a._[1];
+			a._[1] = 0;
+			if (s > 128) {
+				a._[0] >>= (s-128);
+			}
+		} else {
+			a._[0] >>= s;
+			a._[0] += a._[1] << (128-s);
+			a._[1] >>= s;
+		}
+	}
 	return a;
 }
 
 __uint256_t operator>>(const __uint256_t& a, const int s) {
 	__uint256_t r = a;
-	if (s > 0) {
-		r._[0] >>= s;
-		r._[0] += a._[1] << (128-s);
-		r._[1] >>= s;
-	}
+	r >>= s;
 	return r;
 }
 
-__uint256_t& operator<<=(__uint256_t& a, const long s) {
-	a._[1] <<= s;
-	a._[1] += a._[0] >> (128-s);
-	a._[0] <<= s;
+__uint256_t& operator<<=(__uint256_t& a, const int s) {
+	if (s > 0) {
+		if (s >= 128) {
+			a._[1] = a._[0];
+			a._[0] = 0;
+			if (s > 128) {
+				a._[1] <<= (s-128);
+			}
+		} else {
+			a._[1] <<= s;
+			a._[1] += a._[0] >> (128-s);
+			a._[0] <<= s;
+		}
+	}
 	return a;
 }
 

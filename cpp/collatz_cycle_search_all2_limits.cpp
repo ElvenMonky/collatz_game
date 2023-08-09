@@ -11,7 +11,7 @@
 #include "__uint256_t.h"
 
 #include <bit>
-#include <execution>
+//#include <execution>
 #include <iostream>
 #include <sstream>
 #include <thread>
@@ -21,9 +21,9 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-//#define PSTLD_HACK_INTO_STD // export into namespace std
-//#include "pstld.h"
+#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+#define PSTLD_HACK_INTO_STD // export into namespace std
+#include "pstld.h"
 
 using namespace std;
 
@@ -36,11 +36,12 @@ constexpr __uint16_t M3=162;
 __uint16_t m = 1;
 __uint16_t T = 11;
 
-__uint16_t MIN_N_BITS = 60;
+__uint16_t MIN_N_BITS = 0;
 _bigint limits[M3];
 
 _bigint p23[M2][M3];
 _bigint dx[M3];
+_bigint maxz[M3];
 _bigint yy[M3];
 _bigint ymin;
 
@@ -82,9 +83,9 @@ int main () {
 				yy[l] = p23[m][0];
 				yy[l] -= p23[0][l];
 			} else {
-				yy[l] = 0;
-				// yy[l] = p23[0][l];
-				// yy[l] -= p23[m][0];
+				// yy[l] = 0;
+				yy[l] = p23[0][l];
+				yy[l] -= p23[m][0];
 			}
 			if (ymin >= yy[l])
 				ymin = yy[l];
@@ -109,8 +110,20 @@ int main () {
 
 			// 3^m1 - 2^m1 < 2^m - 3^l
 			__uint16_t m1;
-			for (m1 = 1; y >= dx[m1+1]; ++m1);
-			__uint16_t m2 = m - m1 - 1;
+			for (m1 = 1; y >= dx[m1-1]; ++m1);
+			__uint16_t m2 = (m - m1 - 1) * m/2 / m1;
+			m1 = m - m2 - 1;
+
+			stringstream str;
+			double seconds_since_start = difftime(time(0), start_time);
+			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+			str << "\t l m1 m2 y " << l << " " << m1 << " " << m2 << " " << y << endl;
+			cout << str.str();
+
+			for (__uint16_t l1=1; l1 <= m1; ++l1) {
+				maxz[l1] = p23[m1-l1][l1];
+				maxz[l1] -= p23[m1][0];
+			}
 
 			for (__uint16_t l1=1; l1 <= m1; ++l1) {
 				if (limit >= p23[m-l1][l1]) {
@@ -120,12 +133,6 @@ int main () {
 					limits[l1] = 0;
 				}
 			}
-
-			stringstream str;
-			double seconds_since_start = difftime(time(0), start_time);
-			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-			str << "\t l m1 m2 y " << l << " " << m1 << " " << m2 << " " << y << " " << limit << endl;
-			cout << str.str();
 
 			std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint64_t& t) {
 				__uint16_t m0 = (m2-T)*(m2>T);
@@ -145,7 +152,7 @@ int main () {
 				/*stringstream str;
 				double seconds_since_start = difftime(time(0), start_time);
 				str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-				str << "\t t l2 x " << t << " " << l2 << " " << x << endl;
+				str << "\t" << m2 << " " << l2 << " " << t << " " << x << endl;
 				cout << str.str();*/
 				__uint16_t d = std::countr_zero(s+(__uint64_t)p23[m2][0]);
 				for (; s < e; ++s, d = std::countr_zero(s)) {
@@ -179,47 +186,53 @@ int main () {
 						z += d * y;
 						z >>= 1;
 					}
-					q = z;
 
-					/*stringstream str;
-					double seconds_since_start = difftime(time(0), start_time);
-					str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-					str << "\t in loop: l1 l2 x y z s " << l1 << " " << l2 << " " << x << " " << y << " " << z << " " >> (s+(__uint64_t)p23[m2][0]) << endl;
-					cout << str.str();*/
+					while (maxz[l1] >= z) {
+						q = z;
 
-					__uint16_t k = 0;
-					__int16_t ll = l1;
-					for (; k < m1 && ll > 0 && z > 0; ++k) {
-						bool d = z & 1;
-						ll -= d * (ll > 0);
-						z -= d * p23[0][ll];
-						z >>= 1;
-					}
-					if (z == 0 && ll == 0 && k == m1) {
+						/*stringstream str;
+						double seconds_since_start = difftime(time(0), start_time);
+						str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+						str << "\t in loop: l1 l2 x y z s " << l1 << " " << l2 << " " << x << " " << y << " " << z << " " >> (s+(__uint64_t)p23[m2][0]) << endl;
+						cout << str.str();*/
+
 						__uint16_t k = 0;
 						__int16_t ll = l1;
-						_bigint ss = s;
 						for (; k < m1 && ll > 0 && q > 0; ++k) {
 							bool d = q & 1;
 							ll -= d * (ll > 0);
-							ss += d * p23[m2 + k][0];
 							q -= d * p23[0][ll];
 							q >>= 1;
 						}
-						_bigint xx = 0;
-						__uint16_t l = 0;
-						for (__uint16_t i=m; i>0; --i) {
-							bool d = (ss>>(i-1)) & 1;
-							xx += d*p23[i-1][l];
-							l += d;
+						if (q == 0 && ll == 0 && k == m1) {
+							__uint16_t k = 0;
+							__int16_t ll = l1;
+							_bigint ss = s;
+							q = z;
+							for (; k < m1 && ll > 0 && q > 0; ++k) {
+								bool d = q & 1;
+								ll -= d * (ll > 0);
+								ss += d * p23[m2 + k][0];
+								q -= d * p23[0][ll];
+								q >>= 1;
+							}
+							_bigint xx = 0;
+							__uint16_t l = 0;
+							for (__uint16_t i=m; i>0; --i) {
+								bool d = (ss>>(i-1)) & 1;
+								xx += d*p23[i-1][l];
+								l += d;
+							}
+							pair<_bigint, _bigint> qr = divmod(xx, y);
+							std::string sign = p23[m][0] >= p23[0][l] ? "" : "-";
+							stringstream str;
+							double seconds_since_start = difftime(time(0), start_time);
+							str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+							str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << ",\tx=" << xx << endl;
+							cout << str.str();
 						}
-						pair<_bigint, _bigint> qr = divmod(xx, y);
-						std::string sign = p23[m][0] >= p23[0][l] ? "" : "-";
-						stringstream str;
-						double seconds_since_start = difftime(time(0), start_time);
-						str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-						str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << endl;
-						cout << str.str();
+
+						z += y;
 					}
 				}
 			});
