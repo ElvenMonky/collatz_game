@@ -11,7 +11,7 @@
 #include "__uint256_t.h"
 
 #include <bit>
-//#include <execution>
+#include <execution>
 #include <iostream>
 #include <sstream>
 #include <thread>
@@ -21,9 +21,9 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-#define PSTLD_HACK_INTO_STD // export into namespace std
-#include "pstld.h"
+//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+//#define PSTLD_HACK_INTO_STD // export into namespace std
+//#include "pstld.h"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ constexpr __uint16_t M3=162;
 __uint16_t m = 1;
 __uint16_t T = 11;
 
-__uint16_t MIN_N_BITS = 0;
+__uint16_t MIN_N_BITS = 60;
 _bigint limits[M3];
 
 _bigint p23[M2][M3];
