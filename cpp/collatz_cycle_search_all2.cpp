@@ -11,7 +11,7 @@
 #include "__uint256_t.h"
 
 #include <bit>
-#include <execution>
+//#include <execution>
 #include <iostream>
 #include <sstream>
 #include <thread>
@@ -21,9 +21,9 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-//#define PSTLD_HACK_INTO_STD // export into namespace std
-//#include "pstld.h"
+#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+#define PSTLD_HACK_INTO_STD // export into namespace std
+#include "pstld.h"
 
 using namespace std;
 
@@ -56,6 +56,24 @@ int main () {
 		// dest.assign(p23[m2], p23[m2] + M3);
 		// print_vector(dest);
 	}
+
+	// test big number operations
+	/*for (__uint16_t m3 = 0; m3 < 128; ++m3) {
+		_bigint x = p23[0][m3];
+		for (__uint16_t m2 = 0; m2 < 128; ++m2) {
+			x <<= m2;
+			if (x != p23[m2][m3]) {
+				cout << "shift error: " << m3 << " " << m2 << " " << p23[m2][m3] << " " << x << endl;
+				return 0;
+			}
+			_bigint y = (__uint128_t)p23[m2][0] * p23[0][m3];
+			if (m2 < 128 && x != y) {
+				cout << "mul error: " << m3 << " " << m2 << " " << p23[m2][0] << " " << p23[0][m3] << " " << y << " " << x << endl;
+				return 0;
+			}
+			x >>= m2;
+		}
+	}*/
 
 	// 01 -> 10, 011 -> 100, 0111 -> 1000, 01111 -> 10000, ...
 	for (__uint16_t m3 = 0; m3 < M3; ++m3) {

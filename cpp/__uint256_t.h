@@ -121,11 +121,13 @@ __uint256_t operator*(const bool x, const __uint256_t& a)
 
 __uint256_t operator*(const __uint128_t x, const __uint256_t& a)
 {
-	__uint256_t r = a;
-	r._[0] *= x;
-	r._[1] *= x;
-	__uint128_t h = x * (a._[0] >> 64);
-	r._[1] += (h >> 64) + ((__uint64_t)h > (r._[0] >> 64));
+	__uint256_t r;
+	r._[0] = (__uint64_t)x * (a._[0] >> 64) + ((((x & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF))) >> 64);
+	r._[1] = r._[0] + (x >> 64) * (__uint64_t)a._[0];
+	__uint128_t d = r._[0] > r._[1];
+	r._[1] >>= 64;
+	r._[1] += a._[1] * x + (d << 64) + (a._[0] >> 64) * (x >> 64);
+	r._[0] = a._[0] * x;
 	return r;
 }
 
@@ -141,6 +143,10 @@ bool operator>=(const __uint256_t& a, const __uint256_t& b) {
 
 bool operator==(const __uint256_t& a, const __uint256_t& b) {
 	return (a._[1] == b._[1]) * (a._[0] == b._[0]);
+}
+
+bool operator!=(const __uint256_t& a, const __uint256_t& b) {
+	return (a._[1] != b._[1]) + (a._[0] != b._[0]);
 }
 
 bool operator==(const __uint256_t& a, const int& i) {
