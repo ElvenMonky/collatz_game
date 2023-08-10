@@ -12,6 +12,7 @@
 
 #include <bit>
 #include <execution>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <thread>
@@ -43,7 +44,9 @@ _bigint yy[M3];
 _bigint ymin;
 
 int main () {
-	std::vector<_bigint> dest;
+	ofstream destfile;
+	destfile.open("solutions.txt");
+	//std::vector<_bigint> dest;
 	// powers of 2 and 3
 	p23[0][0] = 1;
 	for (__uint16_t m2 = 1; m2 < M2; ++m2) {
@@ -227,6 +230,8 @@ int main () {
 							str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
 							str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << ",\tx=" << xx << endl;
 							cout << str.str();
+							destfile << str.str();
+							destfile.flush();
 						}
 
 						z += y;
@@ -236,4 +241,5 @@ int main () {
 		}
 		++m;
 	}
+	destfile.close();
 }
