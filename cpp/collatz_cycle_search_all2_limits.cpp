@@ -36,7 +36,7 @@ constexpr __uint16_t M3=162;
 __uint16_t m = 1;
 __uint16_t T = 11;
 
-__uint16_t MIN_N_BITS = 60;
+__uint16_t MIN_N_BITS = 48;
 _bigint limits[M3];
 
 _bigint p23[M2][M3];
@@ -163,7 +163,7 @@ int main () {
 					if (l > m1 + l2 || l <= l2)
 						continue;
 					__uint16_t l1 = l - l2;
-					_bigint q = (__uint128_t)p23[0][l1] * x;
+					_bigint q = p23[0][l1] * x;
 					if (limits[l1] >= q)
 						continue;
 					q %= y;
