@@ -52,7 +52,7 @@ int main () {
 	for (__uint16_t m2 = 1; m2 < M2; ++m2) {
 		p23[m2][0] = 2 * p23[m2-1][0];
 	}
-	for (__uint16_t m2 = 0; m2 < M3; ++m2) {
+	for (__uint16_t m2 = 0; m2 < M2; ++m2) {
 		for (__uint16_t m3 = 1; m3 < M3; ++m3) {
 			p23[m2][m3] = 3 * p23[m2][m3-1];
 		}
@@ -60,23 +60,23 @@ int main () {
 		// print_vector(dest);
 	}
 
-	// test big number operations
-	/*for (__uint16_t m3 = 0; m3 < 128; ++m3) {
+	// check validity of big number operations
+	for (__uint16_t m3 = 0; m3 < M3; ++m3) {
 		_bigint x = p23[0][m3];
-		for (__uint16_t m2 = 0; m2 < 128; ++m2) {
+		for (__uint16_t m2 = 0; m2 < M2; ++m2) {
 			x <<= m2;
 			if (x != p23[m2][m3]) {
 				cout << "shift error: " << m3 << " " << m2 << " " << p23[m2][m3] << " " << x << endl;
 				return 0;
 			}
-			_bigint y = (__uint128_t)p23[m2][0] * p23[0][m3];
-			if (m2 < 128 && x != y) {
+			_bigint y = p23[m2][0] * p23[0][m3];
+			if (x != y) {
 				cout << "mul error: " << m3 << " " << m2 << " " << p23[m2][0] << " " << p23[0][m3] << " " << y << " " << x << endl;
 				return 0;
 			}
 			x >>= m2;
 		}
-	}*/
+	}
 
 	// 01 -> 10, 011 -> 100, 0111 -> 1000, 01111 -> 10000, ...
 	for (__uint16_t m3 = 0; m3 < M3; ++m3) {
@@ -165,7 +165,7 @@ int main () {
 					if (l > m1 + l2 || l <= l2)
 						continue;
 					__uint16_t l1 = l - l2;
-					_bigint q = (__uint128_t)p23[0][l1] * x;
+					_bigint q = p23[0][l1] * x;
 					q %= y;
 					_bigint z = y;
 					z -= q;
