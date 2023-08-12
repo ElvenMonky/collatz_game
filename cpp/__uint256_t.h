@@ -126,6 +126,13 @@ __uint256_t operator*(const int x, const __uint256_t& a)
 	return (__uint128_t)x * a;
 }
 
+__uint256_t operator*(const __uint256_t x, const __uint256_t& a)
+{
+	__uint256_t r = x._[0] * a;
+	r._[1] += x._[1] * a._[0];
+	return r;
+}
+
 bool operator>=(const __uint256_t& a, const __uint256_t& b) {
 	return
 		(a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] >= b._[0]);
