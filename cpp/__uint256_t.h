@@ -4,38 +4,44 @@
 */
 #pragma once
 
+#include <cstring>
 #include <iostream>
-#include <vector>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
+#include "print_utils.h"
+
 class __uint256_t {
 	public:
+	static constexpr size_t SIZE = 32;
 	__uint128_t _[2];
 
 	__uint256_t() {
+		memset(_, 0, SIZE);
 	}
 
 	__uint256_t(const __uint128_t& i) {
+		memset(_, 0, SIZE);
 		_[0] = i;
-		_[1] = 0;
+	}
+
+	__uint256_t(const __uint128_t& i, const __uint128_t& j) {
+		_[0] = i;
+		_[1] = j;
 	}
 
 	void operator=(const __uint128_t& i) {
+		memset(_, 0, SIZE);
 		_[0] = i;
-		_[1] = 0;
 	}
 
 	__uint256_t(const __uint256_t& i) {
-		_[0] = i._[0];
-		_[1] = i._[1];
+		memcpy(_, i._, SIZE);
 	}
 
 	void operator=(const __uint256_t& i) {
-		_[0] = i._[0];
-		_[1] = i._[1];
+		memcpy(_, i._, SIZE);
 	}
 
 	operator __uint128_t() {
@@ -76,8 +82,11 @@ __uint256_t& operator>>=(__uint256_t& a, const int s) {
 		a._[0] += a._[1] << (128-i);
 		a._[1] >>= i;
 	}
-	a._[0] -= (a._[0] - a._[1]) * (s >> 7);
-	a._[1] -= a._[1] * (s >> 7);
+	i = s >> 7;
+	if (i) {
+		memmove(a._,a._+i,__uint256_t::SIZE-16*i);
+		memset(a._+(2-i),0,16*i);
+	}
 	return a;
 }
 
@@ -94,8 +103,11 @@ __uint256_t& operator<<=(__uint256_t& a, const int s) {
 		a._[1] += a._[0] >> (128-i);
 		a._[0] <<= i;
 	}
-	a._[1] -= (a._[1] - a._[0]) * (s >> 7);
-	a._[0] -= a._[0] * (s >> 7);
+	i = s >> 7;
+	if (i) {
+		memmove(a._+i,a._,__uint256_t::SIZE-16*i);
+		memset(a._,0,16*i);
+	}
 	return a;
 }
 
@@ -128,8 +140,13 @@ __uint256_t operator*(const int x, const __uint256_t& a)
 
 __uint256_t operator*(const __uint256_t x, const __uint256_t& a)
 {
-	__uint256_t r = x._[0] * a;
-	r._[1] += x._[1] * a._[0];
+	__uint256_t r;
+	r._[0] = (__uint64_t)x._[0] * (a._[0] >> 64) + ((((x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF))) >> 64);
+	r._[1] = r._[0] + (x._[0] >> 64) * (__uint64_t)a._[0];
+	__uint128_t d = r._[0] > r._[1];
+	r._[1] >>= 64;
+	r._[1] += a._[1] * x._[0] + x._[1] * a._[0] + (d << 64) + (a._[0] >> 64) * (x._[0] >> 64);
+	r._[0] = a._[0] * x._[0];
 	return r;
 }
 
@@ -143,7 +160,7 @@ bool operator==(const __uint256_t& a, const __uint256_t& b) {
 }
 
 bool operator!=(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] != b._[1]) + (a._[0] != b._[0]);
+	return 1 - (a._[1] == b._[1]) * (a._[0] == b._[0]);
 }
 
 bool operator==(const __uint256_t& a, const int& i) {
@@ -189,118 +206,48 @@ pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b)
 	return pair<__uint256_t,__uint256_t>(q, r);
 }
 
-std::ostream& operator>>( std::ostream& dest, __uint128_t value )
-{
-	__uint8_t base = 2;
-	std::ostream::sentry s( dest );
-	if ( s ) {
-		__uint128_t tmp = value;
-		char buffer[ 128 ];
-		char* d = std::end( buffer );
-		__uint8_t i = 0;
-		do
-		{
-			-- d;
-			*d = "0123456789ABCDEF"[ tmp % base ];
-			tmp /= base;
-			++ i;
-		} while ( tmp != 0 );
-		int len = std::end( buffer ) - d;
-		if ( dest.rdbuf()->sputn( d, len ) != len ) {
-			dest.setstate( std::ios_base::badbit );
-		}
-	}
-	return dest;
-}
-
-std::ostream& operator<<( std::ostream& dest, __uint128_t value )
-{
-	__uint8_t base = 10;
-	std::ostream::sentry s( dest );
-	if ( s ) {
-		__uint128_t tmp = value;
-		char buffer[ 128 ];
-		char* d = std::end( buffer );
-		__uint8_t i = 0;
-		do
-		{
-			-- d;
-			*d = "0123456789ABCDEF"[ tmp % base ];
-			tmp /= base;
-			++ i;
-		} while ( tmp != 0 );
-		int len = std::end( buffer ) - d;
-		if ( dest.rdbuf()->sputn( d, len ) != len ) {
-			dest.setstate( std::ios_base::badbit );
-		}
-	}
-	return dest;
-}
-
-std::ostream& operator<<( std::ostream& dest, __int128_t value )
-{
-	__uint8_t base = 10;
-	std::ostream::sentry s( dest );
-	if ( s ) {
-		__int128_t tmp = value;
-		if (value < 0) {
-			dest << "-";
-			tmp = -value;
-		}
-		char buffer[ 128 ];
-		char* d = std::end( buffer );
-		__uint8_t i = 0;
-		do
-		{
-			-- d;
-			*d = "0123456789ABCDEF"[ tmp % base ];
-			tmp /= base;
-			++ i;
-		} while ( tmp != 0 );
-		int len = std::end( buffer ) - d;
-		if ( dest.rdbuf()->sputn( d, len ) != len ) {
-			dest.setstate( std::ios_base::badbit );
-		}
-	}
-	return dest;
-}
-
 std::ostream& operator<<(std::ostream& dest, const __uint256_t value)
 {
-	if (value._[1]) {
-		dest << value._[1] << "'";
+	__uint8_t base = 10;
+	std::ostream::sentry s( dest );
+	if ( s ) {
+		__uint256_t tmp = value;
+		char buffer[ 256 ];
+		char* d = std::end( buffer );
+		do
+		{
+			-- d;
+			pair<__uint256_t,__uint256_t> p = divmod(tmp, base);
+			*d = "0123456789ABCDEF"[ p.second ];
+			tmp = p.first;
+		} while ( tmp != 0 );
+		int len = std::end( buffer ) - d;
+		if ( dest.rdbuf()->sputn( d, len ) != len ) {
+			dest.setstate( std::ios_base::badbit );
+		}
 	}
-	dest << value._[0];
 	return dest;
 }
 
 std::ostream& operator>>(std::ostream& dest, const __uint256_t value)
 {
-	if (value._[1]) {
-		dest >> value._[1] << "'";
+	__uint8_t base = 2;
+	std::ostream::sentry s( dest );
+	if ( s ) {
+		__uint256_t tmp = value;
+		char buffer[ 256 ];
+		char* d = std::end( buffer );
+		do
+		{
+			-- d;
+			pair<__uint256_t,__uint256_t> p = divmod(tmp, base);
+			*d = "0123456789ABCDEF"[ p.second ];
+			tmp = p.first;
+		} while ( tmp != 0 );
+		int len = std::end( buffer ) - d;
+		if ( dest.rdbuf()->sputn( d, len ) != len ) {
+			dest.setstate( std::ios_base::badbit );
+		}
 	}
-	dest >> value._[0];
 	return dest;
-}
-
-template<class T>
-void print_matrix(vector< vector<T> >& v, const string &text = "") {
-	stringstream str;
-	for (auto j: v) {
-		for (auto k: j)
-			str << k << ' ';
-		str << endl;
-	}
-	str << text << endl;
-	cout << str.str();
-}
-
-template<class T>
-void print_vector(vector<T>& v, const string &text = "") {
-	stringstream str;
-	for (auto i: v) {
-		str << i << ", ";
-	}
-	str << text << endl;
-	cout << str.str();
 }
