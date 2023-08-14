@@ -135,7 +135,11 @@ __uint256_t operator*(const __uint128_t x, const __uint256_t& a)
 
 __uint256_t operator*(const int x, const __uint256_t& a)
 {
-	return (__uint128_t)x * a;
+	__uint256_t r;
+	r._[0] = (__uint128_t)x * (__uint64_t)a._[0];
+	*(__uint128_t *)((__uint64_t *)r._+1) += (__uint128_t)x * ((__uint64_t *)a._)[1];
+	r._[1] += x * a._[1];
+	return r;
 }
 
 __uint256_t operator*(const __uint256_t x, const __uint256_t& a)
@@ -251,3 +255,21 @@ std::ostream& operator>>(std::ostream& dest, const __uint256_t value)
 	}
 	return dest;
 }
+
+/*std::ostream& operator<<(std::ostream& dest, const __uint256_t value)
+{
+	if (value._[1]) {
+		dest << value._[1] << "'";
+	}
+	dest << value._[0];
+	return dest;
+}
+
+std::ostream& operator>>(std::ostream& dest, const __uint256_t value)
+{
+	if (value._[1]) {
+		dest >> value._[1] << "'";
+	}
+	dest >> value._[0];
+	return dest;
+}*/

@@ -145,6 +145,7 @@ __uint512_t operator*(const bool x, const __uint512_t& a)
 	return x ? a : 0;
 }
 
+// not valid
 __uint512_t operator*(const __uint128_t x, const __uint512_t& a)
 {
 	__uint512_t r;
