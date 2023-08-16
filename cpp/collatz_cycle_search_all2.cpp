@@ -107,24 +107,26 @@ int main () {
 	// print_vector(dest);
 
 	for (__uint16_t l1 = 0; l1 < M3; ++l1) {
-		dz[l1][0] = 0;
-		dl[l1][0] = 0;
+		__uint16_t(& dll1)[] = dl[l1];
+		_bigint(& dzl1)[] = dz[l1];
+		dzl1[0] = 0;
+		dll1[0] = 0;
 		for (__uint16_t dm = 0; dm < DM; ++dm) {
 			_bigint dt = p23[dm+1][0]-1;
 			for (_bigint t = 0; t < dt+1; t += 1) {
-				dz[l1][t+dt] = dz[l1][t+p23[dm][0]-1];
-				dl[l1][t+dt] = dl[l1][t+p23[dm][0]-1];
+				dzl1[t+dt] = dzl1[t+p23[dm][0]-1];
+				dll1[t+dt] = dll1[t+p23[dm][0]-1];
 			}
 			for (_bigint t = 0; t < dt+1; t += 1) {
-				if (dl[l1][t+dt] > l1+1) continue;
-				if ((t - dz[l1][t+dt]) & ((__uint128_t)p23[dm][0] - 1)) {
-					cout << "dz error: " << l1 << " " << dm << " " >> t << " " << dz[l1][t+dt] << endl;
+				if (dll1[t+dt] > l1+1) continue;
+				if ((t - dzl1[t+dt]) & ((__uint128_t)p23[dm][0] - 1)) {
+					cout << "dz error: " << l1 << " " << dm << " " >> t << " " << dzl1[t+dt] << endl;
 					return 0;
 				}
-				bool d = ((t - dz[l1][t+dt]) >> dm) & 1;
-				dz[l1][t+dt] += d * p23[dm][l1 - dl[l1][t+dt]];
-				dl[l1][t+dt] += d;
-				//cout << "dz dl: " << l1 << " " << dm << " " >> t << " " << dz[l1][t+dt] << " " << dl[l1][t+dt] << endl;
+				bool d = ((t - dzl1[t+dt]) >> dm) & 1;
+				dzl1[t+dt] += d * p23[dm][l1 - dll1[t+dt]];
+				dll1[t+dt] += d;
+				//cout << "dz dl: " << l1 << " " << dm << " " >> t << " " << dzl1[t+dt] << " " << dll1[t+dt] << endl;
 			}
 		}
 	}
@@ -251,23 +253,23 @@ int main () {
 						cout << str.str();*/
 
 						__uint16_t k = r;
-						__int16_t ll = l1;
+						__int16_t ll = l1-1;
 						if (r > 0) {
-							__uint128_t d = q & rmask;
+							int d = (q & rmask) + rmask;
 							//cout << "!! " << ll << " " << k << " " << q << " " >> (q & rmask) << " " << dz[ll-1][d+rmask] << " " << dl[ll-1][d+rmask] << " " << endl;
-							q -= dz[ll-1][d+rmask];
-							ll -= dl[ll-1][d+rmask];
+							q -= dz[ll][d];
 							q >>= r;
+							ll -= dl[ll][d];
 						}
-						for (; k < m1 && ll > 0 && q > 0; k += DM) {
-							__uint128_t d = q & mask;
+						for (; k < m1 && ll >= 0 && q > 0; k += DM) {
+							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
-							q -= dz[ll-1][d+mask];
-							ll -= dl[ll-1][d+mask];
+							q -= dz[ll][d];
 							q >>= DM;
+							ll -= dl[ll][d];
 						}
 						//cout << "? " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
-						if (q == 0 && ll == 0 && k == m1) {
+						if (q == 0 && ll == -1 && k == m1) {
 							__uint16_t k = 0;
 							__int16_t ll = l1;
 							_bigint ss = s;
