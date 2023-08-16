@@ -34,7 +34,7 @@ typedef __uint256_t _bigint;
 
 constexpr __uint16_t M2=256;
 constexpr __uint16_t M3=162;
-constexpr __uint16_t DM = 18;
+constexpr __uint16_t DM = 13;
 __uint16_t m = 1;
 __uint16_t T = 14;
 
@@ -176,7 +176,7 @@ int main () {
 			// 3^m1 - 2^m1 < 2^m - 3^l
 			__uint16_t m1;
 			for (m1 = 1; y >= dx[m1-1]; ++m1);
-			__uint16_t m2 = (m - m1 - 1) * m/2 / (m1 + m1/DM);
+			__uint16_t m2 = (m - m1 - 1) * m/2 / (m1 + m1/16);
 			m1 = m - m2 - 1;
 			__uint16_t r = m1%DM;
 			int rmask = p23[r][0] - 1;
