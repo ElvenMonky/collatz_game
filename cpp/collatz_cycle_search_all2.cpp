@@ -11,7 +11,7 @@
 #include "__uint256_t.h"
 
 #include <bit>
-#include <execution>
+//#include <execution>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -22,9 +22,9 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-//#define PSTLD_HACK_INTO_STD // export into namespace std
-//#include "pstld.h"
+#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+#define PSTLD_HACK_INTO_STD // export into namespace std
+#include "pstld.h"
 
 using namespace std;
 
@@ -34,7 +34,8 @@ typedef __uint256_t _bigint;
 
 constexpr __uint16_t M2=256;
 constexpr __uint16_t M3=162;
-__uint16_t m = 136;
+constexpr __uint16_t DM = 17;
+__uint16_t m = 1;
 __uint16_t T = 11;
 
 _bigint p23[M2][M3];
@@ -42,6 +43,10 @@ _bigint dx[M3];
 _bigint maxz[M3];
 _bigint yy[M3];
 _bigint ymin;
+
+__uint16_t dl[M3][2 << DM];
+_bigint dz[M3][2 << DM];
+int mask = (1 << DM) - 1;
 
 int main () {
 	ofstream destfile;
@@ -101,6 +106,38 @@ int main () {
 	// dest.assign(dx, dx + M3);
 	// print_vector(dest);
 
+	for (__uint16_t l1 = 0; l1 < M3; ++l1) {
+		dz[l1][0] = 0;
+		dl[l1][0] = 0;
+		for (__uint16_t dm = 0; dm < DM; ++dm) {
+			_bigint dt = p23[dm+1][0]-1;
+			for (_bigint t = 0; t < dt+1; t += 1) {
+				dz[l1][t+dt] = dz[l1][t+p23[dm][0]-1];
+				dl[l1][t+dt] = dl[l1][t+p23[dm][0]-1];
+			}
+			for (_bigint t = 0; t < dt+1; t += 1) {
+				if (dl[l1][t+dt] > l1+1) continue;
+				if ((t - dz[l1][t+dt]) & ((__uint128_t)p23[dm][0] - 1)) {
+					cout << "dz error: " << l1 << " " << dm << " " >> t << " " << dz[l1][t+dt] << endl;
+					return 0;
+				}
+				bool d = ((t - dz[l1][t+dt]) >> dm) & 1;
+				dz[l1][t+dt] += d * p23[dm][l1 - dl[l1][t+dt]];
+				dl[l1][t+dt] += d;
+				//cout << "dz dl: " << l1 << " " << dm << " " >> t << " " << dz[l1][t+dt] << " " << dl[l1][t+dt] << endl;
+			}
+		}
+	}
+
+	for (__uint16_t l1 = 0; l1 < M3; ++l1) {
+		for (_bigint t = 0; t < p23[DM+1][0]; t += 1) {
+			if (dl[l1][t] > l1+1) {
+				dz[l1][t] = 0;
+				dl[l1][t] = 0;
+			}
+		}
+	}
+
 	// enables parallel computations
 	vector<__uint64_t> range;
 	range.resize(p23[T][0]);
@@ -137,8 +174,10 @@ int main () {
 			// 3^m1 - 2^m1 < 2^m - 3^l
 			__uint16_t m1;
 			for (m1 = 1; y >= dx[m1-1]; ++m1);
-			__uint16_t m2 = (m - m1 - 1) * m/2 / m1;
+			__uint16_t m2 = (m - m1 - 1) * m/2 / (m1 + m1/DM);
 			m1 = m - m2 - 1;
+			__uint16_t r = m1%DM;
+			int rmask = p23[r][0] - 1;
 
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
@@ -211,14 +250,23 @@ int main () {
 						str << "\t in loop: l1 l2 x y z s " << l1 << " " << l2 << " " << x << " " << y << " " << z << " " >> (s+(__uint64_t)p23[m2][0]) << endl;
 						cout << str.str();*/
 
-						__uint16_t k = 0;
+						__uint16_t k = r;
 						__int16_t ll = l1;
-						for (; k < m1 && ll > 0 && q > 0; ++k) {
-							bool d = q & 1;
-							ll -= d * (ll > 0);
-							q -= d * p23[0][ll];
-							q >>= 1;
+						if (r > 0) {
+							__uint128_t d = q & rmask;
+							//cout << "!! " << ll << " " << k << " " << q << " " >> (q & rmask) << " " << dz[ll-1][d+rmask] << " " << dl[ll-1][d+rmask] << " " << endl;
+							q -= dz[ll-1][d+rmask];
+							ll -= dl[ll-1][d+rmask];
+							q >>= r;
 						}
+						for (; k < m1 && ll > 0 && q > 0; k += DM) {
+							__uint128_t d = q & mask;
+							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
+							q -= dz[ll-1][d+mask];
+							ll -= dl[ll-1][d+mask];
+							q >>= DM;
+						}
+						//cout << "? " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 						if (q == 0 && ll == 0 && k == m1) {
 							__uint16_t k = 0;
 							__int16_t ll = l1;
