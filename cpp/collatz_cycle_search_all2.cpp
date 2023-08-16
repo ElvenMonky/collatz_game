@@ -34,7 +34,7 @@ typedef __uint256_t _bigint;
 
 constexpr __uint16_t M2=256;
 constexpr __uint16_t M3=162;
-constexpr __uint16_t DM = 19;
+constexpr __uint16_t DM = 18;
 __uint16_t m = 1;
 __uint16_t T = 14;
 
