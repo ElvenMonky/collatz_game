@@ -176,7 +176,7 @@ int main () {
 			// 3^m1 - 2^m1 < 2^m - 3^l
 			__uint16_t m1;
 			for (m1 = 1; y >= dx[m1-1]; ++m1);
-			__uint16_t m2 = (m - m1 - 1) * m/2 / (m1 + m1/6);
+			__uint16_t m2 = (m - m1 - 1) * m/2 / (m1 + m1/3);
 			m1 = m - m2 - 1;
 			__uint16_t r = m1%DM;
 			int rmask = p23[r][0] - 1;
