@@ -34,13 +34,14 @@ typedef __uint256_t _bigint;
 
 constexpr __uint16_t M2=256;
 constexpr __uint16_t M3=162;
-constexpr __uint16_t DM = 18;
-__uint16_t m = 136;
+constexpr __uint16_t DM = 13;
+__uint16_t m = 1;
 __uint16_t T = 14;
 
 _bigint p23[M2][M3];
 _bigint dx[M3];
 _bigint maxz[M3];
+_bigint minz[M3];
 _bigint yy[M3];
 _bigint ymin;
 
@@ -174,23 +175,53 @@ int main () {
 			_bigint& y = yy[l];
 
 			// 3^m1 - 2^m1 < 2^m - 3^l
+			_bigint x = p23[m-1-l][l];
+			x -= p23[m-1][0];
+			pair<_bigint, _bigint> pn = divmod(x, y);
+			_bigint pq = pn.first;
+			_bigint ps = 2 * pq;
+			ps += 1;
+			_bigint mn = ps;
 			__uint16_t m1;
-			for (m1 = 1; y >= dx[m1-1]; ++m1);
-			__uint16_t m2 = (m - m1 - 1) * m/2 / (m1 + m1/3);
+			__uint16_t m2 = 0;
+			for (m1 = 1; m1 <= 2*l && m1 <= 2*(m-1-l); ++m1) {
+				x = p23[m-1-l-(m1+1)/2][l-m1/2];
+				x -= p23[m-1-m1][0];
+				pn = divmod(x, y);
+				pq = pn.first;
+				ps = pq;
+				x = p23[m-1-l-m1/2][l-(m1+1)/2];
+				x -= p23[m-1-m1][0];
+				pn = divmod(x, y);
+				pq = pn.first;
+				ps += pq;
+				ps += 4;
+				ps = ps * p23[m1][0];
+				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
+				if (mn > ps) {
+					m2 = m1;
+					mn = ps;
+				}
+			}
 			m1 = m - m2 - 1;
 			__uint16_t r = m1%DM;
 			int rmask = p23[r][0] - 1;
+
+			for (__uint16_t l1=1; l1 <= m1; ++l1) {
+				minz[l1] = p23[m1-1][0];
+				minz[l1] += p23[0][l1];
+				minz[l1] -= p23[l1-1][1];
+				//minz[l1] -= 1;
+				//minz[l1] -= divmod(minz[l1], y).second;
+				maxz[l1] = p23[m1-l1][l1];
+				maxz[l1] -= p23[m1][0];
+			}
 
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
 			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
 			str << "\t l m1 m2 y " << l << " " << m1 << " " << m2 << " " << y << endl;
 			cout << str.str();
-
-			for (__uint16_t l1=1; l1 <= m1; ++l1) {
-				maxz[l1] = p23[m1-l1][l1];
-				maxz[l1] -= p23[m1][0];
-			}
 
 			std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint64_t& t) {
 				__uint16_t m0 = (m2-T)*(m2>T);
@@ -243,6 +274,9 @@ int main () {
 						z >>= 1;
 					}
 
+					while (minz[l1] > z) {
+						z += y;
+					}
 					while (maxz[l1] >= z) {
 						q = z;
 
@@ -261,7 +295,7 @@ int main () {
 							q >>= r;
 							ll -= dl[ll][d];
 						}
-						for (; k < m1 && ll >= 0 && q > 0; k += DM) {
+						for (; k < m1 && ll >= 0; k += DM) {
 							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 							q -= dz[ll][d];
@@ -274,7 +308,7 @@ int main () {
 							__int16_t ll = l1;
 							_bigint ss = s;
 							q = z;
-							for (; k < m1 && ll > 0 && q > 0; ++k) {
+							for (; k < m1 && ll > 0 && q != 0; ++k) {
 								bool d = q & 1;
 								ll -= d * (ll > 0);
 								ss += d * p23[m2 + k][0];
