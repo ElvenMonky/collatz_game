@@ -34,8 +34,8 @@ typedef __uint256_t _bigint;
 
 constexpr __uint16_t M2=256;
 constexpr __uint16_t M3=162;
-constexpr __uint16_t DM = 12;
-__uint16_t m = 136;
+constexpr __uint16_t DM = 13;
+__uint16_t m = 146;
 __uint16_t T = 14;
 
 _bigint p23[M2][M3];
@@ -179,9 +179,9 @@ int main () {
 			x -= p23[m-1][0];
 			pair<_bigint, _bigint> pn = divmod(x, y);
 			_bigint pq = pn.first;
-			_bigint ps = 2 * pq;
-			ps += 1;
-			_bigint mn = ps;
+			pq <<= 1;
+			pq += 1;
+			_bigint mn = pq;
 			__uint16_t m1;
 			__uint16_t m2 = 0;
 			for (m1 = 1; m1 <= 2*l && m1 <= 2*(m-1-l); ++m1) {
@@ -189,18 +189,16 @@ int main () {
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
 				pq = pn.first;
-				ps = pq;
 				x = p23[m-1-l-m1/2][l-(m1+1)/2];
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
-				pq = pn.first;
-				ps += pq;
-				ps += 4;
-				ps = ps * p23[m1][0];
+				pq += pn.first;
+				pq += 3;
+				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
-				if (mn > ps) {
+				if (mn > pq) {
 					m2 = m1;
-					mn = ps;
+					mn = pq;
 				}
 			}
 			m1 = m - m2 - 1;
