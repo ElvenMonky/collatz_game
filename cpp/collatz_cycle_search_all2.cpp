@@ -67,7 +67,9 @@ int main () {
 
 	for (__uint16_t m2 = 1; m2 < M3; ++m2) {
 		for (__uint16_t m3 = 0; m3 < m2; ++m3) {
-			pp23[m2][m3] = p23[m2-m3-1][m3+1] - p23[m2-1][1];
+			pp23[m2][m3] = p23[m2-m3-1][m3+1];
+			pp23[m2][m3] -= p23[m2-1][1];
+			pp23[m2][m3] += 1;
 		}
 	}
 
@@ -262,7 +264,7 @@ int main () {
 						z += y;
 					}
 					z -= p23[m1-1][0];
-					while (pp23[m1][l1-1] >= z) {
+					while (pp23[m1][l1-1] > z) {
 						q = z;
 
 						/*stringstream str;
@@ -279,7 +281,7 @@ int main () {
 							q >>= r;
 							ll -= dl[ll][d];
 						}
-						for (__uint16_t k = m1-r-1; ll > 0 && ll < k && pp23[k][ll] >= q; k -= DM) {
+						for (__uint16_t k = m1-r-1; ll > 0 && ll < k && pp23[k][ll] > q; k -= DM) {
 							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 							q -= dz[ll][d];
