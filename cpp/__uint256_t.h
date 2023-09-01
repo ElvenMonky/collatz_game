@@ -165,6 +165,14 @@ bool operator>(const __uint256_t& a, const __uint256_t& b) {
 	return (a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] > b._[0]);
 }
 
+bool operator<=(const __uint256_t& a, const __uint256_t& b) {
+	return (a._[1] < b._[1]) + (a._[1] == b._[1]) * (a._[0] <= b._[0]);
+}
+
+bool operator<(const __uint256_t& a, const __uint256_t& b) {
+	return (a._[1] < b._[1]) + (a._[1] == b._[1]) * (a._[0] < b._[0]);
+}
+
 bool operator==(const __uint256_t& a, const __uint256_t& b) {
 	return (a._[1] == b._[1]) * (a._[0] == b._[0]);
 }
@@ -194,6 +202,12 @@ __uint256_t& operator%=(__uint256_t& a, const __uint256_t& b) {
 		}
 	}
 	return a;
+}
+
+__uint256_t operator%(const __uint256_t& a, const __uint256_t& b) {
+	__uint256_t r = a;
+	r %= b;
+	return r;
 }
 
 pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b) {

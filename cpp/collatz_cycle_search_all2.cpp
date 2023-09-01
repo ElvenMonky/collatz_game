@@ -11,7 +11,7 @@
 #include "__uint256_t.h"
 
 #include <bit>
-#include <execution>
+//#include <execution>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -22,9 +22,9 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-//#define PSTLD_HACK_INTO_STD // export into namespace std
-//#include "pstld.h"
+#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+#define PSTLD_HACK_INTO_STD // export into namespace std
+#include "pstld.h"
 
 using namespace std;
 
@@ -35,13 +35,11 @@ typedef __uint256_t _bigint;
 constexpr __uint16_t M2=256;
 constexpr __uint16_t M3=162;
 constexpr __uint16_t DM = 13;
-__uint16_t m = 146;
-__uint16_t T = 14;
+__uint16_t m = 1;
+__uint16_t T = 11;
 
 _bigint p23[M2][M3];
 _bigint dx[M3];
-_bigint maxz[M3];
-_bigint minz[M3];
 _bigint yy[M3];
 _bigint ymin;
 
@@ -114,11 +112,11 @@ int main () {
 		dll1[0] = 0;
 		for (__uint16_t dm = 0; dm < DM; ++dm) {
 			_bigint dt = p23[dm+1][0]-1;
-			for (_bigint t = 0; t < dt+1; t += 1) {
+			for (_bigint t = 0; t <= dt; t += 1) {
 				dzl1[t+dt] = dzl1[t+p23[dm][0]-1];
 				dll1[t+dt] = dll1[t+p23[dm][0]-1];
 			}
-			for (_bigint t = 0; t < dt+1; t += 1) {
+			for (_bigint t = 0; t <= dt; t += 1) {
 				if (dll1[t+dt] > l1+1) continue;
 				if ((t - dzl1[t+dt]) & ((__uint128_t)p23[dm][0] - 1)) {
 					cout << "dz error: " << l1 << " " << dm << " " >> t << " " << dzl1[t+dt] << endl;
@@ -132,19 +130,10 @@ int main () {
 		}
 	}
 
-	for (__uint16_t l1 = 0; l1 < M3; ++l1) {
-		for (_bigint t = 0; t < p23[DM+1][0]; t += 1) {
-			if (dl[l1][t] > l1+1) {
-				dz[l1][t] = 0;
-				dl[l1][t] = 0;
-			}
-		}
-	}
-
 	// enables parallel computations
 	vector<__uint64_t> range;
 	range.resize(p23[T][0]);
-	for (__uint64_t t = 0; t < p23[T][0]; ++t) {
+	for (__uint64_t t = 0; t < (__uint128_t)p23[T][0]; ++t) {
 		range[t] = t;
 	}
 	// print_vector(range);
@@ -205,16 +194,6 @@ int main () {
 			__uint16_t r = m1%DM;
 			int rmask = p23[r][0] - 1;
 
-			for (__uint16_t l1=1; l1 <= m1; ++l1) {
-				minz[l1] = p23[m1-1][0];
-				minz[l1] += p23[0][l1];
-				minz[l1] -= p23[l1-1][1];
-				//minz[l1] -= 1;
-				//minz[l1] -= divmod(minz[l1], y).second;
-				maxz[l1] = p23[m1-l1][l1];
-				maxz[l1] -= p23[m1][0];
-			}
-
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
 			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
@@ -272,10 +251,10 @@ int main () {
 						z >>= 1;
 					}
 
-					while (minz[l1] > z) {
+					while (p23[m1-1][0] > z) {
 						z += y;
 					}
-					while (maxz[l1] >= z) {
+					while (p23[m1-l1][l1] > z) {
 						q = z;
 
 						/*stringstream str;
@@ -284,7 +263,6 @@ int main () {
 						str << "\t in loop: l1 l2 x y z s " << l1 << " " << l2 << " " << x << " " << y << " " << z << " " >> (s+(__uint64_t)p23[m2][0]) << endl;
 						cout << str.str();*/
 
-						__uint16_t k = r;
 						__int16_t ll = l1-1;
 						if (r > 0) {
 							int d = (q & rmask) + rmask;
@@ -293,7 +271,7 @@ int main () {
 							q >>= r;
 							ll -= dl[ll][d];
 						}
-						for (; k < m1 && ll >= 0; k += DM) {
+						for (__uint16_t k = m1-r; k > 0 && ll >= 0 && ll < k && p23[k-ll-1][ll+1] > q && q >= p23[k-1][0]; k -= DM) {
 							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 							q -= dz[ll][d];
@@ -301,7 +279,7 @@ int main () {
 							ll -= dl[ll][d];
 						}
 						//cout << "? " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
-						if (q == 0 && ll == -1 && k == m1) {
+						if (q == 0 && ll == -1) {
 							__uint16_t k = 0;
 							__int16_t ll = l1;
 							_bigint ss = s;
