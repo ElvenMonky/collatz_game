@@ -32,13 +32,14 @@ time_t start_time = time(0);
 
 typedef __uint256_t _bigint;
 
-constexpr __uint16_t M2=256;
+constexpr __uint16_t M2=162;
 constexpr __uint16_t M3=162;
 constexpr __uint16_t DM = 13;
 __uint16_t m = 147;
 __uint16_t T = 14;
 
 _bigint p23[M2][M3];
+_bigint pp23[M3][M3];
 _bigint dx[M3];
 _bigint yy[M3];
 _bigint ymin;
@@ -62,6 +63,12 @@ int main () {
 		}
 		// dest.assign(p23[m2], p23[m2] + M3);
 		// print_vector(dest);
+	}
+
+	for (__uint16_t m2 = 1; m2 < M3; ++m2) {
+		for (__uint16_t m3 = 0; m3 < m2; ++m3) {
+			pp23[m2][m3] = p23[m2-m3-1][m3+1] - p23[m2-1][1];
+		}
 	}
 
 	// check validity of big number operations
@@ -191,7 +198,7 @@ int main () {
 				}
 			}
 			m1 = m - m2 - 1;
-			__uint16_t r = m1%DM;
+			__uint16_t r = (m1-1)%DM;
 			int rmask = p23[r][0] - 1;
 
 			stringstream str;
@@ -254,7 +261,8 @@ int main () {
 					while (p23[m1-1][0] > z) {
 						z += y;
 					}
-					while (p23[m1-l1][l1] > z) {
+					z -= p23[m1-1][0];
+					while (pp23[m1][l1-1] >= z) {
 						q = z;
 
 						/*stringstream str;
@@ -271,7 +279,7 @@ int main () {
 							q >>= r;
 							ll -= dl[ll][d];
 						}
-						for (__uint16_t k = m1-r; k > 0 && ll >= 0 && ll < k && p23[k-ll-1][ll+1] > q && q >= p23[k-1][0]; k -= DM) {
+						for (__uint16_t k = m1-r-1; ll > 0 && ll < k && pp23[k][ll] >= q; k -= DM) {
 							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 							q -= dz[ll][d];
@@ -279,11 +287,12 @@ int main () {
 							ll -= dl[ll][d];
 						}
 						//cout << "? " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
-						if (q == 0 && ll == -1) {
+						if (q == 0 && ll == 0) {
 							__uint16_t k = 0;
 							__int16_t ll = l1;
 							_bigint ss = s;
 							q = z;
+							q += p23[m1-1][0];
 							for (; k < m1 && ll > 0 && q != 0; ++k) {
 								bool d = q & 1;
 								ll -= d * (ll > 0);
