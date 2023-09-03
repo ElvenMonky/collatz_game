@@ -35,7 +35,7 @@ typedef __uint256_t _bigint;
 constexpr __uint16_t M2=162;
 constexpr __uint16_t M3=162;
 constexpr __uint16_t DM = 13;
-__uint16_t m = 147;
+__uint16_t m = 148;
 __uint16_t T = 14;
 
 _bigint p23[M2][M3];
@@ -190,7 +190,7 @@ int main () {
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
 				pq += pn.first;
-				pq += 3;
+				pq += (16 << (m1 >> 4));
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
 				if (mn > pq) {
