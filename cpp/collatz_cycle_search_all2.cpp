@@ -34,15 +34,16 @@ typedef __uint256_t _bigint;
 
 constexpr __uint16_t M2=162;
 constexpr __uint16_t M3=162;
-constexpr __uint16_t DM = 13;
-__uint16_t m = 148;
-__uint16_t T = 14;
+constexpr __uint16_t DM = 12;
+__uint16_t m = 1;
+__uint16_t T = 11;
 
 _bigint p23[M2][M3];
 _bigint pp23[M3][M3];
 _bigint dx[M3];
 _bigint yy[M3];
 _bigint ymin;
+_bigint dy[2 << DM];
 
 __uint16_t dl[M3][2 << DM];
 _bigint dz[M3][2 << DM];
@@ -71,6 +72,9 @@ int main () {
 			pp23[m2][m3] -= p23[m2-1][1];
 		}
 	}
+
+	dy[0] = 0;
+	dy[1] = 0;
 
 	// check validity of big number operations
 	for (__uint16_t m3 = 0; m3 < M3; ++m3) {
@@ -170,6 +174,20 @@ int main () {
 
 		for (__uint16_t l=1; l < m; ++l) {
 			_bigint& y = yy[l];
+			dy[2] = y;
+			
+			for (__uint16_t dm = 1; dm < DM; ++dm) {
+				_bigint yp2 = (1 << dm) * y;
+				__uint16_t dt = (2 << dm)-1;
+				for (__uint16_t t = 0; t <= dt; t += 1) {
+					dy[t+dt] = dy[t+(dt >> 1)];
+				}
+				for (__uint16_t t = 0; t <= dt; t += 1) {
+					bool d = ((t + dy[t+dt]) >> dm) & 1;
+					dy[t+dt] += d * yp2;
+					//cout << t << " " << dy[t+dt] << endl;
+				}
+			}
 
 			// 3^m1 - 2^m1 < 2^m - 3^l
 			_bigint x = p23[m-1-l][l];
@@ -190,7 +208,8 @@ int main () {
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
 				pq += pn.first;
-				pq += (16 << (m1 >> 4));
+				//pq = ((m - m1 - 1)/DM + 2) * pq;
+				pq += m1;
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
 				if (mn > pq) {
@@ -201,6 +220,9 @@ int main () {
 			m1 = m - m2 - 1;
 			__uint16_t r = (m1-1)%DM;
 			int rmask = p23[r][0] - 1;
+
+			__uint16_t r2 = m2%DM;
+			int rmask2 = p23[r2][0] - 1;
 
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
@@ -253,11 +275,23 @@ int main () {
 					// z * 2^m2 = (n - p) * y - (x * 3^l1)%y
 					// q = (x * 3^l1)%y
 					// 0 <= ((n - p) * y - q) / 2^m2 = z < y
-					for (__uint16_t m2 = m1+1; m2 < m; ++m2) {
+					__uint16_t mm2 = m1+1+r2;
+					if (r2 > 0) {
+						int d = (z & rmask2) + rmask2;
+						z += dy[d];
+						z >>= r2;
+					}
+					for (; mm2 < m; mm2 += DM) {
+						int d = (z & mask) + mask;
+						z += dy[d];
+						z >>= DM;
+					}
+
+					/*for (__uint16_t m2 = m1+1; m2 < m; ++m2) {
 						bool d = z & 1;
 						z += d * y;
 						z >>= 1;
-					}
+					}*/
 
 					while (p23[m1-1][0] > z) {
 						z += y;
@@ -275,19 +309,19 @@ int main () {
 						__int16_t ll = l1-1;
 						if (r > 0) {
 							int d = (q & rmask) + rmask;
-							//cout << "!! " << ll << " " << k << " " << q << " " >> (q & rmask) << " " << dz[ll-1][d+rmask] << " " << dl[ll-1][d+rmask] << " " << endl;
+							//cout << "!! " << ll << " " << q << " " >> (q & rmask) << " " << dz[ll-1][d+rmask] << " " << dl[ll-1][d+rmask] << " " << endl;
 							q -= dz[ll][d];
 							q >>= r;
 							ll -= dl[ll][d];
 						}
-						for (__uint16_t k = m1-r-1; ll > 0 && ll < k && pp23[k][ll] >= q; k -= DM) {
+						for (__uint16_t k = m1-r; ll > 0 && ll < k && pp23[k][ll] >= q; k -= DM) {
 							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 							q -= dz[ll][d];
 							q >>= DM;
 							ll -= dl[ll][d];
 						}
-						//cout << "? " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
+						//cout << "? " << ll << " " << r << " " << q << " " >> (q & mask) << " " << endl;
 						if (q == 0 && ll == 0) {
 							__uint16_t k = 0;
 							__int16_t ll = l1;
