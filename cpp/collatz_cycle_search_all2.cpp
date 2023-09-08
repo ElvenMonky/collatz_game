@@ -209,7 +209,7 @@ int main () {
 				pn = divmod(x, y);
 				pq += pn.first;
 				//pq = ((m - m1 - 1)/DM + 2) * pq;
-				pq += m1;
+				pq += 2*m1/3;
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
 				if (mn > pq) {
