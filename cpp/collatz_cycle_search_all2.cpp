@@ -38,6 +38,7 @@ constexpr __uint16_t DM = 12;
 __uint16_t m = 1;
 __uint16_t T = 11;
 
+__uint16_t p2[DM+1];
 _bigint p23[M2][M3];
 _bigint pp23[M3][M3];
 _bigint dx[M3];
@@ -52,6 +53,12 @@ int mask = (1 << DM) - 1;
 int main () {
 	ofstream destfile;
 	destfile.open("solutions.txt");
+
+	p2[0] = 1;
+	for (__uint16_t dm = 1; dm <= DM; ++dm) {
+		p2[dm] = 1 << dm;
+	}
+
 	//std::vector<_bigint> dest;
 	// powers of 2 and 3
 	p23[0][0] = 1;
@@ -123,14 +130,14 @@ int main () {
 		dzl1[0] = 0;
 		dll1[0] = 0;
 		for (__uint16_t dm = 0; dm < DM; ++dm) {
-			_bigint dt = p23[dm+1][0]-1;
-			for (_bigint t = 0; t <= dt; t += 1) {
-				dzl1[t+dt] = dzl1[t+p23[dm][0]-1];
-				dll1[t+dt] = dll1[t+p23[dm][0]-1];
+			__uint16_t dt = p2[dm+1]-1;
+			for (__uint16_t t = 0; t <= dt; t += 1) {
+				dzl1[t+dt] = dzl1[t+p2[dm]-1];
+				dll1[t+dt] = dll1[t+p2[dm]-1];
 			}
-			for (_bigint t = 0; t <= dt; t += 1) {
+			for (__uint16_t t = 0; t <= dt; t += 1) {
 				if (dll1[t+dt] > l1+1) continue;
-				if ((t - dzl1[t+dt]) & ((__uint128_t)p23[dm][0] - 1)) {
+				if ((t - dzl1[t+dt]) & (p2[dm] - 1)) {
 					cout << "dz error: " << l1 << " " << dm << " " >> t << " " << dzl1[t+dt] << endl;
 					return 0;
 				}
@@ -143,9 +150,9 @@ int main () {
 	}
 
 	// enables parallel computations
-	vector<__uint64_t> range;
-	range.resize(p23[T][0]);
-	for (__uint64_t t = 0; t < (__uint128_t)p23[T][0]; ++t) {
+	vector<__uint16_t> range;
+	range.resize(p2[T]);
+	for (__uint16_t t = 0; t < p2[T]; ++t) {
 		range[t] = t;
 	}
 	// print_vector(range);
@@ -177,13 +184,13 @@ int main () {
 			dy[2] = y;
 			
 			for (__uint16_t dm = 1; dm < DM; ++dm) {
-				_bigint yp2 = (1 << dm) * y;
-				__uint16_t dt = (2 << dm)-1;
+				_bigint yp2 = p2[dm] * y;
+				__uint16_t dt = p2[dm+1]-1;
 				for (__uint16_t t = 0; t <= dt; t += 1) {
 					dy[t+dt] = dy[t+(dt >> 1)];
 				}
 				for (__uint16_t t = 0; t <= dt; t += 1) {
-					bool d = ((t + dy[t+dt]) >> dm) & 1;
+					bool d = ((dy[t+dt] + t) >> dm) & 1;
 					dy[t+dt] += d * yp2;
 					//cout << t << " " << dy[t+dt] << endl;
 				}
@@ -219,10 +226,10 @@ int main () {
 			}
 			m1 = m - m2 - 1;
 			__uint16_t r = (m1-1)%DM;
-			int rmask = p23[r][0] - 1;
+			__uint16_t rmask = p2[r] - 1;
 
 			__uint16_t r2 = m2%DM;
-			int rmask2 = p23[r2][0] - 1;
+			__uint16_t rmask2 = p2[r2] - 1;
 
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
@@ -230,13 +237,13 @@ int main () {
 			str << "\t l m1 m2 y " << l << " " << m1 << " " << m2 << " " << y << endl;
 			cout << str.str();
 
-			std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint64_t& t) {
+			std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint16_t& t) {
 				__uint16_t m0 = (m2-T)*(m2>T);
-				if (t >= (__uint128_t)p23[m2-m0][0]) return;
+				if (t >= p2[m2-m0]) return;
 				__uint16_t l2 = 0;
 				_bigint x = 0;
-				__uint64_t s = t*(__uint128_t)p23[m0][0];
-				__uint64_t e = s+(__uint128_t)p23[m0][0];
+				__uint64_t s = t*(__uint64_t)p23[m0][0];
+				__uint64_t e = s+(__uint64_t)p23[m0][0];
 				for (__uint16_t i=m2; i>0; --i) {
 					bool d = ((s-1)>>(i-1)) & 1;
 					x += d*p23[i-1][l2];

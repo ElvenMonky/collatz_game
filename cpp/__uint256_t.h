@@ -44,6 +44,10 @@ class __uint256_t {
 		memcpy(_, i._, SIZE);
 	}
 
+	operator __uint64_t() {
+        return _[0];
+    }
+
 	operator __uint128_t() {
         return _[0];
     }
@@ -69,27 +73,34 @@ __uint256_t& operator+=(__uint256_t& a, const __uint256_t& b) {
 	return a;
 }
 
+__uint256_t operator+(const __uint256_t& a, const __uint16_t& s) {
+	__uint256_t r = a;
+	r._[0] += s;
+	r._[1] += r._[0] < a._[0];
+	return r;
+}
+
 __uint256_t& operator-=(__uint256_t& a, const __uint256_t& b) {
 	a._[0] -= b._[0];
 	a._[1] -= b._[1] + (~a._[0] < b._[0]);
 	return a;
 }
 
+__uint256_t operator-(const __uint16_t& s, const __uint256_t& a) {
+	__uint256_t r = s;
+	r -= a;
+	return r;
+}
+
 __uint256_t& operator>>=(__uint256_t& a, const int s) {
 	if (s >> 7) {
-		a._[0] = a._[1];
-		__uint8_t i = s & 0x7F;
-		if (i) {
-			a._[0] >>= i;
-		}
+		a._[0] = a._[1] >> (s & 0x7F);
 		a._[1] = 0;
 	} else {
 		__uint8_t i = s & 0x7F;
-		if (i) {
-			a._[0] >>= i;
-			a._[0] += a._[1] << (128-i);
-			a._[1] >>= i;
-		}
+		a._[0] >>= i;
+		a._[0] |= (i != 0) * (a._[1] << (128-i));
+		a._[1] >>= i;
 	}
 	return a;
 }
@@ -102,19 +113,13 @@ __uint256_t operator>>(const __uint256_t& a, const int s) {
 
 __uint256_t& operator<<=(__uint256_t& a, const int s) {
 	if (s >> 7) {
-		a._[1] = a._[0];
-		__uint8_t i = s & 0x7F;
-		if (i) {
-			a._[1] <<= i;
-		}
+		a._[1] = a._[0] << (s & 0x7F);
 		a._[0] = 0;
 	} else {
 		__uint8_t i = s & 0x7F;
-		if (i) {
-			a._[1] <<= i;
-			a._[1] += a._[0] >> (128-i);
-			a._[0] <<= i;
-		}
+		a._[1] <<= i;
+		a._[1] |= (i != 0) * (a._[0] >> (128-i));
+		a._[0] <<= i;
 	}
 	return a;
 }
@@ -129,30 +134,30 @@ __uint256_t operator*(const bool x, const __uint256_t& a) {
 
 __uint256_t operator*(const __uint128_t x, const __uint256_t& a) {
 	__uint256_t r;
-	r._[0] = (__uint64_t)x * (a._[0] >> 64) + ((((x & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF))) >> 64);
-	r._[1] = r._[0] + (x >> 64) * (__uint64_t)a._[0];
-	__uint128_t d = r._[0] > r._[1];
+	r._[0] = (x & 0xFFFFFFFFFFFFFFFF) * (a._[0] >> 64) + (((x & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF)) >> 64);
+	r._[1] = r._[0] + (x >> 64) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
+	r._[0] = r._[0] > r._[1];
 	r._[1] >>= 64;
-	r._[1] += a._[1] * x + (d << 64) + (a._[0] >> 64) * (x >> 64);
+	r._[1] += a._[1] * x + (r._[0] << 64) + (a._[0] >> 64) * (x >> 64);
 	r._[0] = a._[0] * x;
 	return r;
 }
 
 __uint256_t operator*(const int x, const __uint256_t& a) {
 	__uint256_t r;
-	r._[0] = (__uint128_t)x * (__uint64_t)a._[0];
-	*(__uint128_t *)((__uint64_t *)r._+1) += (__uint128_t)x * ((__uint64_t *)a._)[1];
+	r._[0] = x * (a._[0] & 0xFFFFFFFFFFFFFFFF);
+	*(__uint128_t *)((__uint64_t *)r._+1) += x * (a._[0] >> 64);
 	r._[1] += x * a._[1];
 	return r;
 }
 
 __uint256_t operator*(const __uint256_t x, const __uint256_t& a) {
 	__uint256_t r;
-	r._[0] = (__uint64_t)x._[0] * (a._[0] >> 64) + ((((x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF))) >> 64);
-	r._[1] = r._[0] + (x._[0] >> 64) * (__uint64_t)a._[0];
-	__uint128_t d = r._[0] > r._[1];
+	r._[0] = (x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] >> 64) + (((x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF)) >> 64);
+	r._[1] = r._[0] + (x._[0] >> 64) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
+	r._[0] = r._[0] > r._[1];
 	r._[1] >>= 64;
-	r._[1] += a._[1] * x._[0] + x._[1] * a._[0] + (d << 64) + (a._[0] >> 64) * (x._[0] >> 64);
+	r._[1] += a._[1] * x._[0] + x._[1] * a._[0] + (r._[0] << 64) + (a._[0] >> 64) * (x._[0] >> 64);
 	r._[0] = a._[0] * x._[0];
 	return r;
 }
@@ -193,12 +198,12 @@ __uint256_t& operator%=(__uint256_t& a, const __uint256_t& b) {
 	if (a >= b) {
 		__uint256_t c = b;
 		__uint16_t i = a.bit() - b.bit();
-		if (i) {
-			c <<= i;
-		}
+		c <<= i;
 		while (a >= b) {
 			a -= (a >= c) * c;
-			c >>= 1;
+			c._[0] >>= 1;
+			c._[0] += c._[1] << 127;
+			c._[1] >>= 1;
 		}
 	}
 	return a;
@@ -217,16 +222,18 @@ pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b)
 		__uint256_t c = b;
 		__uint256_t s = 1;
 		__uint16_t i = a.bit() - b.bit();
-		if (i) {
-			c <<= i;
-			s <<= i;
-		}
+		c <<= i;
+		s <<= i;
 		while (r >= b) {
 			bool d = r >= c;
 			q += d * s;
 			r -= d * c;
-			c >>= 1;
-			s >>= 1;
+			c._[0] >>= 1;
+			c._[0] += c._[1] << 127;
+			c._[1] >>= 1;
+			s._[0] >>= 1;
+			s._[0] += s._[1] << 127;
+			s._[1] >>= 1;
 		}
 	}
 	return pair<__uint256_t,__uint256_t>(q, r);
@@ -243,7 +250,7 @@ std::ostream& operator<<(std::ostream& dest, const __uint256_t value) {
 		{
 			-- d;
 			pair<__uint256_t,__uint256_t> p = divmod(tmp, base);
-			*d = "0123456789ABCDEF"[ p.second ];
+			*d = "0123456789ABCDEF"[ (__uint64_t)p.second ];
 			tmp = p.first;
 		} while ( tmp != 0 );
 		int len = std::end( buffer ) - d;
@@ -265,7 +272,7 @@ std::ostream& operator>>(std::ostream& dest, const __uint256_t value) {
 		{
 			-- d;
 			pair<__uint256_t,__uint256_t> p = divmod(tmp, base);
-			*d = "0123456789ABCDEF"[ p.second ];
+			*d = "0123456789ABCDEF"[ (__uint64_t)p.second ];
 			tmp = p.first;
 		} while ( tmp != 0 );
 		int len = std::end( buffer ) - d;
