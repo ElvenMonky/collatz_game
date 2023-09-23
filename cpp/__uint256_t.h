@@ -36,14 +36,6 @@ class __uint256_t {
 		_[0] = i;
 	}
 
-	__uint256_t(const __uint256_t& i) {
-		memcpy(_, i._, SIZE);
-	}
-
-	void operator=(const __uint256_t& i) {
-		memcpy(_, i._, SIZE);
-	}
-
 	operator __uint64_t() {
         return _[0];
     }
@@ -62,6 +54,32 @@ class __uint256_t {
 		j += 2 * ((_[i] >> (2 + j)) > 0);
 		j += ((_[i] >> (1 + j)) > 0);
 		return (i << 7) + j;
+	}
+
+	friend __uint256_t& operator+=(__uint256_t& a, const __uint256_t& b);
+	friend __uint256_t& operator-=(__uint256_t& a, const __uint256_t& b);
+	friend __uint256_t& operator<<=(__uint256_t& a, const int s);
+	friend __uint256_t operator*(const bool x, const __uint256_t& a);
+	friend bool operator>=(const __uint256_t& a, const __uint256_t& b);
+
+	__uint256_t inv(__uint16_t& s) const {
+		// https://dl.acm.org/doi/pdf/10.1145/178243.178249
+		// I take N = 255 for unsigned case to greatly simplify algorithm
+		// m = (2^(256 + ys) + 1)/y
+		s = this->bit();
+		pair<__uint256_t,__uint256_t> p = divmod(__uint256_t(-1,-1), *this);
+		p.second += 2;
+		bool d = p.second >= *this;
+		p.first += d;
+		p.second -= d * *this;
+		for (__uint16_t x = 0; x < s; ++x) {
+			p.second <<= 1;
+			p.first <<= 1;
+			bool d = p.second >= *this;
+			p.first += d;
+			p.second -= d * *this;
+		}
+		return p.first;
 	}
 
 	friend pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b);
@@ -151,7 +169,7 @@ __uint256_t operator*(const int x, const __uint256_t& a) {
 	return r;
 }
 
-__uint256_t operator*(const __uint256_t x, const __uint256_t& a) {
+__uint256_t operator*(const __uint256_t& x, const __uint256_t& a) {
 	__uint256_t r;
 	r._[0] = (x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] >> 64) + (((x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF)) >> 64);
 	r._[1] = r._[0] + (x._[0] >> 64) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
@@ -159,6 +177,24 @@ __uint256_t operator*(const __uint256_t x, const __uint256_t& a) {
 	r._[1] >>= 64;
 	r._[1] += a._[1] * x._[0] + x._[1] * a._[0] + (r._[0] << 64) + (a._[0] >> 64) * (x._[0] >> 64);
 	r._[0] = a._[0] * x._[0];
+	return r;
+}
+
+inline __uint128_t mulhi128_fast_approx(const __uint128_t& x, const __uint128_t& a) {
+	return (((x & 0xFFFFFFFFFFFFFFFF) * (a >> 64)) >> 64) + (((x >> 64) * (a & 0xFFFFFFFFFFFFFFFF)) >> 64) + (a >> 64) * (x >> 64);
+}
+
+inline __uint256_t mulhi_fast_approx(const __uint256_t& x, const __uint256_t& a) {
+	// abc d * efg h = (de + cf + bg + ah + 24 + 2)000 + (ce+bf+ag)0000 + 
+	__uint256_t r;
+	r._[0] = (x._[1] & 0xFFFFFFFFFFFFFFFF) * (a._[1] >> 64) + (((x._[1] & 0xFFFFFFFFFFFFFFFF) * (a._[1] & 0xFFFFFFFFFFFFFFFF)) >> 64);
+	r._[1] = r._[0] + (x._[1] >> 64) * (a._[1] & 0xFFFFFFFFFFFFFFFF);
+	r._[0] = r._[0] > r._[1];
+	r._[1] >>= 64;
+	r._[1] += (r._[0] << 64) + (a._[1] >> 64) * (x._[1] >> 64);
+	r._[0] = a._[1] * x._[1];
+	r += mulhi128_fast_approx(x._[0],a._[1]);
+	r += mulhi128_fast_approx(x._[1],a._[0]);
 	return r;
 }
 

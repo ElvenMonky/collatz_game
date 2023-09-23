@@ -231,6 +231,9 @@ int main () {
 			__uint16_t r2 = m2%DM;
 			__uint16_t rmask2 = p2[r2] - 1;
 
+			__uint16_t ys;
+			_bigint ym = y.inv(ys);
+
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
 			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
@@ -267,7 +270,15 @@ int main () {
 						continue;
 					__uint16_t l1 = l - l2;
 					_bigint q = p23[0][l1] * x;
-					q %= y;
+
+					_bigint qq = mulhi_fast_approx(q, ym);
+					qq >>= ys;
+					q -= qq * y;
+					q -= (q >= y) * y;
+					if (q >= y) {
+						cout << "Incorrect fast reminder "<< y << " " << ym << " " << ys << " " << q << " " << (q % y) << endl;
+						throw;
+					}
 					_bigint z = y;
 					z -= q;
 
