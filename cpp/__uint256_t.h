@@ -91,7 +91,7 @@ __uint256_t& operator+=(__uint256_t& a, const __uint256_t& b) {
 	return a;
 }
 
-__uint256_t operator+(const __uint256_t& a, const __uint16_t& s) {
+__uint256_t operator+(const __uint256_t& a, const __uint16_t s) {
 	__uint256_t r = a;
 	r._[0] += s;
 	r._[1] += r._[0] < a._[0];
@@ -104,7 +104,7 @@ __uint256_t& operator-=(__uint256_t& a, const __uint256_t& b) {
 	return a;
 }
 
-__uint256_t operator-(const __uint16_t& s, const __uint256_t& a) {
+__uint256_t operator-(const __uint16_t s, const __uint256_t& a) {
 	__uint256_t r = s;
 	r -= a;
 	return r;
@@ -150,14 +150,12 @@ __uint256_t operator*(const bool x, const __uint256_t& a) {
 	return x ? a : 0;
 }
 
-__uint256_t operator*(const __uint128_t x, const __uint256_t& a) {
+__uint256_t operator*(const __uint128_t& x, const __uint256_t& a) {
 	__uint256_t r;
-	r._[0] = (x & 0xFFFFFFFFFFFFFFFF) * (a._[0] >> 64) + (((x & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF)) >> 64);
-	r._[1] = r._[0] + (x >> 64) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
-	r._[0] = r._[0] > r._[1];
-	r._[1] >>= 64;
-	r._[1] += a._[1] * x + (r._[0] << 64) + (a._[0] >> 64) * (x >> 64);
-	r._[0] = a._[0] * x;
+	r._[0] = (x & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
+	__uint128_t y = (x >> 64) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
+	*(__uint128_t *)((__uint64_t *)r._+1) += (x & 0xFFFFFFFFFFFFFFFF) * (a._[0] >> 64) + (y & 0xFFFFFFFFFFFFFFFF);
+	r._[1] += (y >> 64) + (a._[0] >> 64) * (x >> 64) + x * a._[1];
 	return r;
 }
 
@@ -171,12 +169,10 @@ __uint256_t operator*(const int x, const __uint256_t& a) {
 
 __uint256_t operator*(const __uint256_t& x, const __uint256_t& a) {
 	__uint256_t r;
-	r._[0] = (x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] >> 64) + (((x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF)) >> 64);
-	r._[1] = r._[0] + (x._[0] >> 64) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
-	r._[0] = r._[0] > r._[1];
-	r._[1] >>= 64;
-	r._[1] += a._[1] * x._[0] + x._[1] * a._[0] + (r._[0] << 64) + (a._[0] >> 64) * (x._[0] >> 64);
-	r._[0] = a._[0] * x._[0];
+	r._[0] = (x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
+	__uint128_t y = (x._[0] >> 64) * (a._[0] & 0xFFFFFFFFFFFFFFFF);
+	*(__uint128_t *)((__uint64_t *)r._+1) += (x._[0] & 0xFFFFFFFFFFFFFFFF) * (a._[0] >> 64) + (y & 0xFFFFFFFFFFFFFFFF);
+	r._[1] += (y >> 64) + (a._[0] >> 64) * (x._[0] >> 64) + a._[1] * x._[0] + x._[1] * a._[0];
 	return r;
 }
 
@@ -185,14 +181,11 @@ inline __uint128_t mulhi128_fast_approx(const __uint128_t& x, const __uint128_t&
 }
 
 inline __uint256_t mulhi_fast_approx(const __uint256_t& x, const __uint256_t& a) {
-	// abc d * efg h = (de + cf + bg + ah + 24 + 2)000 + (ce+bf+ag)0000 + 
 	__uint256_t r;
-	r._[0] = (x._[1] & 0xFFFFFFFFFFFFFFFF) * (a._[1] >> 64) + (((x._[1] & 0xFFFFFFFFFFFFFFFF) * (a._[1] & 0xFFFFFFFFFFFFFFFF)) >> 64);
-	r._[1] = r._[0] + (x._[1] >> 64) * (a._[1] & 0xFFFFFFFFFFFFFFFF);
-	r._[0] = r._[0] > r._[1];
-	r._[1] >>= 64;
-	r._[1] += (r._[0] << 64) + (a._[1] >> 64) * (x._[1] >> 64);
-	r._[0] = a._[1] * x._[1];
+	r._[0] = (x._[1] & 0xFFFFFFFFFFFFFFFF) * (a._[1] & 0xFFFFFFFFFFFFFFFF);
+	__uint128_t y = (x._[1] >> 64) * (a._[1] & 0xFFFFFFFFFFFFFFFF);
+	*(__uint128_t *)((__uint64_t *)r._+1) += (x._[1] & 0xFFFFFFFFFFFFFFFF) * (a._[1] >> 64) + (y & 0xFFFFFFFFFFFFFFFF);
+	r._[1] += (y >> 64) + (a._[1] >> 64) * (x._[1] >> 64);
 	r += mulhi128_fast_approx(x._[0],a._[1]);
 	r += mulhi128_fast_approx(x._[1],a._[0]);
 	return r;
@@ -222,11 +215,11 @@ bool operator!=(const __uint256_t& a, const __uint256_t& b) {
 	return 1 - (a._[1] == b._[1]) * (a._[0] == b._[0]);
 }
 
-bool operator>(const __uint256_t& a, const int& i) {
+bool operator>(const __uint256_t& a, const int i) {
 	return (a._[1] > 0) + (a._[1] == 0) * (a._[0] > i);
 }
 
-bool operator==(const __uint256_t& a, const int& i) {
+bool operator==(const __uint256_t& a, const int i) {
 	return (a._[1] == 0) * (a._[0] == i);
 }
 
@@ -275,7 +268,7 @@ pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b)
 	return pair<__uint256_t,__uint256_t>(q, r);
 }
 
-std::ostream& operator<<(std::ostream& dest, const __uint256_t value) {
+std::ostream& operator<<(std::ostream& dest, const __uint256_t& value) {
 	__uint8_t base = 10;
 	std::ostream::sentry s( dest );
 	if ( s ) {
@@ -297,7 +290,7 @@ std::ostream& operator<<(std::ostream& dest, const __uint256_t value) {
 	return dest;
 }
 
-std::ostream& operator>>(std::ostream& dest, const __uint256_t value) {
+std::ostream& operator>>(std::ostream& dest, const __uint256_t& value) {
 	__uint8_t base = 2;
 	std::ostream::sentry s( dest );
 	if ( s ) {
