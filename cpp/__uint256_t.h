@@ -44,7 +44,7 @@ class __uint256_t {
         return _[0];
     }
 
-	__uint16_t bit() const {
+	inline __uint16_t bit() const {
 		__uint16_t i = 1 - (_[1] == 0);
 		__uint16_t j = 64 * ((_[i] >> 64) > 0);
 		j += 32 * ((_[i] >> (32 + j)) > 0);
