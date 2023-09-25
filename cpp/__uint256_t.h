@@ -147,7 +147,7 @@ __uint128_t operator&(const __uint256_t& a, const int x) {
 }
 
 __uint256_t operator*(const bool x, const __uint256_t& a) {
-	return x ? a : 0;
+	return x ? a : __uint256_t();
 }
 
 __uint256_t operator*(const __uint128_t& x, const __uint256_t& a) {
