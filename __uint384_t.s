@@ -1193,119 +1193,112 @@ __ZmliRK11__uint384_t:                  ; @_ZmliRK11__uint384_t
 __ZmlRK11__uint384_tS1_:                ; @_ZmlRK11__uint384_tS1_
 	.cfi_startproc
 ; %bb.0:
-	sub	sp, sp, #96
-	.cfi_def_cfa_offset 96
-	stp	x22, x21, [sp, #48]             ; 16-byte Folded Spill
-	stp	x20, x19, [sp, #64]             ; 16-byte Folded Spill
-	stp	x29, x30, [sp, #80]             ; 16-byte Folded Spill
-	add	x29, sp, #80
+	sub	sp, sp, #64
+	.cfi_def_cfa_offset 64
+	stp	x29, x30, [sp, #48]             ; 16-byte Folded Spill
+	add	x29, sp, #48
 	.cfi_def_cfa w29, 16
 	.cfi_offset w30, -8
 	.cfi_offset w29, -16
-	.cfi_offset w19, -24
-	.cfi_offset w20, -32
-	.cfi_offset w21, -40
-	.cfi_offset w22, -48
 Lloh26:
 	adrp	x9, ___stack_chk_guard@GOTPAGE
 Lloh27:
 	ldr	x9, [x9, ___stack_chk_guard@GOTPAGEOFF]
 Lloh28:
 	ldr	x9, [x9]
-	str	x9, [sp, #40]
+	stur	x9, [x29, #-8]
 	movi.2d	v0, #0000000000000000
 	stp	q0, q0, [x8, #16]
-	ldp	x11, x12, [x0]
+	ldp	x12, x11, [x0]
 	ldp	x9, x10, [x1]
-	umulh	x13, x9, x11
-	mul	x14, x9, x11
-	umulh	x15, x9, x12
-	mul	x16, x9, x12
-	umulh	x17, x10, x11
-	mul	x2, x10, x11
+	umulh	x13, x9, x12
+	mul	x14, x9, x12
+	umulh	x15, x9, x11
+	mul	x16, x9, x11
+	umulh	x17, x10, x12
+	mul	x2, x10, x12
 	adds	x13, x13, x2
 	ldp	x2, x3, [x8, #16]
 	adc	x17, x2, x17
 	adds	x13, x13, x16
 	cinc	x16, x17, hs
 	stp	x14, x13, [x8]
-	umulh	x13, x10, x12
-	mul	x14, x10, x12
+	umulh	x13, x10, x11
+	mul	x14, x10, x11
 	adds	x14, x15, x14
 	cinc	x13, x13, hs
 	adds	x14, x14, x16
 	adc	x13, x13, x3
 	ldp	x16, x15, [x1, #16]
-	umulh	x17, x16, x11
-	mul	x2, x16, x11
-	umulh	x3, x16, x12
-	mul	x4, x16, x12
-	umulh	x5, x15, x11
-	mul	x6, x15, x11
+	umulh	x17, x16, x12
+	mul	x2, x16, x12
+	umulh	x3, x16, x11
+	mul	x4, x16, x11
+	umulh	x5, x15, x12
+	mul	x6, x15, x12
 	adds	x17, x17, x6
 	ldp	x6, x7, [x8, #32]
 	adc	x5, x6, x5
 	adds	x17, x17, x4
 	cinc	x4, x5, hs
 	stp	x2, x17, [x8, #16]
-	umulh	x17, x15, x12
-	mul	x2, x15, x12
-	adds	x2, x3, x2
-	cinc	x17, x17, hs
-	adds	x2, x2, x4
-	adc	x17, x17, x7
-	ldp	x5, x3, [x0, #16]
-	mul	x6, x5, x9
-	umulh	x7, x5, x9
-	umulh	x19, x3, x9
-	mul	x20, x3, x9
-	umulh	x21, x5, x10
-	mul	x22, x5, x10
-	adds	x20, x20, x22
-	cinc	x21, x21, hs
-	adds	x7, x20, x7
-	cinc	x20, x21, hs
-	umulh	x21, x3, x10
-	umulh	x22, x5, x16
-	madd	x15, x5, x15, x22
-	mul	x22, x3, x10
-	madd	x15, x3, x16, x15
-	mul	x16, x5, x16
-	adds	x16, x16, x2
-	adc	x15, x15, x17
-	adds	x16, x16, x22
-	adc	x15, x15, x21
-	adds	x16, x16, x19
-	cinc	x15, x15, hs
-	adds	x14, x6, x14
-	adcs	x13, x7, x13
-	ldp	x2, x17, [x8, #16]
-	adcs	x16, x16, xzr
-	cinc	x15, x15, hs
-	adds	x16, x16, x20
-	cinc	x15, x15, hs
+	umulh	x5, x15, x11
+	mul	x6, x15, x11
+	adds	x3, x3, x6
+	cinc	x5, x5, hs
 	adds	x14, x2, x14
 	adcs	x13, x17, x13
+	adcs	x17, x3, xzr
+	cinc	x2, x5, hs
+	ldp	x1, x3, [x1, #32]
+	umulh	x5, x1, x12
+	madd	x11, x1, x11, x5
+	madd	x11, x3, x12, x11
+	mul	x12, x1, x12
+	adds	x12, x17, x12
+	adc	x11, x2, x11
+	adds	x12, x12, x4
+	adc	x11, x11, x7
+	ldp	x1, x17, [x0, #16]
+	mul	x2, x1, x9
+	umulh	x3, x1, x9
+	umulh	x5, x17, x9
+	mul	x6, x17, x9
+	mul	x7, x1, x10
+	adds	x6, x6, x7
+	umulh	x7, x1, x10
+	cinc	x7, x7, hs
+	adds	x3, x6, x3
+	cinc	x6, x7, hs
+	mul	x7, x17, x10
+	adds	x5, x5, x7
+	umulh	x7, x17, x10
+	cinc	x7, x7, hs
+	adds	x5, x5, x6
+	cinc	x6, x7, hs
+	umulh	x7, x1, x16
+	madd	x15, x1, x15, x7
+	madd	x15, x17, x16, x15
+	mul	x16, x1, x16
+	adds	x12, x16, x12
+	adc	x11, x15, x11
+	adds	x12, x12, x5
+	adc	x11, x11, x6
+	adds	x14, x2, x14
+	adcs	x13, x3, x13
 	stp	x14, x13, [x8, #16]
-	ldp	x14, x13, [x1, #32]
-	umulh	x17, x14, x11
-	madd	x12, x14, x12, x17
-	madd	x12, x13, x11, x12
-	mul	x11, x14, x11
 	ldp	x14, x13, [x0, #32]
-	umulh	x17, x14, x9
-	madd	x10, x14, x10, x17
+	umulh	x15, x14, x9
+	madd	x10, x14, x10, x15
 	madd	x10, x13, x9, x10
 	mul	x9, x14, x9
-	adcs	x13, x16, xzr
-	cinc	x14, x15, hs
-	adds	x11, x13, x11
-	adc	x12, x14, x12
-	adds	x9, x11, x9
-	adc	x10, x12, x10
+	adcs	x12, x12, xzr
+	cinc	x11, x11, hs
+	adds	x9, x12, x9
+	adc	x10, x11, x10
 	stp	x4, x10, [x8, #32]
 	str	x9, [x8, #32]
-	ldr	x8, [sp, #40]
+	ldur	x8, [x29, #-8]
 Lloh29:
 	adrp	x9, ___stack_chk_guard@GOTPAGE
 Lloh30:
@@ -1315,10 +1308,8 @@ Lloh31:
 	cmp	x9, x8
 	b.ne	LBB14_2
 ; %bb.1:
-	ldp	x29, x30, [sp, #80]             ; 16-byte Folded Reload
-	ldp	x20, x19, [sp, #64]             ; 16-byte Folded Reload
-	ldp	x22, x21, [sp, #48]             ; 16-byte Folded Reload
-	add	sp, sp, #96
+	ldp	x29, x30, [sp, #48]             ; 16-byte Folded Reload
+	add	sp, sp, #64
 	ret
 LBB14_2:
 	bl	___stack_chk_fail
@@ -3303,58 +3294,58 @@ LBB28_8:                                ;   Parent Loop BB28_7 Depth=1
 	mov	w8, #0
 	add	x9, sp, #288
 	add	x9, x9, #16
-	str	x9, [sp, #16]                   ; 8-byte Folded Spill
+	str	x9, [sp, #24]                   ; 8-byte Folded Spill
 	add	x9, sp, #336
 	add	x9, x9, #16
 	str	x9, [sp, #248]                  ; 8-byte Folded Spill
-	mov	w26, #48
-	mov	w27, #11664
+	mov	w25, #48
+	mov	w26, #11664
 	movi.2d	v0, #0000000000000000
-	str	x23, [sp, #32]                  ; 8-byte Folded Spill
+	str	x23, [sp, #40]                  ; 8-byte Folded Spill
 LBB28_11:                               ; =>This Loop Header: Depth=1
                                         ;     Child Loop BB28_13 Depth 2
-	mov	x28, #0
+	mov	x27, #0
 	mov	x24, #0
 	and	x8, x8, #0xffff
-	str	x8, [sp, #40]                   ; 8-byte Folded Spill
-	madd	x8, x8, x26, x23
+	str	x8, [sp, #48]                   ; 8-byte Folded Spill
+	madd	x8, x8, x25, x23
 	ldp	q2, q1, [x8]
 	stp	q2, q1, [x29, #-240]
-	str	x8, [sp, #24]                   ; 8-byte Folded Spill
+	str	x8, [sp, #32]                   ; 8-byte Folded Spill
 	ldr	q1, [x8, #32]
 	stur	q1, [x29, #-208]
 	ldp	x8, x9, [x29, #-224]
 	ldp	x6, x7, [x29, #-240]
-	mov	w30, #128
+	mov	w28, #128
 	ldp	x10, x11, [x29, #-208]
 	b	LBB28_13
 LBB28_12:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldr	w30, [sp, #52]                  ; 4-byte Folded Reload
-	mov	w10, w30
+	ldr	w28, [sp, #60]                  ; 4-byte Folded Reload
+	mov	w10, w28
 	ldp	x11, x17, [sp, #272]            ; 16-byte Folded Reload
 	lsr	x11, x11, x24
 	mvn	w13, w24
-	lsl	x14, x7, #1
+	lsl	x14, x1, #1
 	lsl	x14, x14, x13
 	orr	x11, x14, x11
-	mvn	w14, w30
+	mvn	w14, w28
 	lsr	x15, x17, #1
 	lsr	x15, x15, x14
-	lsl	x16, x25, x10
+	lsl	x16, x6, x10
 	orr	x15, x16, x15
 	lsl	x16, x17, x10
 	tst	x10, #0x40
 	csel	x15, x16, x15, ne
 	csel	x16, xzr, x16, ne
 	lsr	x9, x9, x14
-	lsl	x14, x20, x10
+	lsl	x14, x5, x10
 	orr	x9, x14, x9
-	lsl	x10, x19, x10
+	lsl	x10, x20, x10
 	csel	x9, x10, x9, ne
 	csel	x10, xzr, x10, ne
-	lsr	x14, x7, x24
-	ldr	x28, [sp, #56]                  ; 8-byte Folded Reload
-	cmp	x28, #0
+	lsr	x14, x1, x24
+	ldr	x27, [sp, #64]                  ; 8-byte Folded Reload
+	cmp	x27, #0
 	csel	x15, xzr, x15, eq
 	csel	x16, xzr, x16, eq
 	csel	x9, xzr, x9, eq
@@ -3363,30 +3354,31 @@ LBB28_12:                               ;   in Loop: Header=BB28_13 Depth=2
 	csel	x11, x14, x11, ne
 	csel	x14, xzr, x14, ne
 	orr	x7, x14, x15
+	mov	x14, x6
 	orr	x6, x11, x16
 	lsr	x11, x17, x24
 	lsl	x8, x8, x13
 	orr	x8, x8, x11
-	lsr	x11, x25, x24
+	lsr	x11, x14, x24
 	csel	x8, x11, x8, ne
 	csel	x11, xzr, x11, ne
 	orr	x9, x11, x9
 	orr	x8, x8, x10
-	lsr	x10, x19, x24
+	lsr	x10, x20, x24
 	lsl	x11, x12, x13
 	orr	x10, x11, x10
-	lsr	x11, x20, x24
+	lsr	x11, x5, x24
 	csel	x10, x11, x10, ne
 	csel	x11, xzr, x11, ne
 Lloh59:
 	adrp	x23, _p23@PAGE
 Lloh60:
 	add	x23, x23, _p23@PAGEOFF
-	mov	w26, #48
-	mov	w27, #11664
+	mov	w25, #48
+	mov	w26, #11664
 	add	x24, x24, #1
-	add	x28, x28, x27
-	sub	w30, w30, #1
+	add	x27, x27, x26
+	sub	w28, w28, #1
 	cmp	x24, #243
 	b.eq	LBB28_33
 LBB28_13:                               ;   Parent Loop BB28_11 Depth=1
@@ -3394,14 +3386,14 @@ LBB28_13:                               ;   Parent Loop BB28_11 Depth=1
 	cmp	x24, #128
 	b.hs	LBB28_15
 ; %bb.14:                               ;   in Loop: Header=BB28_13 Depth=2
-	mov	w12, w30
+	mov	w12, w28
 	lsl	x11, x11, x24
 	mvn	w13, w24
 	lsr	x14, x10, #1
 	lsr	x14, x14, x13
 	orr	x11, x11, x14
 	lsr	x14, x8, x12
-	mvn	w15, w30
+	mvn	w15, w28
 	lsl	x16, x9, #1
 	lsl	x16, x16, x15
 	orr	x14, x16, x14
@@ -3416,7 +3408,7 @@ LBB28_13:                               ;   Parent Loop BB28_11 Depth=1
 	lsr	x12, x7, x12
 	csel	x15, x12, x15, ne
 	csel	x12, xzr, x12, ne
-	cmp	x28, #0
+	cmp	x27, #0
 	csel	x14, xzr, x14, eq
 	lsl	x10, x10, x24
 	csel	x16, xzr, x16, eq
@@ -3425,8 +3417,8 @@ LBB28_13:                               ;   Parent Loop BB28_11 Depth=1
 	tst	x24, #0x40
 	csel	x11, x10, x11, ne
 	csel	x10, xzr, x10, ne
-	orr	x20, x16, x11
-	orr	x19, x14, x10
+	orr	x30, x16, x11
+	orr	x20, x14, x10
 	lsl	x9, x9, x24
 	lsr	x10, x8, #1
 	lsr	x10, x10, x13
@@ -3442,13 +3434,13 @@ LBB28_13:                               ;   Parent Loop BB28_11 Depth=1
 	lsr	x9, x9, x13
 	orr	x8, x8, x9
 	lsl	x9, x6, x24
-	csel	x7, x9, x8, ne
+	csel	x2, x9, x8, ne
 	csel	x8, xzr, x9, ne
 	str	x8, [sp, #272]                  ; 8-byte Folded Spill
 	b	LBB28_16
 LBB28_15:                               ;   in Loop: Header=BB28_13 Depth=2
 	str	xzr, [sp, #272]                 ; 8-byte Folded Spill
-	mov	x15, #0
+	mov	x2, #0
 	ands	w10, w24, #0x7f
 	mov	w11, #128
 	sub	w10, w11, w10
@@ -3472,28 +3464,27 @@ LBB28_15:                               ;   in Loop: Header=BB28_13 Depth=2
 	csel	x12, xzr, x13, eq
 	tst	x11, #0x40
 	csel	x9, x8, x9, ne
-	orr	x20, x12, x9
+	orr	x30, x12, x9
 	csel	x8, xzr, x8, ne
-	orr	x19, x10, x8
+	orr	x20, x10, x8
 	lsr	x8, x6, #1
 	lsr	x8, x8, x14
 	lsl	x9, x7, x11
-	mov	x7, x15
 	orr	x8, x9, x8
 	lsl	x9, x6, x11
 	csel	x12, x9, x8, ne
 	csel	x8, xzr, x9, ne
 	str	x8, [sp, #280]                  ; 8-byte Folded Spill
 LBB28_16:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldr	x10, [sp, #32]                  ; 8-byte Folded Reload
-	add	x8, x10, x28
+	ldr	x10, [sp, #40]                  ; 8-byte Folded Reload
+	add	x8, x10, x27
 	mov	w9, #11696
 	add	x8, x8, x9
-	add	x21, x10, x28
+	add	x21, x10, x27
 	prfm	pldl1keep, [x8]
 	ldp	x8, x9, [x21, #32]
-	eor	x9, x20, x9
-	eor	x8, x19, x8
+	eor	x9, x30, x9
+	eor	x8, x20, x8
 	orr	x8, x8, x9
 	cbnz	x8, LBB28_34
 ; %bb.17:                               ;   in Loop: Header=BB28_13 Depth=2
@@ -3507,420 +3498,413 @@ LBB28_16:                               ;   in Loop: Header=BB28_13 Depth=2
 	ldp	x9, x8, [x21]
 	ldr	x10, [sp, #272]                 ; 8-byte Folded Reload
 	eor	x9, x10, x9
-	eor	x8, x7, x8
+	eor	x8, x2, x8
 	orr	x8, x9, x8
 	cbnz	x8, LBB28_34
 ; %bb.19:                               ;   in Loop: Header=BB28_13 Depth=2
-	add	x8, x23, x28
-	add	x8, x8, x27
-	add	x21, x23, x28
-	ldp	x9, x25, [sp, #16]              ; 16-byte Folded Reload
+	add	x8, x23, x27
+	add	x8, x8, x26
+	add	x21, x23, x27
+	ldp	x9, x6, [sp, #24]               ; 16-byte Folded Reload
 	stp	q0, q0, [x9]
 	prfm	pldl1keep, [x8]
-	ldp	x10, x11, [x21]
-	str	x12, [sp, #256]                 ; 8-byte Folded Spill
-	ldp	x9, x8, [x25]
-	umulh	x12, x9, x10
-	mul	x13, x9, x10
-	umulh	x14, x9, x11
-	mul	x15, x9, x11
-	umulh	x16, x8, x10
-	mul	x17, x8, x10
+	ldp	x11, x10, [x21]
+	str	x12, [sp, #264]                 ; 8-byte Folded Spill
+	ldp	x9, x8, [x6]
+	umulh	x12, x9, x11
+	mul	x13, x9, x11
+	umulh	x14, x9, x10
+	mul	x15, x9, x10
+	umulh	x16, x8, x11
+	mul	x17, x8, x11
 	adds	x12, x12, x17
 	ldp	x17, x0, [sp, #304]
 	adc	x16, x17, x16
 	adds	x12, x12, x15
 	cinc	x15, x16, hs
 	stp	x13, x12, [sp, #288]
-	umulh	x12, x8, x11
-	mul	x13, x8, x11
+	umulh	x12, x8, x10
+	mul	x13, x8, x10
 	adds	x13, x14, x13
 	cinc	x12, x12, hs
 	adds	x13, x13, x15
 	adc	x12, x12, x0
-	ldp	x15, x14, [x25, #16]
-	umulh	x16, x15, x10
-	mul	x17, x15, x10
-	umulh	x0, x15, x11
-	mul	x1, x15, x11
-	umulh	x2, x14, x10
-	mul	x3, x14, x10
+	ldp	x15, x14, [x6, #16]
+	umulh	x16, x15, x11
+	mul	x17, x15, x11
+	umulh	x0, x15, x10
+	mul	x1, x15, x10
+	str	x2, [sp, #256]                  ; 8-byte Folded Spill
+	umulh	x2, x14, x11
+	mul	x3, x14, x11
 	adds	x16, x16, x3
 	ldp	x3, x4, [sp, #320]
 	adc	x2, x3, x2
 	adds	x16, x16, x1
 	cinc	x1, x2, hs
 	stp	x17, x16, [sp, #304]
-	umulh	x2, x14, x11
-	mul	x3, x14, x11
-	adds	x0, x0, x3
-	cinc	x2, x2, hs
-	adds	x0, x0, x1
-	adc	x2, x2, x4
-	ldp	x4, x3, [x21, #16]
-	mul	x5, x4, x9
-	umulh	x6, x4, x9
-	stp	x7, x20, [sp, #232]             ; 16-byte Folded Spill
-	umulh	x7, x3, x9
-	str	x19, [sp, #264]                 ; 8-byte Folded Spill
-	mul	x19, x3, x9
-	umulh	x20, x4, x8
-	mul	x22, x4, x8
+	umulh	x2, x14, x10
+	mul	x3, x14, x10
+	ldp	x6, x5, [x6, #32]
+	umulh	x7, x6, x11
+	madd	x10, x6, x10, x7
+	madd	x10, x5, x11, x10
+	mul	x11, x6, x11
+	ldp	x6, x5, [x21, #16]
+	umulh	x7, x6, x9
+	mul	x19, x5, x9
+	str	x20, [sp, #240]                 ; 8-byte Folded Spill
+	umulh	x20, x6, x8
+	mul	x22, x6, x8
 	adds	x19, x19, x22
 	cinc	x20, x20, hs
-	adds	x6, x19, x6
+	adds	x7, x19, x7
 	cinc	x19, x20, hs
-	umulh	x20, x3, x8
-	umulh	x22, x4, x15
-	madd	x14, x4, x14, x22
-	mul	x22, x3, x8
-	madd	x14, x3, x15, x14
-	mul	x15, x4, x15
-	adds	x15, x0, x15
-	adc	x14, x2, x14
-	adds	x15, x15, x22
-	adc	x14, x14, x20
-	ldp	x3, x2, [sp, #232]              ; 16-byte Folded Reload
-	adds	x15, x15, x7
-	cinc	x14, x14, hs
-	adds	x13, x5, x13
-	adcs	x0, x6, x12
-	adcs	x12, x15, xzr
-	cinc	x14, x14, hs
-	adds	x15, x12, x19
-	ldp	x5, x4, [sp, #256]              ; 16-byte Folded Reload
-	cinc	x14, x14, hs
-	adds	x12, x17, x13
-	adcs	x13, x16, x0
-	stp	x12, x13, [sp, #304]
-	ldp	x17, x16, [x25, #32]
-	umulh	x0, x17, x10
-	madd	x11, x17, x11, x0
-	madd	x11, x16, x10, x11
-	mul	x10, x17, x10
-	ldp	x17, x16, [x21, #32]
-	mul	x0, x17, x9
-	adcs	x15, x15, xzr
-	cinc	x14, x14, hs
-	adds	x10, x15, x10
-	adc	x11, x14, x11
-	adds	x10, x10, x0
-	umulh	x14, x17, x9
-	madd	x8, x17, x8, x14
-	madd	x8, x16, x9, x8
-	adc	x8, x11, x8
+	ldr	x20, [sp, #240]                 ; 8-byte Folded Reload
+	adds	x0, x0, x3
+	cinc	x2, x2, hs
+	adds	x11, x0, x11
+	adc	x10, x2, x10
+	adds	x11, x11, x1
+	adc	x10, x10, x4
+	adds	x13, x17, x13
+	adcs	x12, x16, x12
+	umulh	x16, x5, x9
+	umulh	x17, x5, x8
+	mul	x0, x5, x8
+	umulh	x2, x6, x15
+	madd	x14, x6, x14, x2
+	mul	x2, x6, x15
+	adcs	x11, x11, xzr
+	cinc	x10, x10, hs
+	adds	x11, x11, x2
+	madd	x14, x5, x15, x14
+	adc	x10, x10, x14
+	adds	x11, x11, x0
+	adc	x10, x10, x17
+	adds	x11, x11, x16
+	cinc	x10, x10, hs
+	adds	x14, x11, x19
+	cinc	x15, x10, hs
+	mul	x10, x6, x9
+	ldp	x2, x17, [sp, #256]             ; 16-byte Folded Reload
+	adds	x10, x10, x13
+	adcs	x11, x7, x12
+	stp	x10, x11, [sp, #304]
+	ldp	x16, x13, [x21, #32]
+	mul	x12, x16, x9
+	adcs	x14, x14, xzr
+	cinc	x15, x15, hs
+	adds	x12, x14, x12
+	umulh	x14, x16, x9
+	madd	x8, x16, x8, x14
+	madd	x8, x13, x9, x8
+	adc	x8, x15, x8
 	stp	x1, x8, [sp, #320]
-	str	x10, [sp, #320]
-	ldp	x9, x11, [sp, #288]
-	eor	x11, x3, x11
+	str	x12, [sp, #320]
+	ldp	x9, x13, [sp, #288]
+	eor	x13, x2, x13
 	ldr	x14, [sp, #272]                 ; 8-byte Folded Reload
 	eor	x9, x14, x9
-	orr	x9, x9, x11
+	orr	x9, x9, x13
 	cbnz	x9, LBB28_37
 ; %bb.20:                               ;   in Loop: Header=BB28_13 Depth=2
 	ldr	x9, [sp, #280]                  ; 8-byte Folded Reload
-	eor	x9, x9, x12
-	eor	x11, x5, x13
-	orr	x9, x9, x11
+	eor	x9, x9, x10
+	eor	x10, x17, x11
+	orr	x9, x9, x10
 	cbnz	x9, LBB28_37
 ; %bb.21:                               ;   in Loop: Header=BB28_13 Depth=2
-	eor	x9, x4, x10
-	eor	x8, x2, x8
+	eor	x9, x20, x12
+	eor	x8, x30, x8
 	orr	x8, x9, x8
 	cbnz	x8, LBB28_37
 ; %bb.22:                               ;   in Loop: Header=BB28_13 Depth=2
-	str	w30, [sp, #52]                  ; 4-byte Folded Spill
-	str	x28, [sp, #56]                  ; 8-byte Folded Spill
+	str	w28, [sp, #60]                  ; 4-byte Folded Spill
+	str	x27, [sp, #64]                  ; 8-byte Folded Spill
 	ubfx	x8, x24, #1, #31
-	umaddl	x5, w8, w27, x23
-	str	x24, [sp, #224]                 ; 8-byte Folded Spill
+	umaddl	x16, w8, w26, x23
 	add	w8, w24, #1
 	lsr	w8, w8, #1
-	umaddl	x8, w8, w27, x23
-	ldr	x9, [sp, #40]                   ; 8-byte Folded Reload
-	madd	x12, x9, x26, x8
+	umaddl	x8, w8, w26, x23
+	ldr	x9, [sp, #48]                   ; 8-byte Folded Reload
+	madd	x12, x9, x25, x8
 	ldr	x8, [sp, #248]                  ; 8-byte Folded Reload
 	stp	q0, q0, [x8]
-	ldp	x22, x8, [x5]
-	ldp	x14, x3, [x12]
-	umulh	x10, x14, x22
-	umulh	x13, x14, x8
-	mul	x11, x14, x8
-	umulh	x9, x3, x22
-	mul	x15, x3, x22
-	str	x11, [sp, #176]                 ; 8-byte Folded Spill
-	str	x15, [sp, #160]                 ; 8-byte Folded Spill
+	ldp	x14, x8, [x16]
+	ldp	x23, x21, [x12]
+	umulh	x10, x23, x14
+	umulh	x13, x23, x8
+	mul	x11, x23, x8
+	umulh	x9, x21, x14
+	mul	x15, x21, x14
+	stp	x15, x11, [sp, #176]            ; 16-byte Folded Spill
 	adds	x25, x11, x15
-	stp	x9, x10, [sp, #200]             ; 16-byte Folded Spill
+	stp	x13, x9, [sp, #200]             ; 16-byte Folded Spill
 	cinc	x6, x9, hs
+	stp	x10, x24, [sp, #224]            ; 16-byte Folded Spill
 	adds	x9, x25, x10
 	ldp	x10, x11, [sp, #352]
 	adc	x10, x6, x10
 	str	x9, [sp, #344]
-	umulh	x9, x3, x8
-	mul	x15, x3, x8
-	str	x13, [sp, #192]                 ; 8-byte Folded Spill
-	str	x15, [sp, #128]                 ; 8-byte Folded Spill
+	umulh	x9, x21, x8
+	mul	x15, x21, x8
 	adds	x26, x13, x15
-	str	x9, [sp, #144]                  ; 8-byte Folded Spill
+	str	x9, [sp, #160]                  ; 8-byte Folded Spill
 	cinc	x27, x9, hs
-	adds	x28, x26, x10
-	adc	x9, x27, x11
+	adds	x17, x26, x10
+	adc	x0, x27, x11
+	ldp	x3, x1, [x12, #16]
+	umulh	x9, x3, x14
+	mul	x11, x3, x8
+	umulh	x10, x1, x14
+	mul	x13, x1, x14
+	mov	x2, x30
+	str	x11, [sp, #168]                 ; 8-byte Folded Spill
+	stp	x15, x13, [sp, #144]            ; 16-byte Folded Spill
+	adds	x30, x11, x13
+	str	x10, [sp, #192]                 ; 8-byte Folded Spill
+	cinc	x28, x10, hs
 	str	x9, [sp, #216]                  ; 8-byte Folded Spill
-	ldp	x2, x10, [x12, #16]
-	umulh	x9, x2, x22
-	umulh	x17, x2, x8
-	mul	x0, x2, x8
-	umulh	x15, x10, x22
-	mul	x1, x10, x22
-	umulh	x20, x10, x8
-	mul	x7, x10, x8
-	ldp	x16, x11, [x12, #32]
-	str	x12, [sp, #8]                   ; 8-byte Folded Spill
-	umulh	x13, x16, x22
-	madd	x8, x16, x8, x13
-	ldr	x19, [x5, #16]
-	madd	x23, x11, x22, x8
-	umulh	x8, x19, x2
-	madd	x8, x19, x10, x8
-	str	x0, [sp, #152]                  ; 8-byte Folded Spill
-	str	x1, [sp, #136]                  ; 8-byte Folded Spill
-	adds	x13, x0, x1
-	str	x15, [sp, #184]                 ; 8-byte Folded Spill
-	cinc	x30, x15, hs
-	mov	x4, x9
-	adds	x12, x13, x9
-	ldp	x10, x9, [sp, #368]
-	adc	x15, x30, x10
-	ldr	x11, [x5, #24]
-	str	x17, [sp, #168]                 ; 8-byte Folded Spill
-	stp	x7, x20, [sp, #112]             ; 16-byte Folded Spill
-	adds	x7, x17, x7
-	cinc	x24, x20, hs
-	umulh	x1, x19, x14
-	mul	x17, x11, x14
-	umulh	x10, x19, x3
-	mul	x0, x19, x3
-	stp	x0, x17, [sp, #64]              ; 16-byte Folded Spill
-	adds	x17, x17, x0
-	stp	x10, x23, [sp, #96]             ; 16-byte Folded Spill
-	cinc	x0, x10, hs
-	str	x1, [sp, #80]                   ; 8-byte Folded Spill
-	adds	x10, x17, x1
-	cinc	x20, x0, hs
-	madd	x1, x11, x2, x8
-	umulh	x17, x11, x14
-	umulh	x21, x11, x3
-	mul	x0, x11, x3
-	mul	x11, x16, x22
-	mul	x8, x19, x14
-	mul	x16, x19, x2
-	str	x11, [sp, #88]                  ; 8-byte Folded Spill
-	adds	x19, x11, x7
-	adc	x11, x23, x24
-	mov	x23, x1
-	adds	x7, x19, x15
-	adc	x9, x11, x9
-	adds	x7, x7, x16
-	adc	x9, x9, x1
-	adds	x7, x7, x0
-	adc	x9, x9, x21
-	adds	x7, x7, x17
-	cinc	x9, x9, hs
-	adds	x24, x8, x28
-	ldr	x1, [sp, #216]                  ; 8-byte Folded Reload
-	adcs	x10, x10, x1
-	adcs	x7, x7, xzr
-	cinc	x9, x9, hs
-	adds	x7, x7, x20
-	mul	x2, x2, x22
-	stp	x2, x12, [sp, #352]
-	cinc	x9, x9, hs
-	adds	x20, x2, x24
-	adcs	x10, x12, x10
-	stp	x20, x10, [sp, #352]
-	ldr	x10, [x5, #32]
-	umulh	x12, x10, x14
-	madd	x12, x10, x3, x12
-	str	x5, [sp, #216]                  ; 8-byte Folded Spill
-	ldr	x3, [x5, #40]
-	madd	x3, x3, x14, x12
-	mul	x28, x14, x22
-	mul	x22, x10, x14
-	adcs	x10, x7, xzr
-	ldp	x7, x20, [sp, #232]             ; 16-byte Folded Reload
-	cinc	x9, x9, hs
-	adds	x10, x10, x22
-	adc	x9, x9, x3
-	stp	x15, x9, [sp, #368]
-	str	x10, [sp, #368]
-	str	x28, [sp, #336]
+	adds	x4, x30, x9
+	ldp	x11, x9, [x12, #32]
+	str	x12, [sp, #16]                  ; 8-byte Folded Spill
+	umulh	x10, x11, x14
+	madd	x10, x11, x8, x10
+	madd	x5, x9, x14, x10
+	ldp	x9, x19, [sp, #368]
+	adc	x12, x28, x9
+	str	x4, [sp, #360]
+	umulh	x10, x3, x8
+	umulh	x9, x1, x8
+	mul	x8, x1, x8
+	mul	x7, x11, x14
+	stp	x10, x8, [sp, #96]              ; 16-byte Folded Spill
+	adds	x11, x10, x8
+	stp	x7, x9, [sp, #112]              ; 16-byte Folded Spill
+	cinc	x22, x9, hs
+	ldp	x8, x9, [x16, #16]
+	umulh	x20, x8, x23
+	mul	x13, x9, x23
+	umulh	x10, x8, x21
+	mul	x15, x8, x21
+	stp	x15, x13, [sp, #72]             ; 16-byte Folded Spill
+	adds	x13, x13, x15
+	stp	x10, x5, [sp, #128]             ; 16-byte Folded Spill
+	cinc	x15, x10, hs
+	str	x20, [sp, #88]                  ; 8-byte Folded Spill
+	adds	x10, x13, x20
+	cinc	x15, x15, hs
+	adds	x13, x7, x11
+	adc	x11, x5, x22
+	adds	x20, x13, x12
+	adc	x7, x11, x19
+	mul	x19, x3, x14
+	adds	x24, x19, x17
+	adcs	x5, x4, x0
+	umulh	x17, x8, x3
+	madd	x17, x8, x1, x17
+	madd	x4, x9, x3, x17
+	umulh	x22, x9, x23
+	umulh	x0, x9, x21
+	mul	x1, x9, x21
+	mul	x3, x8, x3
+	adcs	x9, x20, xzr
+	ldr	x20, [sp, #240]                 ; 8-byte Folded Reload
+	cinc	x17, x7, hs
+	adds	x9, x9, x3
+	adc	x17, x17, x4
+	adds	x9, x9, x1
+	adc	x17, x17, x0
+	adds	x9, x9, x22
+	cinc	x7, x17, hs
+	adds	x9, x9, x15
+	mul	x17, x8, x23
+	cinc	x8, x7, hs
+	adds	x15, x17, x24
+	adcs	x10, x10, x5
+	stp	x19, x10, [sp, #352]
+	str	x15, [sp, #352]
+	ldp	x10, x5, [x16, #32]
+	umulh	x15, x10, x23
+	madd	x15, x10, x21, x15
+	str	x16, [sp, #8]                   ; 8-byte Folded Spill
+	madd	x21, x5, x23, x15
+	mul	x14, x23, x14
+	mul	x23, x10, x23
+	adcs	x9, x9, xzr
+	cinc	x8, x8, hs
+	adds	x9, x9, x23
+	adc	x8, x8, x21
+	stp	x12, x8, [sp, #368]
+	str	x9, [sp, #368]
+	str	x14, [sp, #336]
 	ldp	q3, q1, [sp, #336]
 	ldr	q2, [sp, #368]
 	str	q2, [sp, #320]
-	ldp	x10, x9, [sp, #320]
+	ldp	x9, x8, [sp, #320]
+	mov	x7, x2
+	eor	x8, x2, x8
+	ldr	x2, [sp, #256]                  ; 8-byte Folded Reload
 	eor	x9, x20, x9
-	ldr	x12, [sp, #264]                 ; 8-byte Folded Reload
-	eor	x10, x12, x10
-	orr	x9, x10, x9
+	orr	x8, x9, x8
 	stp	q3, q1, [sp, #288]
-	cbnz	x9, LBB28_39
+	cbnz	x8, LBB28_39
 ; %bb.23:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldp	x10, x9, [sp, #304]
-	ldr	x12, [sp, #280]                 ; 8-byte Folded Reload
-	eor	x10, x12, x10
-	ldr	x12, [sp, #256]                 ; 8-byte Folded Reload
-	eor	x9, x12, x9
-	orr	x9, x10, x9
-	cbnz	x9, LBB28_39
+	ldp	x9, x8, [sp, #304]
+	ldr	x10, [sp, #280]                 ; 8-byte Folded Reload
+	eor	x9, x10, x9
+	ldr	x10, [sp, #264]                 ; 8-byte Folded Reload
+	eor	x8, x10, x8
+	orr	x8, x9, x8
+	cbnz	x8, LBB28_39
 ; %bb.24:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldp	x10, x9, [sp, #288]
-	ldr	x12, [sp, #272]                 ; 8-byte Folded Reload
-	eor	x10, x12, x10
-	eor	x9, x7, x9
-	orr	x9, x10, x9
-	cbnz	x9, LBB28_39
+	ldp	x9, x8, [sp, #288]
+	ldr	x10, [sp, #272]                 ; 8-byte Folded Reload
+	eor	x9, x10, x9
+	eor	x8, x2, x8
+	orr	x8, x9, x8
+	cbnz	x8, LBB28_39
 ; %bb.25:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldr	x9, [sp, #248]                  ; 8-byte Folded Reload
-	stp	q0, q0, [x9]
-	ldr	x5, [sp, #208]                  ; 8-byte Folded Reload
-	adds	x9, x25, x5
-	ldp	x10, x12, [sp, #352]
-	adc	x10, x6, x10
-	stp	x28, x9, [sp, #336]
-	adds	x9, x10, x26
-	adc	x12, x12, x27
-	adds	x13, x13, x4
-	ldp	x14, x15, [sp, #368]
-	adc	x14, x30, x14
-	adds	x14, x19, x14
-	adc	x11, x11, x15
-	adds	x9, x2, x9
-	adcs	x12, x13, x12
-	stp	x10, x12, [sp, #352]
-	adcs	x10, x14, xzr
-	cinc	x11, x11, hs
-	str	x9, [sp, #352]
-	stp	x10, x11, [sp, #368]
+	ldr	x8, [sp, #248]                  ; 8-byte Folded Reload
+	stp	q0, q0, [x8]
+	ldp	x24, x16, [sp, #216]            ; 16-byte Folded Reload
+	adds	x8, x25, x16
+	ldp	x9, x10, [sp, #352]
+	adc	x9, x6, x9
+	stp	x14, x8, [sp, #336]
+	adds	x8, x9, x26
+	adc	x10, x10, x27
+	adds	x12, x30, x24
+	ldp	x15, x5, [sp, #368]
+	adc	x15, x28, x15
+	adds	x13, x13, x15
+	adc	x11, x11, x5
+	adds	x8, x19, x8
+	adcs	x10, x12, x10
+	stp	x9, x10, [sp, #352]
+	adcs	x9, x13, xzr
+	cinc	x10, x11, hs
+	str	x8, [sp, #352]
+	stp	x9, x10, [sp, #368]
 	ldp	q1, q2, [sp, #336]
 	ldr	q3, [sp, #368]
 	stp	q2, q3, [sp, #304]
 	str	q1, [sp, #288]
-	ldp	x9, x10, [sp, #320]
-	eor	x10, x20, x10
-	ldp	x25, x19, [sp, #256]            ; 16-byte Folded Reload
-	eor	x9, x19, x9
-	orr	x9, x9, x10
-	cbnz	x9, LBB28_41
-; %bb.26:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldp	x10, x9, [sp, #304]
-	ldr	x11, [sp, #280]                 ; 8-byte Folded Reload
-	eor	x10, x11, x10
-	eor	x9, x25, x9
-	orr	x9, x10, x9
-	cbnz	x9, LBB28_41
-; %bb.27:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldp	x10, x9, [sp, #288]
-	ldr	x11, [sp, #272]                 ; 8-byte Folded Reload
-	eor	x10, x11, x10
+	ldp	x8, x9, [sp, #320]
+	mov	x5, x7
 	eor	x9, x7, x9
-	orr	x9, x10, x9
-	cbnz	x9, LBB28_41
+	eor	x8, x20, x8
+	orr	x8, x8, x9
+	ldr	x6, [sp, #264]                  ; 8-byte Folded Reload
+	cbnz	x8, LBB28_41
+; %bb.26:                               ;   in Loop: Header=BB28_13 Depth=2
+	ldp	x9, x8, [sp, #304]
+	ldr	x10, [sp, #280]                 ; 8-byte Folded Reload
+	eor	x9, x10, x9
+	eor	x8, x6, x8
+	orr	x8, x9, x8
+	cbnz	x8, LBB28_41
+; %bb.27:                               ;   in Loop: Header=BB28_13 Depth=2
+	ldp	x9, x8, [sp, #288]
+	ldr	x10, [sp, #272]                 ; 8-byte Folded Reload
+	eor	x9, x10, x9
+	eor	x8, x2, x8
+	orr	x8, x9, x8
+	cbnz	x8, LBB28_41
 ; %bb.28:                               ;   in Loop: Header=BB28_13 Depth=2
-	ldr	x9, [sp, #248]                  ; 8-byte Folded Reload
-	stp	q0, q0, [x9]
-	ldr	x9, [sp, #176]                  ; 8-byte Folded Reload
-	ldr	x10, [sp, #160]                 ; 8-byte Folded Reload
-	adds	x9, x10, x9
-	ldr	x10, [sp, #192]                 ; 8-byte Folded Reload
-	cinc	x10, x10, hs
-	adds	x9, x9, x5
-	ldp	x11, x12, [sp, #352]
-	adc	x10, x10, x11
-	stp	x28, x9, [sp, #336]
+	ldr	x8, [sp, #248]                  ; 8-byte Folded Reload
+	stp	q0, q0, [x8]
+	ldp	x9, x8, [sp, #176]              ; 16-byte Folded Reload
+	adds	x8, x9, x8
 	ldr	x9, [sp, #200]                  ; 8-byte Folded Reload
-	ldp	x11, x1, [sp, #128]             ; 16-byte Folded Reload
-	adds	x9, x9, x11
-	ldr	x11, [sp, #144]                 ; 8-byte Folded Reload
-	cinc	x11, x11, hs
-	adds	x9, x9, x10
-	adc	x11, x11, x12
-	ldp	x13, x12, [sp, #64]             ; 16-byte Folded Reload
-	adds	x12, x13, x12
-	cinc	x13, x17, hs
-	ldr	x14, [sp, #80]                  ; 8-byte Folded Reload
-	adds	x12, x12, x14
-	ldp	x14, x15, [sp, #368]
-	adc	x13, x13, x14
-	ldr	x14, [sp, #152]                 ; 8-byte Folded Reload
-	adds	x14, x1, x14
-	ldr	x1, [sp, #168]                  ; 8-byte Folded Reload
-	cinc	x1, x1, hs
-	adds	x14, x14, x4
-	cinc	x1, x1, hs
-	ldr	x4, [sp, #184]                  ; 8-byte Folded Reload
-	ldr	x5, [sp, #112]                  ; 8-byte Folded Reload
-	adds	x4, x4, x5
-	ldr	x5, [sp, #120]                  ; 8-byte Folded Reload
-	cinc	x6, x5, hs
-	adds	x16, x4, x16
-	adc	x4, x6, x23
-	adds	x16, x16, x0
-	adc	x17, x4, x21
-	ldr	x0, [sp, #96]                   ; 8-byte Folded Reload
-	adds	x16, x16, x0
-	cinc	x17, x17, hs
-	ldr	x0, [sp, #88]                   ; 8-byte Folded Reload
-	adds	x16, x16, x0
-	ldr	x0, [sp, #104]                  ; 8-byte Folded Reload
-	adc	x17, x17, x0
-	adds	x16, x16, x22
-	adc	x17, x17, x3
-	adds	x16, x16, x13
-	adc	x15, x17, x15
-	adds	x9, x2, x9
-	adcs	x11, x14, x11
-	adcs	x14, x16, xzr
+	cinc	x9, x9, hs
+	adds	x8, x8, x16
+	ldp	x10, x11, [sp, #352]
+	adc	x9, x9, x10
+	stp	x14, x8, [sp, #336]
+	ldr	x8, [sp, #208]                  ; 8-byte Folded Reload
+	ldp	x10, x15, [sp, #144]            ; 16-byte Folded Reload
+	adds	x8, x8, x10
+	ldr	x10, [sp, #160]                 ; 8-byte Folded Reload
+	cinc	x10, x10, hs
+	adds	x8, x8, x9
+	adc	x10, x10, x11
+	ldp	x12, x11, [sp, #72]             ; 16-byte Folded Reload
+	adds	x11, x12, x11
+	cinc	x12, x22, hs
+	ldr	x13, [sp, #88]                  ; 8-byte Folded Reload
+	adds	x11, x11, x13
+	ldp	x13, x14, [sp, #368]
+	adc	x12, x12, x13
+	ldr	x13, [sp, #168]                 ; 8-byte Folded Reload
+	adds	x13, x15, x13
+	ldp	x15, x2, [sp, #96]              ; 16-byte Folded Reload
 	cinc	x15, x15, hs
-	adds	x14, x14, x1
-	stp	x10, x12, [sp, #352]
-	cinc	x10, x15, hs
-	adds	x9, x8, x9
-	adcs	x11, x12, x11
-	stp	x8, x11, [sp, #352]
-	str	x13, [sp, #368]
-	str	x9, [sp, #352]
-	adcs	x8, x14, xzr
-	cinc	x9, x10, hs
+	adds	x13, x13, x24
+	cinc	x15, x15, hs
+	ldr	x16, [sp, #192]                 ; 8-byte Folded Reload
+	adds	x16, x16, x2
+	ldp	x7, x2, [sp, #112]              ; 16-byte Folded Reload
+	cinc	x2, x2, hs
+	adds	x16, x16, x7
+	ldr	x7, [sp, #136]                  ; 8-byte Folded Reload
+	adc	x2, x2, x7
+	adds	x16, x16, x3
+	adc	x2, x2, x4
+	adds	x16, x16, x1
+	adc	x0, x2, x0
+	ldr	x1, [sp, #256]                  ; 8-byte Folded Reload
+	ldr	x2, [sp, #128]                  ; 8-byte Folded Reload
+	adds	x16, x16, x2
+	cinc	x0, x0, hs
+	adds	x16, x16, x23
+	adc	x0, x0, x21
+	adds	x16, x16, x12
+	adc	x14, x0, x14
+	stp	x9, x11, [sp, #352]
+	adds	x8, x17, x8
+	adcs	x9, x11, x10
+	adcs	x10, x16, xzr
+	cinc	x11, x14, hs
+	adds	x10, x10, x15
+	cinc	x11, x11, hs
+	adds	x8, x19, x8
+	adcs	x9, x13, x9
+	stp	x17, x9, [sp, #352]
+	str	x12, [sp, #368]
+	str	x8, [sp, #352]
+	adcs	x8, x10, xzr
+	cinc	x9, x11, hs
 	stp	x8, x9, [sp, #368]
 	ldp	q3, q1, [sp, #336]
 	ldr	q2, [sp, #368]
 	str	q2, [sp, #320]
 	ldp	x8, x9, [sp, #320]
-	eor	x9, x20, x9
-	eor	x8, x19, x8
+	eor	x9, x5, x9
+	eor	x8, x20, x8
 	orr	x8, x8, x9
 	stp	q3, q1, [sp, #288]
-	ldr	x24, [sp, #224]                 ; 8-byte Folded Reload
+	ldr	x24, [sp, #232]                 ; 8-byte Folded Reload
 	cbnz	x8, LBB28_43
 ; %bb.29:                               ;   in Loop: Header=BB28_13 Depth=2
 	ldp	x9, x8, [sp, #304]
 	ldr	x10, [sp, #280]                 ; 8-byte Folded Reload
 	eor	x9, x10, x9
-	eor	x8, x25, x8
+	eor	x8, x6, x8
 	orr	x8, x9, x8
 	cbnz	x8, LBB28_43
 ; %bb.30:                               ;   in Loop: Header=BB28_13 Depth=2
 	ldp	x9, x8, [sp, #288]
 	ldr	x10, [sp, #272]                 ; 8-byte Folded Reload
 	eor	x9, x10, x9
-	eor	x8, x7, x8
+	eor	x8, x1, x8
 	orr	x8, x9, x8
 	cbnz	x8, LBB28_43
 ; %bb.31:                               ;   in Loop: Header=BB28_13 Depth=2
-	lsr	x9, x19, #1
-	lsl	x8, x25, #1
-	lsl	x12, x20, #1
+	lsr	x9, x20, #1
+	lsl	x8, x6, #1
+	lsl	x12, x5, #1
 	cmp	x24, #128
 	b.lo	LBB28_12
 ; %bb.32:                               ;   in Loop: Header=BB28_13 Depth=2
@@ -3930,11 +3914,11 @@ LBB28_16:                               ;   in Loop: Header=BB28_13 Depth=2
 	mov	w14, #128
 	sub	w13, w14, w13
 	mvn	w14, w13
-	lsl	x15, x19, x13
+	lsl	x15, x20, x13
 	tst	x13, #0x40
 	lsr	x9, x9, x14
 	csel	x14, xzr, x15, ne
-	lsl	x13, x20, x13
+	lsl	x13, x5, x13
 	orr	x9, x13, x9
 	csel	x9, x15, x9, ne
 	ands	w13, w24, #0x7f
@@ -3943,7 +3927,7 @@ LBB28_16:                               ;   in Loop: Header=BB28_13 Depth=2
 	mvn	w16, w13
 	lsl	x8, x8, x16
 	orr	x8, x8, x15
-	lsr	x15, x25, x13
+	lsr	x15, x6, x13
 	csel	x9, xzr, x9, eq
 	csel	x14, xzr, x14, eq
 	tst	x13, #0x40
@@ -3951,30 +3935,30 @@ LBB28_16:                               ;   in Loop: Header=BB28_13 Depth=2
 	csel	x15, xzr, x15, ne
 	orr	x6, x8, x14
 	orr	x7, x15, x9
-	lsr	x8, x19, x13
+	lsr	x8, x20, x13
 	lsl	x9, x12, x16
 	orr	x8, x9, x8
-	lsr	x9, x20, x13
+	lsr	x9, x5, x13
 	csel	x8, x9, x8, ne
 	csel	x9, xzr, x9, ne
 Lloh61:
 	adrp	x23, _p23@PAGE
 Lloh62:
 	add	x23, x23, _p23@PAGEOFF
-	mov	w26, #48
-	mov	w27, #11664
-	ldr	x28, [sp, #56]                  ; 8-byte Folded Reload
-	ldr	w30, [sp, #52]                  ; 4-byte Folded Reload
+	mov	w25, #48
+	mov	w26, #11664
+	ldr	x27, [sp, #64]                  ; 8-byte Folded Reload
+	ldr	w28, [sp, #60]                  ; 4-byte Folded Reload
 	add	x24, x24, #1
-	add	x28, x28, x27
-	sub	w30, w30, #1
+	add	x27, x27, x26
+	sub	w28, w28, #1
 	cmp	x24, #243
 	b.ne	LBB28_13
 LBB28_33:                               ;   in Loop: Header=BB28_11 Depth=1
-	ldp	x10, x9, [sp, #32]              ; 16-byte Folded Reload
+	ldp	x10, x9, [sp, #40]              ; 16-byte Folded Reload
 	add	w8, w9, #1
 	add	x10, x10, #48
-	str	x10, [sp, #32]                  ; 8-byte Folded Spill
+	str	x10, [sp, #40]                  ; 8-byte Folded Spill
 	cmp	w9, #242
 	b.lo	LBB28_11
 	b	LBB28_47
@@ -3982,8 +3966,8 @@ LBB28_34:
 	ldr	x8, [sp, #280]                  ; 8-byte Folded Reload
 	stp	x8, x12, [x29, #-224]
 	ldr	x8, [sp, #272]                  ; 8-byte Folded Reload
-	stp	x8, x7, [x29, #-240]
-	stp	x19, x20, [x29, #-208]
+	stp	x8, x2, [x29, #-240]
+	stp	x20, x30, [x29, #-208]
 Lloh63:
 	adrp	x0, __ZNSt3__14coutE@GOTPAGE
 Lloh64:
@@ -3994,7 +3978,7 @@ Lloh66:
 	add	x1, x1, l_.str.3@PAGEOFF
 	mov	w2, #13
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #40]                   ; 8-byte Folded Reload
+	ldr	x1, [sp, #48]                   ; 8-byte Folded Reload
                                         ; kill: def $w1 killed $w1 killed $x1
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 Lloh67:
@@ -4043,10 +4027,10 @@ Ltmp31:
 	b	LBB28_46
 LBB28_37:
 	ldr	x8, [sp, #280]                  ; 8-byte Folded Reload
-	stp	x8, x5, [x29, #-224]
+	stp	x8, x17, [x29, #-224]
 	ldr	x8, [sp, #272]                  ; 8-byte Folded Reload
-	stp	x8, x3, [x29, #-240]
-	stp	x4, x2, [x29, #-208]
+	stp	x8, x2, [x29, #-240]
+	stp	x20, x30, [x29, #-208]
 Lloh71:
 	adrp	x0, __ZNSt3__14coutE@GOTPAGE
 Lloh72:
@@ -4057,7 +4041,7 @@ Lloh74:
 	add	x1, x1, l_.str.5@PAGEOFF
 	mov	w2, #11
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #40]                   ; 8-byte Folded Reload
+	ldr	x1, [sp, #48]                   ; 8-byte Folded Reload
                                         ; kill: def $w1 killed $w1 killed $x1
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 Lloh75:
@@ -4077,7 +4061,7 @@ Lloh76:
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #24]                   ; 8-byte Folded Reload
+	ldr	x1, [sp, #32]                   ; 8-byte Folded Reload
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	mov	x1, x19
 	mov	w2, #1
@@ -4113,12 +4097,11 @@ Ltmp36:
 	b	LBB28_45
 LBB28_39:
 	ldr	x9, [sp, #280]                  ; 8-byte Folded Reload
-	ldr	x8, [sp, #256]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #264]                  ; 8-byte Folded Reload
 	stp	x9, x8, [x29, #-224]
 	ldr	x8, [sp, #272]                  ; 8-byte Folded Reload
-	stp	x8, x7, [x29, #-240]
-	ldr	x8, [sp, #264]                  ; 8-byte Folded Reload
-	stp	x8, x20, [x29, #-208]
+	stp	x8, x2, [x29, #-240]
+	stp	x20, x7, [x29, #-208]
 Lloh79:
 	adrp	x0, __ZNSt3__14coutE@GOTPAGE
 Lloh80:
@@ -4129,7 +4112,7 @@ Lloh82:
 	add	x1, x1, l_.str.6@PAGEOFF
 	mov	w2, #14
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #40]                   ; 8-byte Folded Reload
+	ldr	x1, [sp, #48]                   ; 8-byte Folded Reload
                                         ; kill: def $w1 killed $w1 killed $x1
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 Lloh83:
@@ -4139,18 +4122,18 @@ Lloh84:
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x8, [sp, #224]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #232]                  ; 8-byte Folded Reload
 	and	w1, w8, #0xffff
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #216]                  ; 8-byte Folded Reload
+	ldr	x1, [sp, #8]                    ; 8-byte Folded Reload
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #8]                    ; 8-byte Folded Reload
+	ldr	x1, [sp, #16]                   ; 8-byte Folded Reload
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	mov	x1, x19
 	mov	w2, #1
@@ -4186,10 +4169,10 @@ Ltmp41:
 	b	LBB28_45
 LBB28_41:
 	ldr	x8, [sp, #280]                  ; 8-byte Folded Reload
-	stp	x8, x25, [x29, #-224]
+	stp	x8, x6, [x29, #-224]
 	ldr	x8, [sp, #272]                  ; 8-byte Folded Reload
-	stp	x8, x7, [x29, #-240]
-	stp	x19, x20, [x29, #-208]
+	stp	x8, x2, [x29, #-240]
+	stp	x20, x5, [x29, #-208]
 Lloh87:
 	adrp	x0, __ZNSt3__14coutE@GOTPAGE
 Lloh88:
@@ -4200,7 +4183,7 @@ Lloh90:
 	add	x1, x1, l_.str.7@PAGEOFF
 	mov	w2, #15
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #40]                   ; 8-byte Folded Reload
+	ldr	x1, [sp, #48]                   ; 8-byte Folded Reload
                                         ; kill: def $w1 killed $w1 killed $x1
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 Lloh91:
@@ -4210,18 +4193,18 @@ Lloh92:
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x8, [sp, #224]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #232]                  ; 8-byte Folded Reload
 	and	w1, w8, #0xffff
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #216]                  ; 8-byte Folded Reload
+	ldr	x1, [sp, #8]                    ; 8-byte Folded Reload
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #8]                    ; 8-byte Folded Reload
+	ldr	x1, [sp, #16]                   ; 8-byte Folded Reload
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	mov	x1, x19
 	mov	w2, #1
@@ -4257,10 +4240,10 @@ Ltmp46:
 	b	LBB28_45
 LBB28_43:
 	ldr	x8, [sp, #280]                  ; 8-byte Folded Reload
-	stp	x8, x25, [x29, #-224]
+	stp	x8, x6, [x29, #-224]
 	ldr	x8, [sp, #272]                  ; 8-byte Folded Reload
-	stp	x8, x7, [x29, #-240]
-	stp	x19, x20, [x29, #-208]
+	stp	x8, x1, [x29, #-240]
+	stp	x20, x5, [x29, #-208]
 Lloh95:
 	adrp	x0, __ZNSt3__14coutE@GOTPAGE
 Lloh96:
@@ -4271,7 +4254,7 @@ Lloh98:
 	add	x1, x1, l_.str.8@PAGEOFF
 	mov	w2, #14
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #40]                   ; 8-byte Folded Reload
+	ldr	x1, [sp, #48]                   ; 8-byte Folded Reload
                                         ; kill: def $w1 killed $w1 killed $x1
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 Lloh99:
@@ -4286,12 +4269,12 @@ Lloh100:
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #216]                  ; 8-byte Folded Reload
+	ldr	x1, [sp, #8]                    ; 8-byte Folded Reload
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	mov	x1, x19
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
-	ldr	x1, [sp, #8]                    ; 8-byte Folded Reload
+	ldr	x1, [sp, #16]                   ; 8-byte Folded Reload
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	mov	x1, x19
 	mov	w2, #1
