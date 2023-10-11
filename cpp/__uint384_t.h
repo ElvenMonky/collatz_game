@@ -260,35 +260,35 @@ inline __uint384_t mulhi_fast_approx(const __uint384_t& x, const __uint384_t& a)
 }
 
 bool operator>=(const __uint384_t& a, const __uint384_t& b) {
-	return (a._[2] > b._[2]) + (a._[2] == b._[2]) * ((a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] >= b._[0]));
+	return a._[2] == b._[2] ? (a._[1] == b._[1] ? a._[0] >= b._[0] : a._[1] > b._[1]) : a._[2] > b._[2];
 }
 
 bool operator>(const __uint384_t& a, const __uint384_t& b) {
-	return (a._[2] > b._[2]) + (a._[2] == b._[2]) * ((a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] > b._[0]));
+	return a._[2] == b._[2] ? (a._[1] == b._[1] ? a._[0] > b._[0] : a._[1] > b._[1]) : a._[2] > b._[2];
 }
 
 bool operator<=(const __uint384_t& a, const __uint384_t& b) {
-	return (a._[2] < b._[2]) + (a._[2] == b._[2]) * ((a._[1] < b._[1]) + (a._[1] == b._[1]) * (a._[0] <= b._[0]));
+	return a._[2] == b._[2] ? (a._[1] == b._[1] ? a._[0] <= b._[0] : a._[1] < b._[1]) : a._[2] < b._[2];
 }
 
 bool operator<(const __uint384_t& a, const __uint384_t& b) {
-	return (a._[2] < b._[2]) + (a._[2] == b._[2]) * ((a._[1] < b._[1]) + (a._[1] == b._[1]) * (a._[0] < b._[0]));
+	return a._[2] == b._[2] ? (a._[1] == b._[1] ? a._[0] < b._[0] : a._[1] < b._[1]) : a._[2] < b._[2];
 }
 
 bool operator==(const __uint384_t& a, const __uint384_t& b) {
-	return (a._[2] == b._[2]) * (a._[1] == b._[1]) * (a._[0] == b._[0]);
+	return (a._[2] == b._[2]) & (a._[1] == b._[1]) & (a._[0] == b._[0]);
 }
 
 bool operator!=(const __uint384_t& a, const __uint384_t& b) {
-	return 1 - (a._[2] == b._[2]) * (a._[1] == b._[1]) * (a._[0] == b._[0]);
+	return (a._[2] != b._[2]) | (a._[1] != b._[1]) | (a._[0] != b._[0]);
 }
 
 bool operator>(const __uint384_t& a, const int i) {
-	return (a._[2] > 0) + (a._[2] == 0) * ((a._[1] > 0) + (a._[1] == 0) * (a._[0] > i));
+	return (a._[2] != 0) | (a._[1] != 0) | (a._[0] > i);
 }
 
 bool operator==(const __uint384_t& a, const int i) {
-	return (a._[2] == 0) * (a._[1] == 0) * (a._[0] == i);
+	return (a._[2] == 0) & (a._[1] == 0) & (a._[0] == i);
 }
 
 __uint384_t& operator%=(__uint384_t& a, const __uint384_t& b) {

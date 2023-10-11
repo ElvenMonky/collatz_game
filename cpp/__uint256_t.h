@@ -192,35 +192,35 @@ inline __uint256_t mulhi_fast_approx(const __uint256_t& x, const __uint256_t& a)
 }
 
 bool operator>=(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] >= b._[0]);
+	return a._[1] == b._[1] ? a._[0] >= b._[0] : a._[1] > b._[1];
 }
 
 bool operator>(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] > b._[1]) + (a._[1] == b._[1]) * (a._[0] > b._[0]);
+	return a._[1] == b._[1] ? a._[0] > b._[0] : a._[1] > b._[1];
 }
 
 bool operator<=(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] < b._[1]) + (a._[1] == b._[1]) * (a._[0] <= b._[0]);
+	return a._[1] == b._[1] ? a._[0] <= b._[0] : a._[1] < b._[1];
 }
 
 bool operator<(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] < b._[1]) + (a._[1] == b._[1]) * (a._[0] < b._[0]);
+	return a._[1] == b._[1] ? a._[0] < b._[0] : a._[1] < b._[1];
 }
 
 bool operator==(const __uint256_t& a, const __uint256_t& b) {
-	return (a._[1] == b._[1]) * (a._[0] == b._[0]);
+	return (a._[1] == b._[1]) & (a._[0] == b._[0]);
 }
 
 bool operator!=(const __uint256_t& a, const __uint256_t& b) {
-	return 1 - (a._[1] == b._[1]) * (a._[0] == b._[0]);
+	return (a._[1] != b._[1]) | (a._[0] != b._[0]);
 }
 
 bool operator>(const __uint256_t& a, const int i) {
-	return (a._[1] > 0) + (a._[1] == 0) * (a._[0] > i);
+	return (a._[1] != 0) | (a._[0] > i);
 }
 
 bool operator==(const __uint256_t& a, const int i) {
-	return (a._[1] == 0) * (a._[0] == i);
+	return (a._[1] == 0) & (a._[0] == i);
 }
 
 __uint256_t& operator%=(__uint256_t& a, const __uint256_t& b) {
