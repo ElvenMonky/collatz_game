@@ -488,44 +488,44 @@ __ZpLR11__uint384_tRKS_:                ; @_ZpLR11__uint384_tRKS_
 	adc	x8, x10, x8
 	stp	x9, x8, [x0]
 	ldp	x11, x10, [x1, #16]
-	ldp	x13, x12, [x1]
-	cmp	x9, x13
-	cset	w13, lo
-	cmp	x8, x12
-	cset	w12, lo
-	csel	w12, w13, w12, eq
-	ldp	x14, x13, [x0, #16]
-	adds	x11, x14, x11
-	adc	x10, x13, x10
-	adds	x11, x11, x12
-	cinc	x10, x10, hs
+	ldp	x13, x12, [x0, #16]
+	adds	x11, x13, x11
+	adc	x10, x12, x10
 	stp	x11, x10, [x0, #16]
 	ldp	x13, x12, [x1, #32]
 	ldp	x15, x14, [x1, #16]
-	eor	x16, x11, x15
 	cmp	x11, x15
-	cset	w11, lo
-	cmp	x10, x14
 	cset	w15, lo
-	csel	w11, w11, w15, eq
-	adds	x11, x13, x11
+	cmp	x10, x14
+	cset	w14, lo
+	csel	w14, w15, w14, eq
+	ldp	x16, x15, [x0, #32]
+	adds	x13, x16, x13
+	adc	x12, x15, x12
+	adds	x13, x13, x14
 	cinc	x12, x12, hs
-	eor	x10, x10, x14
-	orr	x10, x16, x10
-	cmp	x10, #0
-	cset	w10, eq
-	ldp	x14, x13, [x1]
-	cmp	x9, x14
+	stp	x13, x12, [x0, #32]
+	ldp	x15, x14, [x1]
+	cmp	x9, x15
+	cset	w15, lo
+	cmp	x8, x14
+	cset	w14, lo
+	csel	w14, w15, w14, eq
+	adds	x11, x11, x14
+	cinc	x10, x10, hs
+	orr	x14, x11, x10
+	stp	x11, x10, [x0, #16]
+	ldp	x11, x10, [x1]
+	cmp	x9, x11
 	cset	w9, lo
-	cmp	x8, x13
+	cmp	x8, x10
 	cset	w8, lo
 	csel	w8, w9, w8, eq
-	and	w8, w10, w8
-	ldp	x10, x9, [x0, #32]
-	adds	x10, x11, x10
-	adc	x9, x12, x9
-	adds	x8, x10, x8
-	cinc	x9, x9, hs
+	cmp	x14, #0
+	cset	w9, eq
+	and	w8, w8, w9
+	adds	x8, x13, x8
+	cinc	x9, x12, hs
 	stp	x8, x9, [x0, #32]
 	ret
 	.cfi_endproc
@@ -550,13 +550,12 @@ __ZplRK11__uint384_tt:                  ; @_ZplRK11__uint384_tt
 	cset	w9, lo
 	csel	w9, w10, w9, eq
 	ldp	x11, x10, [x8, #16]
-	adds	x11, x11, x9
+	adds	x9, x11, x9
 	cinc	x10, x10, hs
-	orr	x12, x11, x10
-	stp	x11, x10, [x8, #16]
-	cmp	x12, #0
-	cset	w10, eq
-	and	w9, w9, w10
+	orr	x11, x9, x10
+	stp	x9, x10, [x8, #16]
+	cmp	x11, #0
+	cset	w9, eq
 	ldp	x11, x10, [x8, #32]
 	adds	x9, x11, x9
 	cinc	x10, x10, hs
@@ -576,49 +575,43 @@ __ZmIR11__uint384_tRKS_:                ; @_ZmIR11__uint384_tRKS_
 	sbc	x8, x10, x8
 	stp	x9, x8, [x0]
 	ldp	x10, x9, [x1, #16]
-	mvn	x8, x8
-	ldp	x13, x12, [x1]
-	cmp	x13, x11
-	cset	w13, hi
-	cmp	x12, x8
-	cset	w12, hi
-	csel	w12, w13, w12, eq
-	ldp	x14, x13, [x0, #16]
-	subs	x10, x14, x10
-	sbc	x9, x13, x9
-	subs	x10, x10, x12
-	mvn	x12, x10
-	sbc	x9, x9, xzr
+	ldp	x13, x12, [x0, #16]
+	subs	x10, x13, x10
+	sbc	x9, x12, x9
 	stp	x10, x9, [x0, #16]
-	ldp	x14, x13, [x1, #32]
-	mvn	x15, x9
-	ldp	x17, x16, [x1, #16]
-	cmp	x17, x12
-	cset	w12, hi
-	cmp	x16, x15
-	cset	w15, hi
-	csel	w12, w12, w15, eq
-	cmp	w12, #0
-	csetm	x12, ne
-	eon	x10, x10, x17
-	eon	x9, x9, x16
-	orr	x9, x10, x9
-	cmp	x9, #0
-	cset	w9, eq
-	ldp	x15, x10, [x1]
+	ldp	x13, x12, [x1, #32]
+	ldp	x15, x14, [x1, #16]
+	cmn	x10, x15
+	adcs	xzr, x9, x14
+	cset	w14, hs
+	ldp	x16, x15, [x0, #32]
+	subs	x13, x16, x13
+	sbc	x12, x15, x12
+	subs	x13, x13, x14
+	sbc	x12, x12, xzr
+	stp	x13, x12, [x0, #32]
+	mvn	x8, x8
+	ldp	x15, x14, [x1]
 	cmp	x15, x11
-	cset	w11, hi
-	cmp	x10, x8
-	cset	w8, hi
-	csel	w8, w11, w8, eq
-	and	w8, w9, w8
-	ldp	x10, x9, [x0, #32]
-	subs	x11, x12, x14
-	sbc	x12, x12, x13
-	adds	x10, x11, x10
-	adc	x9, x12, x9
-	subs	x8, x10, x8
+	cset	w15, hi
+	cmp	x14, x8
+	cset	w14, hi
+	csel	w14, w15, w14, eq
+	subs	x10, x10, x14
 	sbc	x9, x9, xzr
+	and	x14, x10, x9
+	stp	x10, x9, [x0, #16]
+	ldp	x10, x9, [x1]
+	cmp	x10, x11
+	cset	w10, hi
+	cmp	x9, x8
+	cset	w8, hi
+	csel	w8, w10, w8, eq
+	cmn	x14, #1
+	cset	w9, eq
+	and	w8, w8, w9
+	subs	x8, x13, x8
+	sbc	x9, x12, xzr
 	stp	x8, x9, [x0, #32]
 	ret
 	.cfi_endproc
@@ -634,33 +627,25 @@ __ZmitRK11__uint384_t:                  ; @_ZmitRK11__uint384_t
 	ngc	x12, x10
 	stp	x9, x12, [x8]
 	ldp	x14, x13, [x1, #16]
+	ldp	x16, x15, [x1, #32]
+	orr	x17, x14, x13
+	cmp	x17, #0
+	csetm	x17, ne
+	subs	x16, x17, x16
+	sbc	x15, x17, x15
 	cmn	x9, x11
 	adcs	xzr, x12, x10
 	cset	w9, hs
 	sbfx	x10, x9, #0, #1
 	subs	x11, x10, x14
-	mvn	x12, x11
 	sbc	x10, x10, x13
+	and	x12, x11, x10
 	stp	x11, x10, [x8, #16]
-	ldp	x16, x15, [x1, #32]
-	mvn	x17, x10
-	cmp	x14, x12
-	cset	w12, hi
-	cmp	x13, x17
-	cset	w17, hi
-	csel	w12, w12, w17, eq
-	cmp	w12, #0
-	csetm	x12, ne
-	eon	x10, x10, x13
-	eon	x11, x11, x14
-	orr	x10, x11, x10
-	cmp	x10, #0
+	cmn	x12, #1
 	cset	w10, eq
 	and	w9, w9, w10
-	subs	x10, x12, x16
-	sbc	x11, x12, x15
-	subs	x9, x10, x9
-	sbc	x10, x11, xzr
+	subs	x9, x16, x9
+	sbc	x10, x15, xzr
 	stp	x9, x10, [x8, #32]
 	ret
 	.cfi_endproc
@@ -1965,36 +1950,36 @@ LBB23_5:
 	csel	x14, x8, x9, ne
 	csel	x15, xzr, x8, ne
 LBB23_6:
-	ldp	x9, x8, [x0, #32]
-	ldp	x17, x3, [x0, #16]
-	ldp	x2, x16, [x0]
+	ldp	x3, x2, [x0, #32]
+	ldp	x17, x16, [x0, #16]
+	ldp	x9, x8, [x0]
 LBB23_7:                                ; =>This Inner Loop Header: Depth=1
 	ldp	x5, x4, [x1, #32]
-	cmp	x9, x5
+	cmp	x3, x5
 	cset	w6, hi
-	cmp	x8, x4
+	cmp	x2, x4
 	cset	w7, hi
 	csel	w6, w6, w7, eq
 	cmp	w6, #0
 	csetm	w7, ne
-	eor	x4, x8, x4
-	eor	x5, x9, x5
+	eor	x4, x2, x4
+	eor	x5, x3, x5
 	orr	x4, x5, x4
 	ldp	x19, x5, [x1, #16]
 	cmp	x17, x19
 	cset	w20, hi
-	cmp	x3, x5
+	cmp	x16, x5
 	cset	w21, hi
 	csel	w20, w20, w21, eq
-	eor	x5, x3, x5
+	eor	x5, x16, x5
 	eor	x19, x17, x19
 	orr	x5, x19, x5
 	cmp	x5, #0
 	cset	w5, eq
 	ldp	x21, x19, [x1]
-	cmp	x2, x21
+	cmp	x9, x21
 	cset	w21, hs
-	cmp	x16, x19
+	cmp	x8, x19
 	cset	w19, hs
 	csel	w19, w21, w19, eq
 	and	w5, w5, w19
@@ -2006,29 +1991,29 @@ LBB23_7:                                ; =>This Inner Loop Header: Depth=1
 	cmp	w4, #1
 	b.ne	LBB23_9
 ; %bb.8:                                ;   in Loop: Header=BB23_7 Depth=1
-	cmp	x9, x15
+	cmp	x3, x15
 	cset	w4, hi
-	cmp	x8, x14
+	cmp	x2, x14
 	cset	w5, hi
 	csel	w4, w4, w5, eq
 	cmp	w4, #0
 	csetm	w5, ne
-	eor	x6, x9, x15
-	eor	x7, x8, x14
+	eor	x6, x3, x15
+	eor	x7, x2, x14
 	orr	x6, x6, x7
 	cmp	x17, x10
 	cset	w7, hi
-	cmp	x3, x11
+	cmp	x16, x11
 	cset	w19, hi
 	csel	w7, w7, w19, eq
 	eor	x19, x17, x10
-	eor	x20, x3, x11
+	eor	x20, x16, x11
 	orr	x19, x19, x20
 	cmp	x19, #0
 	cset	w19, eq
-	cmp	x2, x12
+	cmp	x9, x12
 	cset	w20, hs
-	cmp	x16, x13
+	cmp	x8, x13
 	cset	w21, hs
 	csel	w20, w20, w21, eq
 	and	w19, w19, w20
@@ -2044,41 +2029,35 @@ LBB23_7:                                ; =>This Inner Loop Header: Depth=1
 	csel	x7, x10, xzr, ne
 	csel	x19, x14, xzr, ne
 	csel	x20, x15, xzr, ne
-	subs	x2, x2, x5
-	sbc	x16, x16, x4
-	stp	x2, x16, [x0]
-	cmn	x2, x5
-	adcs	xzr, x16, x4
-	cset	w4, hs
-	subs	x17, x17, x7
-	sbc	x3, x3, x6
-	subs	x17, x17, x4
-	mvn	x5, x17
-	sbc	x3, x3, xzr
-	stp	x17, x3, [x0, #16]
-	mvn	x21, x3
-	cmp	x7, x5
-	cset	w5, hi
-	cmp	x6, x21
-	cset	w21, hi
-	csel	w5, w5, w21, eq
-	eon	x7, x17, x7
-	eon	x6, x3, x6
-	orr	x6, x7, x6
-	cmp	x6, #0
-	cset	w6, eq
-	and	w4, w4, w6
-	extr	x12, x13, x12, #1
-	subs	x9, x9, x20
-	sbc	x8, x8, x19
-	extr	x13, x10, x13, #1
 	subs	x9, x9, x5
-	sbc	x8, x8, xzr
-	subs	x9, x9, x4
-	sbc	x8, x8, xzr
+	sbc	x8, x8, x4
+	stp	x9, x8, [x0]
+	subs	x17, x17, x7
+	sbc	x16, x16, x6
+	cmn	x17, x7
+	adcs	xzr, x16, x6
+	cset	w6, hs
+	subs	x3, x3, x20
+	sbc	x2, x2, x19
+	subs	x3, x3, x6
+	sbc	x2, x2, xzr
+	cmn	x9, x5
+	adcs	xzr, x8, x4
+	cset	w4, hs
+	subs	x17, x17, x4
+	sbc	x16, x16, xzr
+	and	x5, x17, x16
+	stp	x17, x16, [x0, #16]
+	extr	x12, x13, x12, #1
+	cmn	x5, #1
+	cset	w5, eq
+	extr	x13, x10, x13, #1
+	and	w4, w4, w5
+	subs	x3, x3, x4
+	sbc	x2, x2, xzr
 	extr	x10, x11, x10, #1
 	extr	x11, x15, x11, #1
-	stp	x9, x8, [x0, #32]
+	stp	x3, x2, [x0, #32]
 	extr	x15, x14, x15, #1
 	lsr	x14, x14, #1
 	b	LBB23_7
@@ -2126,608 +2105,596 @@ __Z6divmodRK11__uint384_tS1_:           ; @_Z6divmodRK11__uint384_tS1_
 	.cfi_offset w26, -80
 	.cfi_offset w27, -88
 	.cfi_offset w28, -96
-	ldp	x30, x28, [x0]
-	ldp	x2, x19, [x0, #16]
-	ldp	x11, x10, [x0, #32]
-	ldp	x14, x13, [x1, #32]
-	cmp	x11, x14
+	ldp	x10, x16, [x0]
+	ldp	x12, x11, [x0, #16]
+	ldp	x13, x21, [x0, #32]
+	ldp	x15, x14, [x1, #32]
+	cmp	x13, x15
 	cset	w9, hi
-	cmp	x10, x13
-	cset	w15, hi
-	csel	w9, w9, w15, eq
+	cmp	x21, x14
+	cset	w17, hi
+	csel	w9, w9, w17, eq
 	cmp	w9, #0
-	csetm	w15, ne
-	eor	x16, x10, x13
-	eor	x17, x11, x14
-	orr	x16, x17, x16
-	ldp	x25, x24, [x1, #16]
-	cmp	x2, x25
-	cset	w3, hi
-	cmp	x19, x24
+	csetm	w3, ne
+	eor	x17, x21, x14
+	eor	x2, x13, x15
+	orr	x5, x2, x17
+	mov	x2, x11
+	ldp	x17, x11, [x1, #16]
+	cmp	x12, x17
 	cset	w4, hi
-	csel	w3, w3, w4, eq
-	eor	x4, x19, x24
-	eor	x5, x2, x25
-	orr	x4, x5, x4
+	cmp	x2, x11
+	cset	w6, hi
+	csel	w6, w4, w6, eq
+	stp	x17, x11, [sp, #48]             ; 16-byte Folded Spill
+	eor	x4, x2, x11
+	eor	x7, x12, x17
+	orr	x4, x7, x4
 	cmp	x4, #0
-	cset	w4, eq
+	cset	w7, eq
 	ldp	x27, x26, [x1]
-	cmp	x30, x27
-	cset	w5, hs
-	cmp	x28, x26
-	cset	w6, hs
-	csel	w5, w5, w6, eq
-	and	w4, w4, w5
-	add	w3, w4, w3
-	cmp	w3, w15
-	cset	w15, ne
-	cmp	x16, #0
-	csel	w9, w15, w9, eq
+	cmp	x10, x27
+	cset	w19, hs
+	cmp	x16, x26
+	cset	w20, hs
+	csel	w19, w19, w20, eq
+	and	w7, w7, w19
+	add	w6, w7, w6
+	cmp	w6, w3
+	cset	w3, ne
+	cmp	x5, #0
+	csel	w9, w3, w9, eq
 	cmp	w9, #1
 	str	x8, [sp, #8]                    ; 8-byte Folded Spill
 	b.ne	LBB25_3
 ; %bb.1:
-	str	x10, [sp, #96]                  ; 8-byte Folded Spill
-	orr	x9, x11, x10
-	mov	x10, x19
-	orr	x15, x2, x19
-	cmp	x15, #0
-	cset	w15, ne
+	mov	x30, x21
+	orr	x9, x13, x21
+	mov	x11, x12
+	orr	x3, x12, x2
+	cmp	x3, #0
+	cset	w5, ne
 	cmp	x9, #0
 	mov	w3, #2
-	csel	w9, w15, w3, eq
-	add	x15, x0, w9, uxtw #4
-	ldp	x6, x7, [x15]
+	csel	w9, w5, w3, eq
+	add	x0, x0, w9, uxtw #4
+	ldp	x6, x7, [x0]
 	cmp	x7, #0
-	cset	w15, ne
-	lsl	w5, w15, #6
+	cset	w19, ne
+	lsl	w5, w19, #6
 	mov	w0, #32
-	mov	w16, #32
-	bfi	w16, w15, #6, #1
-	lsr	x15, x7, #32
-	tst	x16, #0x40
-	csel	x16, xzr, x15, ne
-	lsr	x4, x6, #32
-	bfi	x4, x7, #32, #32
-	csel	x15, x15, x4, ne
-	orr	x15, x15, x16
-	cmp	x15, #0
-	cset	w15, ne
+	mov	w20, #32
+	bfi	w20, w19, #6, #1
+	lsr	x19, x7, #32
+	tst	x20, #0x40
+	csel	x20, xzr, x19, ne
+	lsr	x21, x6, #32
+	bfi	x21, x7, #32, #32
+	csel	x19, x19, x21, ne
+	orr	x19, x19, x20
+	cmp	x19, #0
+	cset	w20, ne
 	lsl	x19, x7, #1
-	bfi	w5, w15, #5, #1
-	orr	w15, w5, #0x10
-	and	x16, x15, #0x30
-	lsr	x4, x7, x16
-	tst	x15, #0x40
-	csel	x20, xzr, x4, ne
-	lsr	x16, x6, x16
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x19, x15
-	orr	x15, x15, x16
-	csel	x15, x4, x15, ne
-	orr	x15, x15, x20
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w5, w15, #4, #1
-	orr	w15, w5, #0x8
-	and	x16, x15, #0x38
-	lsr	x4, x7, x16
-	tst	x15, #0x40
-	csel	x20, xzr, x4, ne
-	lsr	x16, x6, x16
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x19, x15
-	orr	x15, x15, x16
-	csel	x15, x4, x15, ne
-	orr	x15, x15, x20
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w5, w15, #3, #1
-	orr	w15, w5, #0x4
-	and	x16, x15, #0x3c
-	lsr	x4, x7, x16
-	tst	x15, #0x40
-	csel	x20, xzr, x4, ne
-	lsr	x16, x6, x16
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x19, x15
-	orr	x15, x15, x16
-	csel	x15, x4, x15, ne
-	orr	x15, x15, x20
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w5, w15, #2, #1
-	orr	w15, w5, #0x2
-	lsr	x16, x7, x15
-	tst	x15, #0x40
-	csel	x4, xzr, x16, ne
-	lsr	x20, x6, x15
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x19, x15
-	orr	x15, x15, x20
-	csel	x15, x16, x15, ne
-	orr	x15, x15, x4
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w5, w15, #1, #1
-	orr	w15, w5, #0x1
-	lsr	x16, x7, x15
-	tst	x15, #0x40
-	csel	x4, xzr, x16, ne
-	lsr	x15, x6, x15
-	mvn	w6, w5
-	and	x6, x6, #0x3e
-	lsl	x6, x19, x6
-	orr	x15, x6, x15
-	csel	x15, x16, x15, ne
-	orr	x15, x15, x4
-	cmp	x15, #0
-	cset	w15, ne
-	orr	w15, w5, w15
-	add	w9, w15, w9, lsl #7
-	orr	x15, x14, x13
-	orr	x16, x25, x24
-	cmp	x16, #0
-	cset	w16, ne
-	cmp	x15, #0
-	csel	w3, w16, w3, eq
-	add	x15, x1, w3, uxtw #4
-	ldp	x5, x6, [x15]
+	bfi	w5, w20, #5, #1
+	orr	w20, w5, #0x10
+	and	x21, x20, #0x30
+	lsr	x22, x7, x21
+	tst	x20, #0x40
+	csel	x23, xzr, x22, ne
+	lsr	x21, x6, x21
+	mvn	x20, x20
+	and	x20, x20, #0x3f
+	lsl	x20, x19, x20
+	orr	x20, x20, x21
+	csel	x20, x22, x20, ne
+	orr	x20, x20, x23
+	cmp	x20, #0
+	cset	w20, ne
+	bfi	w5, w20, #4, #1
+	orr	w20, w5, #0x8
+	and	x21, x20, #0x38
+	lsr	x22, x7, x21
+	tst	x20, #0x40
+	csel	x23, xzr, x22, ne
+	lsr	x21, x6, x21
+	mvn	x20, x20
+	and	x20, x20, #0x3f
+	lsl	x20, x19, x20
+	orr	x20, x20, x21
+	csel	x20, x22, x20, ne
+	orr	x20, x20, x23
+	cmp	x20, #0
+	cset	w20, ne
+	bfi	w5, w20, #3, #1
+	orr	w20, w5, #0x4
+	and	x21, x20, #0x3c
+	lsr	x22, x7, x21
+	tst	x20, #0x40
+	csel	x23, xzr, x22, ne
+	lsr	x21, x6, x21
+	mvn	x20, x20
+	and	x20, x20, #0x3f
+	lsl	x20, x19, x20
+	orr	x20, x20, x21
+	csel	x20, x22, x20, ne
+	orr	x20, x20, x23
+	cmp	x20, #0
+	cset	w20, ne
+	bfi	w5, w20, #2, #1
+	orr	w20, w5, #0x2
+	lsr	x21, x7, x20
+	tst	x20, #0x40
+	csel	x22, xzr, x21, ne
+	lsr	x23, x6, x20
+	mvn	x20, x20
+	and	x20, x20, #0x3f
+	lsl	x20, x19, x20
+	orr	x20, x20, x23
+	csel	x20, x21, x20, ne
+	orr	x20, x20, x22
+	cmp	x20, #0
+	cset	w20, ne
+	bfi	w5, w20, #1, #1
+	orr	w20, w5, #0x1
+	lsr	x7, x7, x20
+	tst	x20, #0x40
+	csel	x21, xzr, x7, ne
+	lsr	x6, x6, x20
+	mvn	w20, w5
+	and	x20, x20, #0x3e
+	lsl	x19, x19, x20
+	orr	x6, x19, x6
+	csel	x6, x7, x6, ne
+	orr	x6, x6, x21
 	cmp	x6, #0
-	cset	w15, ne
-	lsl	w1, w15, #6
-	bfi	w0, w15, #6, #1
-	lsr	x15, x6, #32
+	cset	w6, ne
+	orr	w5, w5, w6
+	add	w9, w5, w9, lsl #7
+	orr	x5, x15, x14
+	ldp	x17, x12, [sp, #48]             ; 16-byte Folded Reload
+	orr	x6, x17, x12
+	cmp	x6, #0
+	cset	w6, ne
+	cmp	x5, #0
+	csel	w3, w6, w3, eq
+	add	x1, x1, w3, uxtw #4
+	ldp	x5, x6, [x1]
+	cmp	x6, #0
+	cset	w7, ne
+	lsl	w1, w7, #6
+	bfi	w0, w7, #6, #1
+	lsr	x7, x6, #32
 	tst	x0, #0x40
-	csel	x16, xzr, x15, ne
-	lsr	x0, x5, #32
-	bfi	x0, x6, #32, #32
-	csel	x15, x15, x0, ne
-	orr	x15, x15, x16
-	cmp	x15, #0
-	cset	w15, ne
+	csel	x0, xzr, x7, ne
+	lsr	x19, x5, #32
+	bfi	x19, x6, #32, #32
+	csel	x7, x7, x19, ne
+	orr	x0, x7, x0
+	cmp	x0, #0
+	cset	w7, ne
 	lsl	x0, x6, #1
-	bfi	w1, w15, #5, #1
-	orr	w15, w1, #0x10
-	and	x16, x15, #0x30
-	lsr	x4, x6, x16
-	tst	x15, #0x40
-	csel	x7, xzr, x4, ne
-	lsr	x16, x5, x16
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x0, x15
-	orr	x15, x15, x16
-	csel	x15, x4, x15, ne
-	orr	x15, x15, x7
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w1, w15, #4, #1
-	orr	w15, w1, #0x8
-	and	x16, x15, #0x38
-	lsr	x4, x6, x16
-	tst	x15, #0x40
-	csel	x7, xzr, x4, ne
-	lsr	x16, x5, x16
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x0, x15
-	orr	x15, x15, x16
-	csel	x15, x4, x15, ne
-	orr	x15, x15, x7
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w1, w15, #3, #1
-	orr	w15, w1, #0x4
-	and	x16, x15, #0x3c
-	lsr	x4, x6, x16
-	tst	x15, #0x40
-	csel	x7, xzr, x4, ne
-	lsr	x16, x5, x16
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x0, x15
-	orr	x15, x15, x16
-	csel	x15, x4, x15, ne
-	orr	x15, x15, x7
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w1, w15, #2, #1
-	orr	w15, w1, #0x2
-	lsr	x16, x6, x15
-	tst	x15, #0x40
-	csel	x4, xzr, x16, ne
-	lsr	x7, x5, x15
-	mvn	x15, x15
-	and	x15, x15, #0x3f
-	lsl	x15, x0, x15
-	orr	x15, x15, x7
-	csel	x15, x16, x15, ne
-	orr	x15, x15, x4
-	cmp	x15, #0
-	cset	w15, ne
-	bfi	w1, w15, #1, #1
-	orr	w15, w1, #0x1
-	lsr	x16, x6, x15
-	tst	x15, #0x40
-	csel	x4, xzr, x16, ne
-	lsr	x15, x5, x15
-	mvn	w5, w1
-	and	x5, x5, #0x3e
-	lsl	x0, x0, x5
-	orr	x15, x0, x15
-	csel	x15, x16, x15, ne
-	orr	x15, x15, x4
-	cmp	x15, #0
-	cset	w15, ne
-	orr	w15, w1, w15
-	add	w15, w15, w3, lsl #7
-	sub	w16, w9, w15
-	and	w3, w16, #0xffff
+	bfi	w1, w7, #5, #1
+	orr	w7, w1, #0x10
+	and	x19, x7, #0x30
+	lsr	x20, x6, x19
+	tst	x7, #0x40
+	csel	x21, xzr, x20, ne
+	lsr	x19, x5, x19
+	mvn	x7, x7
+	and	x7, x7, #0x3f
+	lsl	x7, x0, x7
+	orr	x7, x7, x19
+	csel	x7, x20, x7, ne
+	orr	x7, x7, x21
+	cmp	x7, #0
+	cset	w7, ne
+	bfi	w1, w7, #4, #1
+	orr	w7, w1, #0x8
+	and	x19, x7, #0x38
+	lsr	x20, x6, x19
+	tst	x7, #0x40
+	csel	x21, xzr, x20, ne
+	lsr	x19, x5, x19
+	mvn	x7, x7
+	and	x7, x7, #0x3f
+	lsl	x7, x0, x7
+	orr	x7, x7, x19
+	csel	x7, x20, x7, ne
+	orr	x7, x7, x21
+	cmp	x7, #0
+	cset	w7, ne
+	bfi	w1, w7, #3, #1
+	orr	w7, w1, #0x4
+	and	x19, x7, #0x3c
+	lsr	x20, x6, x19
+	tst	x7, #0x40
+	csel	x21, xzr, x20, ne
+	lsr	x19, x5, x19
+	mvn	x7, x7
+	and	x7, x7, #0x3f
+	lsl	x7, x0, x7
+	orr	x7, x7, x19
+	csel	x7, x20, x7, ne
+	orr	x7, x7, x21
+	cmp	x7, #0
+	cset	w7, ne
+	bfi	w1, w7, #2, #1
+	orr	w7, w1, #0x2
+	lsr	x19, x6, x7
+	tst	x7, #0x40
+	csel	x20, xzr, x19, ne
+	lsr	x21, x5, x7
+	mvn	x7, x7
+	and	x7, x7, #0x3f
+	lsl	x7, x0, x7
+	orr	x7, x7, x21
+	csel	x7, x19, x7, ne
+	orr	x7, x7, x20
+	cmp	x7, #0
+	cset	w7, ne
+	bfi	w1, w7, #1, #1
+	orr	w7, w1, #0x1
+	lsr	x6, x6, x7
+	tst	x7, #0x40
+	csel	x19, xzr, x6, ne
+	lsr	x5, x5, x7
+	mvn	w7, w1
+	and	x7, x7, #0x3e
+	lsl	x0, x0, x7
+	orr	x0, x0, x5
+	csel	x0, x6, x0, ne
+	orr	x0, x0, x19
+	cmp	x0, #0
+	cset	w0, ne
+	orr	w0, w1, w0
+	add	w7, w0, w3, lsl #7
+	sub	w0, w9, w7
+	and	w3, w0, #0xffff
 	cmp	w3, #128
-	mov	x17, x11
+	mov	x17, x13
 	b.hs	LBB25_4
 ; %bb.2:
-	mov	x5, #0
-	mov	x6, #0
-	mov	x12, #0
 	mov	x0, #0
-	lsr	x16, x14, #1
-	mvn	w4, w3
-	lsr	x16, x16, x4
-	mov	x11, x13
-	lsl	x7, x13, x3
-	orr	x16, x7, x16
+	mov	x6, #0
+	mov	x5, #0
+	mov	x1, #0
+	lsr	x19, x15, #1
+	mvn	w20, w3
+	lsr	x19, x19, x20
+	mov	x12, x14
+	lsl	x21, x14, x3
+	orr	x19, x21, x19
 	and	w8, w9, #0xffff
-	mov	w7, #128
-	sub	w7, w7, w3
-	mvn	w19, w7
-	lsr	x20, x25, x7
-	lsl	x21, x24, #1
-	lsl	x21, x21, x19
-	orr	x20, x21, x20
-	lsl	x21, x26, #1
-	lsl	x19, x21, x19
-	lsr	x21, x27, x7
-	orr	x19, x19, x21
-	lsr	x21, x24, x7
-	tst	x7, #0x40
-	csel	x20, x21, x20, ne
+	mov	w21, #128
+	sub	w21, w21, w3
+	mvn	w22, w21
+	ldp	x14, x13, [sp, #48]             ; 16-byte Folded Reload
+	lsr	x23, x14, x21
+	lsl	x24, x13, #1
+	lsl	x24, x24, x22
+	orr	x23, x24, x23
+	lsl	x24, x26, #1
+	lsl	x22, x24, x22
+	lsr	x24, x27, x21
+	orr	x22, x22, x24
+	lsr	x24, x13, x21
+	tst	x21, #0x40
+	csel	x23, x24, x23, ne
+	csel	x24, xzr, x24, ne
+	lsr	x21, x26, x21
+	csel	x22, x21, x22, ne
 	csel	x21, xzr, x21, ne
-	lsr	x7, x26, x7
-	csel	x19, x7, x19, ne
-	csel	x7, xzr, x7, ne
-	cmp	w8, w15, uxth
-	mov	x9, x14
-	lsl	x8, x14, x3
-	csel	x15, xzr, x20, eq
-	csel	x20, xzr, x21, eq
-	csel	x19, xzr, x19, eq
-	csel	x7, xzr, x7, eq
+	cmp	w8, w7, uxth
+	mov	x9, x15
+	lsl	x8, x15, x3
+	csel	x7, xzr, x23, eq
+	csel	x23, xzr, x24, eq
+	csel	x24, xzr, x22, eq
+	csel	x21, xzr, x21, eq
 	tst	x3, #0x40
-	csel	x16, x8, x16, ne
+	csel	x19, x8, x19, ne
 	csel	x8, xzr, x8, ne
-	orr	x22, x16, x20
-	orr	x23, x8, x15
-	lsr	x8, x25, #1
-	lsr	x8, x8, x4
-	mov	x13, x24
-	lsl	x15, x24, x3
-	orr	x8, x15, x8
-	mov	x14, x25
-	lsl	x15, x25, x3
-	csel	x8, x15, x8, ne
-	csel	x15, xzr, x15, ne
-	orr	x25, x7, x8
-	orr	x24, x19, x15
+	orr	x28, x19, x23
+	orr	x23, x8, x7
+	lsr	x8, x14, #1
+	lsr	x8, x8, x20
+	lsl	x7, x13, x3
+	orr	x8, x7, x8
+	lsl	x7, x14, x3
+	csel	x8, x7, x8, ne
+	csel	x7, xzr, x7, ne
+	orr	x25, x21, x8
+	orr	x24, x24, x7
 	lsr	x8, x27, #1
-	lsr	x8, x8, x4
-	mov	x1, x26
-	lsl	x15, x26, x3
-	orr	x8, x15, x8
-	mov	x4, x27
-	lsl	x15, x27, x3
-	csel	x21, x15, x8, ne
-	csel	x7, xzr, x15, ne
+	lsr	x8, x8, x20
+	mov	x13, x26
+	lsl	x7, x26, x3
+	mov	x26, x0
+	orr	x8, x7, x8
+	mov	x14, x27
+	lsl	x7, x27, x3
+	csel	x4, x7, x8, ne
+	csel	x15, xzr, x7, ne
+	mov	x7, x1
 	mov	w8, #1
 	lsl	x8, x8, x3
-	csel	x20, x8, xzr, ne
-	csel	x26, xzr, x8, ne
-	mov	x19, x10
-	mov	x10, x0
-	ldr	x0, [sp, #96]                   ; 8-byte Folded Reload
+	mov	x3, x15
+	csel	x21, x8, xzr, ne
+	csel	x20, xzr, x8, ne
 	b	LBB25_7
 LBB25_3:
 	stp	xzr, xzr, [sp, #104]            ; 16-byte Folded Spill
-	mov	x3, #0
 	mov	x8, #0
-	mov	x1, #0
 	str	xzr, [sp, #120]                 ; 8-byte Folded Spill
-	mov	x17, x11
-	mov	x0, x10
+	mov	x30, #0
+	mov	x22, #0
+	mov	x19, x10
+	mov	x0, x12
+	mov	x17, x13
+	mov	x1, x21
 	b	LBB25_9
 LBB25_4:
-	mov	x9, x14
-	mov	x11, x13
+	mov	x9, x15
+	mov	x12, x14
 	and	w8, w3, #0x7f
 	cmp	w3, #256
-	mov	x19, x10
-	ldr	x0, [sp, #96]                   ; 8-byte Folded Reload
 	b.hs	LBB25_6
 ; %bb.5:
-	mov	x10, #0
-	mov	x6, #0
-	mov	x12, #0
+	mov	x14, #0
+	mov	x13, #0
 	mov	x20, #0
-	mov	x7, #0
 	mov	x21, #0
-	lsr	x15, x25, #1
-	mvn	w16, w8
-	lsr	x15, x15, x16
-	mov	x13, x24
-	lsl	x3, x24, x8
-	orr	x15, x3, x15
-	mov	w3, #128
-	sub	w3, w3, w8
-	mvn	w4, w3
-	lsl	x5, x26, #1
-	lsl	x4, x5, x4
-	lsr	x5, x27, x3
-	orr	x4, x4, x5
-	mov	x14, x25
-	lsl	x5, x25, x8
-	tst	x3, #0x40
-	lsr	x3, x26, x3
-	csel	x4, x3, x4, ne
-	csel	x3, xzr, x3, ne
+	mov	x0, #0
+	mov	x4, #0
+	ldp	x1, x15, [sp, #48]              ; 16-byte Folded Reload
+	lsr	x3, x1, #1
+	mvn	w5, w8
+	lsr	x3, x3, x5
+	lsl	x6, x15, x8
+	orr	x3, x6, x3
+	mov	w6, #128
+	sub	w6, w6, w8
+	mvn	w22, w6
+	lsl	x23, x26, #1
+	lsl	x22, x23, x22
+	lsr	x23, x27, x6
+	orr	x22, x22, x23
+	lsl	x23, x1, x8
+	tst	x6, #0x40
+	lsr	x6, x26, x6
+	csel	x22, x6, x22, ne
+	csel	x6, xzr, x6, ne
 	cmp	w8, #0
-	csel	x4, xzr, x4, eq
-	csel	x3, xzr, x3, eq
+	csel	x24, xzr, x22, eq
+	csel	x6, xzr, x6, eq
 	tst	x8, #0x40
-	csel	x15, x5, x15, ne
-	csel	x5, xzr, x5, ne
-	orr	x22, x3, x15
-	orr	x23, x4, x5
-	mov	x5, x10
-	lsr	x15, x27, #1
-	lsr	x15, x15, x16
-	mov	x1, x26
-	lsl	x16, x26, x8
-	mov	x26, x12
-	orr	x15, x16, x15
-	mov	x4, x27
-	lsl	x16, x27, x8
-	csel	x25, x16, x15, ne
-	csel	x24, xzr, x16, ne
-	mov	w15, #1
-	lsl	x8, x15, x8
-	csel	x10, x8, xzr, ne
-	csel	x12, xzr, x8, ne
+	csel	x3, x23, x3, ne
+	csel	x23, xzr, x23, ne
+	orr	x28, x6, x3
+	mov	x6, x13
+	orr	x23, x24, x23
+	lsr	x3, x27, #1
+	lsr	x3, x3, x5
+	mov	x13, x26
+	lsl	x5, x26, x8
+	mov	x26, x14
+	orr	x3, x5, x3
+	mov	x14, x27
+	lsl	x5, x27, x8
+	csel	x25, x5, x3, ne
+	csel	x24, xzr, x5, ne
+	mov	w3, #1
+	lsl	x8, x3, x8
+	mov	x3, x0
+	csel	x7, x8, xzr, ne
+	csel	x5, xzr, x8, ne
 	b	LBB25_7
 LBB25_6:
-	mov	x14, x25
-	mov	x13, x24
-	mov	x12, #0
-	mov	x10, #0
-	mov	x3, #0
 	mov	x5, #0
+	mov	x7, #0
+	mov	x20, #0
+	mov	x21, #0
 	mov	x24, #0
 	mov	x25, #0
-	mov	x7, #0
-	mov	x21, #0
-	mvn	w15, w8
-	lsr	x16, x27, #1
-	lsr	x15, x16, x15
-	mov	x1, x26
-	lsl	x16, x26, x8
-	mov	x26, #0
-	orr	x15, x16, x15
-	mov	x4, x27
-	lsl	x16, x27, x8
-	mov	x20, #0
-	tst	x8, #0x40
-	csel	x22, x16, x15, ne
-	csel	x23, xzr, x16, ne
-	mov	w15, #1
-	lsl	x8, x15, x8
-	csel	x6, x8, xzr, ne
-	csel	x5, xzr, x8, ne
-LBB25_7:
-	stp	x4, x1, [sp, #16]               ; 16-byte Folded Spill
-	stp	x14, x13, [sp, #32]             ; 16-byte Folded Spill
-	stp	x9, x11, [sp, #48]              ; 16-byte Folded Spill
-	mov	x15, #0
-	stp	xzr, xzr, [sp, #112]            ; 16-byte Folded Spill
 	mov	x3, #0
-	mov	x8, #0
+	mov	x4, #0
+	mvn	w0, w8
+	lsr	x1, x27, #1
+	lsr	x0, x1, x0
+	mov	x13, x26
+	lsl	x1, x26, x8
+	orr	x0, x1, x0
+	mov	x14, x27
+	lsl	x1, x27, x8
+	tst	x8, #0x40
+	csel	x28, x1, x0, ne
+	csel	x23, xzr, x1, ne
+	mov	w0, #1
+	lsl	x8, x0, x8
+	csel	x6, x8, xzr, ne
+	csel	x26, xzr, x8, ne
+LBB25_7:
+	mov	x0, x11
+	mov	x1, x30
+	stp	x14, x13, [sp, #16]             ; 16-byte Folded Spill
+	stp	x9, x12, [sp, #32]              ; 16-byte Folded Spill
+	mov	x30, #0
+	mov	x22, #0
+	stp	xzr, xzr, [sp, #112]            ; 16-byte Folded Spill
 	str	xzr, [sp, #104]                 ; 8-byte Folded Spill
-	mov	x1, #0
+	mov	x8, #0
+	mov	x19, x10
+	mov	x11, x20
+	mov	x10, x21
+	mov	x20, x4
 LBB25_8:                                ; =>This Inner Loop Header: Depth=1
-	stp	x12, x0, [sp, #88]              ; 16-byte Folded Spill
-	stp	x17, x20, [sp, #64]             ; 16-byte Folded Spill
-	str	x10, [sp, #80]                  ; 8-byte Folded Spill
+	stp	x1, x17, [sp, #64]              ; 16-byte Folded Spill
+	stp	x7, x10, [sp, #80]              ; 16-byte Folded Spill
+	str	x11, [sp, #96]                  ; 8-byte Folded Spill
 	cmp	x17, x23
-	cset	w15, hi
-	cmp	x0, x22
-	cset	w16, hi
-	csel	w15, w15, w16, eq
-	cmp	w15, #0
-	eor	x16, x17, x23
-	eor	x4, x0, x22
-	csetm	w17, ne
-	cmp	x2, x24
-	mov	x0, x2
+	cset	w4, hi
+	cmp	x1, x28
+	cset	w14, hi
+	csel	w14, w4, w14, eq
+	cmp	w14, #0
+	csetm	w4, ne
+	eor	x15, x17, x23
+	eor	x17, x1, x28
+	orr	x15, x15, x17
+	cmp	x0, x24
+	cset	w17, hi
+	cmp	x2, x25
+	mov	x1, x2
 	cset	w2, hi
-	cmp	x19, x25
-	cset	w13, hi
-	eor	x14, x0, x24
-	csel	w13, w2, w13, eq
-	eor	x2, x19, x25
-	orr	x14, x14, x2
+	csel	w17, w17, w2, eq
+	eor	x2, x0, x24
+	eor	x13, x1, x25
+	orr	x13, x2, x13
+	cmp	x13, #0
+	cset	w13, eq
+	cmp	x19, x3
+	cset	w2, hs
+	cmp	x16, x20
+	mov	x21, x3
+	mov	x3, x16
+	cset	w16, hs
+	csel	w16, w2, w16, eq
+	and	w13, w16, w13
+	add	w13, w13, w17
+	cmp	w13, w4
+	cset	w13, ne
+	cmp	x15, #0
+	csel	w13, w13, w14, eq
+	cmp	w13, #0
+	csel	x13, x10, xzr, ne
+	csel	x14, x11, xzr, ne
+	csel	x15, x7, xzr, ne
+	csel	x16, x5, xzr, ne
+	csel	x17, x6, xzr, ne
+	csel	x2, x26, xzr, ne
+	csel	x4, x20, xzr, ne
+	csel	x9, x21, xzr, ne
+	csel	x10, x25, xzr, ne
+	csel	x11, x24, xzr, ne
+	csel	x12, x28, xzr, ne
+	mov	x7, x5
+	mov	x5, x26
+	mov	x26, x6
+	csel	x6, x23, xzr, ne
+	mov	x27, x30
+	mov	x30, x8
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	adds	x2, x2, x8
+	adc	x8, x17, x30
+	mov	x30, x27
+	ldr	x17, [sp, #120]                 ; 8-byte Folded Reload
+	adds	x16, x16, x17
+	ldr	x17, [sp, #112]                 ; 8-byte Folded Reload
+	adcs	x15, x15, x17
+	adcs	x17, x2, xzr
+	cinc	x8, x8, hs
+	adds	x30, x14, x27
+	adcs	x22, x13, x22
+	cset	w13, hs
+	adcs	x14, x16, xzr
+	mov	x16, x3
+	mov	x3, x21
+	cinc	x15, x15, hs
+	stp	x15, x14, [sp, #112]            ; 16-byte Folded Spill
+	orr	x14, x14, x15
 	cmp	x14, #0
 	cset	w14, eq
-	cmp	x30, x7
-	orr	x16, x16, x4
-	cset	w2, hs
-	cmp	x28, x21
-	cset	w4, hs
-	csel	w2, w2, w4, eq
-	and	w14, w2, w14
-	add	w13, w14, w13
-	cmp	w13, w17
-	cset	w13, ne
-	cmp	x16, #0
-	csel	w13, w13, w15, eq
-	cmp	w13, #0
-	csel	x13, x20, xzr, ne
-	csel	x14, x26, xzr, ne
-	csel	x17, x10, xzr, ne
-	csel	x2, x12, xzr, ne
-	csel	x9, x6, xzr, ne
-	csel	x10, x5, xzr, ne
-	csel	x11, x21, xzr, ne
-	csel	x12, x7, xzr, ne
-	csel	x16, x25, xzr, ne
-	mov	x27, x26
-	mov	x26, x7
-	mov	x7, x5
-	mov	x5, x6
-	csel	x6, x24, xzr, ne
-	csel	x20, x22, xzr, ne
-	csel	x4, x23, xzr, ne
-	adds	x3, x2, x3
-	adc	x8, x17, x8
-	adds	x15, x14, x1
-	ldr	x14, [sp, #120]                 ; 8-byte Folded Reload
-	adcs	x14, x13, x14
-	str	x14, [sp, #120]                 ; 8-byte Folded Spill
-	cset	w13, hs
-	adcs	x3, x3, xzr
+	and	w13, w13, w14
+	adds	x13, x17, x13
+	str	x13, [sp, #104]                 ; 8-byte Folded Spill
 	cinc	x8, x8, hs
-	cmp	x3, x2
-	cset	w14, lo
-	cmp	x8, x17
-	mov	x1, x19
-	mov	x19, x30
-	mov	x30, x28
-	cset	w28, lo
-	csel	w14, w14, w28, eq
-	mov	x28, x30
-	mov	x30, x19
-	eor	x17, x8, x17
-	eor	x2, x3, x2
-	orr	x17, x2, x17
-	cmp	x17, #0
-	cset	w17, eq
-	ldr	x2, [sp, #112]                  ; 8-byte Folded Reload
-	adds	x10, x10, x2
-	and	w13, w13, w17
-	ldr	x17, [sp, #104]                 ; 8-byte Folded Reload
-	adc	x9, x9, x17
-	adds	x10, x10, x14
-	cinc	x9, x9, hs
-	adds	x10, x10, x13
-	cinc	x9, x9, hs
-	stp	x9, x10, [sp, #104]             ; 16-byte Folded Spill
-	subs	x30, x19, x12
-	sbc	x28, x28, x11
-	cmn	x30, x12
-	adcs	xzr, x28, x11
-	cset	w9, hs
-	subs	x10, x0, x6
-	sbc	x11, x1, x16
-	mov	x1, x15
-	subs	x2, x10, x9
-	mvn	x10, x2
-	sbc	x19, x11, xzr
-	mvn	x11, x19
-	cmp	x6, x10
-	cset	w10, hi
-	cmp	x16, x11
-	cset	w11, hi
-	eon	x12, x2, x6
-	mov	x6, x5
+	subs	x19, x19, x9
+	sbc	x16, x16, x4
+	subs	x13, x0, x11
+	sbc	x14, x1, x10
+	cmn	x13, x11
+	adcs	xzr, x14, x10
+	cset	w10, hs
+	ldp	x15, x11, [sp, #64]             ; 16-byte Folded Reload
+	subs	x11, x11, x6
+	mov	x6, x26
+	mov	x26, x5
 	mov	x5, x7
-	mov	x7, x26
-	mov	x26, x27
-	eon	x13, x19, x16
-	orr	x12, x12, x13
-	csel	w10, w10, w11, eq
-	cmp	x12, #0
-	cset	w11, eq
-	and	w9, w9, w11
-	ldp	x16, x11, [sp, #56]             ; 16-byte Folded Reload
-	subs	x11, x11, x4
-	ldr	x12, [sp, #96]                  ; 8-byte Folded Reload
-	sbc	x12, x12, x20
+	sbc	x12, x15, x12
+	ldp	x15, x21, [sp, #48]             ; 16-byte Folded Reload
 	subs	x10, x11, x10
 	sbc	x11, x12, xzr
+	cmn	x19, x9
+	adcs	xzr, x16, x4
+	cset	w9, hs
+	subs	x0, x13, x9
+	sbc	x2, x14, xzr
+	and	x12, x0, x2
+	cmn	x12, #1
+	cset	w12, eq
+	and	w9, w9, w12
 	subs	x17, x10, x9
-	ldp	x15, x10, [sp, #40]             ; 16-byte Folded Reload
+	ldp	x10, x4, [sp, #32]              ; 16-byte Folded Reload
 	eor	x9, x17, x10
-	sbc	x0, x11, xzr
+	sbc	x1, x11, xzr
 	cmp	x17, x10
 	cset	w10, hi
-	cmp	x0, x16
+	cmp	x1, x4
 	cset	w11, hi
 	csel	w10, w10, w11, eq
 	cmp	w10, #0
 	csetm	w11, ne
-	ldr	x14, [sp, #32]                  ; 8-byte Folded Reload
-	cmp	x2, x14
+	cmp	x0, x15
 	cset	w12, hi
-	cmp	x19, x15
+	cmp	x2, x21
 	cset	w13, hi
-	eor	x14, x2, x14
-	eor	x15, x19, x15
 	csel	w12, w12, w13, eq
-	orr	x13, x14, x15
+	eor	x13, x0, x15
+	eor	x14, x2, x21
+	orr	x13, x13, x14
 	cmp	x13, #0
 	cset	w13, eq
 	ldp	x14, x15, [sp, #16]             ; 16-byte Folded Reload
-	cmp	x30, x14
+	cmp	x19, x14
 	cset	w14, hs
-	cmp	x28, x15
+	cmp	x16, x15
 	cset	w15, hs
 	csel	w14, w14, w15, eq
 	and	w13, w13, w14
 	add	w12, w13, w12
 	cmp	w12, w11
-	ldr	x12, [sp, #88]                  ; 8-byte Folded Reload
-	eor	x11, x0, x16
+	eor	x11, x1, x4
 	orr	x9, x9, x11
 	cset	w11, ne
 	cmp	x9, #0
 	csel	w9, w11, w10, eq
-	extr	x7, x21, x7, #1
-	extr	x21, x24, x21, #1
+	ldp	x10, x11, [sp, #88]             ; 16-byte Folded Reload
+	extr	x3, x20, x3, #1
+	extr	x21, x24, x20, #1
 	extr	x24, x25, x24, #1
 	extr	x25, x23, x25, #1
-	extr	x23, x22, x23, #1
-	ldr	x10, [sp, #72]                  ; 8-byte Folded Reload
-	extr	x26, x10, x27, #1
-	extr	x20, x12, x10, #1
+	extr	x23, x28, x23, #1
+	extr	x11, x10, x11, #1
+	extr	x20, x7, x10, #1
 	ldr	x10, [sp, #80]                  ; 8-byte Folded Reload
-	extr	x12, x10, x12, #1
-	extr	x10, x5, x10, #1
-	extr	x5, x6, x5, #1
-	lsr	x22, x22, #1
+	extr	x5, x10, x7, #1
+	extr	x7, x26, x10, #1
+	extr	x26, x6, x26, #1
+	lsr	x28, x28, #1
 	lsr	x6, x6, #1
+	mov	x10, x20
+	mov	x20, x21
 	tbnz	w9, #0, LBB25_8
 LBB25_9:
 	ldr	x9, [sp, #8]                    ; 8-byte Folded Reload
-	ldr	x10, [sp, #120]                 ; 8-byte Folded Reload
-	stp	x1, x10, [x9]
-	stp	x3, x8, [x9, #16]
-	ldp	x8, x10, [sp, #104]             ; 16-byte Folded Reload
+	stp	x30, x22, [x9]
+	ldp	x10, x11, [sp, #112]            ; 16-byte Folded Reload
+	stp	x11, x10, [x9, #16]
+	ldr	x10, [sp, #104]                 ; 8-byte Folded Reload
 	stp	x10, x8, [x9, #32]
-	stp	x30, x28, [x9, #48]
-	stp	x2, x19, [x9, #64]
-	stp	x17, x0, [x9, #80]
+	stp	x19, x16, [x9, #48]
+	stp	x0, x2, [x9, #64]
+	stp	x17, x1, [x9, #80]
 	ldp	x29, x30, [sp, #208]            ; 16-byte Folded Reload
 	ldp	x20, x19, [sp, #192]            ; 16-byte Folded Reload
 	ldp	x22, x21, [sp, #176]            ; 16-byte Folded Reload
@@ -3248,35 +3215,29 @@ LBB28_8:                                ;   Parent Loop BB28_7 Depth=1
 	subs	x6, x6, x15
 	sbc	x5, x5, x14
 	stp	x6, x5, [x2]
+	ldp	x19, x7, [x2, #16]
+	subs	x19, x19, x17
+	sbc	x7, x7, x16
+	cmn	x19, x17
+	adcs	xzr, x7, x16
+	cset	w20, hs
+	ldp	x22, x21, [x2, #32]
+	subs	x22, x22, x1
+	sbc	x21, x21, x0
+	subs	x20, x22, x20
+	sbc	x21, x21, xzr
 	cmn	x6, x15
 	adcs	xzr, x5, x14
 	cset	w5, hs
-	ldp	x7, x6, [x2, #16]
-	subs	x7, x7, x17
-	sbc	x6, x6, x16
-	subs	x7, x7, x5
-	mvn	x19, x7
-	sbc	x6, x6, xzr
-	stp	x7, x6, [x2, #16]
-	mvn	x20, x6
-	cmp	x17, x19
-	cset	w19, hi
-	cmp	x16, x20
-	cset	w20, hi
-	csel	w19, w19, w20, eq
-	eon	x7, x7, x17
-	eon	x6, x6, x16
-	orr	x6, x7, x6
-	cmp	x6, #0
+	subs	x6, x19, x5
+	sbc	x7, x7, xzr
+	and	x19, x6, x7
+	stp	x6, x7, [x2, #16]
+	cmn	x19, #1
 	cset	w6, eq
 	and	w5, w5, w6
-	ldp	x7, x6, [x2, #32]
-	subs	x7, x7, x1
-	sbc	x6, x6, x0
-	subs	x7, x7, x19
-	sbc	x6, x6, xzr
-	subs	x5, x7, x5
-	sbc	x6, x6, xzr
+	subs	x5, x20, x5
+	sbc	x6, x21, xzr
 	stp	x5, x6, [x2, #32]
 	sub	x4, x4, #1
 	add	x3, x3, x12

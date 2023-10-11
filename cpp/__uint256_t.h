@@ -45,7 +45,7 @@ class __uint256_t {
     }
 
 	inline __uint16_t bit() const {
-		__uint16_t i = 1 - (_[1] == 0);
+		__uint16_t i = _[1] != 0;
 		__uint16_t j = 64 * ((_[i] >> 64) > 0);
 		j += 32 * ((_[i] >> (32 + j)) > 0);
 		j += 16 * ((_[i] >> (16 + j)) > 0);
@@ -231,7 +231,7 @@ __uint256_t& operator%=(__uint256_t& a, const __uint256_t& b) {
 		while (a >= b) {
 			a -= (a >= c) * c;
 			c._[0] >>= 1;
-			c._[0] += c._[1] << 127;
+			c._[0] |= c._[1] << 127;
 			c._[1] >>= 1;
 		}
 	}
@@ -258,10 +258,10 @@ pair<__uint256_t,__uint256_t> divmod(const __uint256_t& a, const __uint256_t& b)
 			q += d * s;
 			r -= d * c;
 			c._[0] >>= 1;
-			c._[0] += c._[1] << 127;
+			c._[0] |= c._[1] << 127;
 			c._[1] >>= 1;
 			s._[0] >>= 1;
-			s._[0] += s._[1] << 127;
+			s._[0] |= s._[1] << 127;
 			s._[1] >>= 1;
 		}
 	}
@@ -275,9 +275,8 @@ std::ostream& operator<<(std::ostream& dest, const __uint256_t& value) {
 		__uint256_t tmp = value;
 		char buffer[ 256 ];
 		char* d = std::end( buffer );
-		do
-		{
-			-- d;
+		do {
+			--d;
 			pair<__uint256_t,__uint256_t> p = divmod(tmp, base);
 			*d = "0123456789ABCDEF"[ (__uint64_t)p.second ];
 			tmp = p.first;
@@ -297,9 +296,8 @@ std::ostream& operator>>(std::ostream& dest, const __uint256_t& value) {
 		__uint256_t tmp = value;
 		char buffer[ 256 ];
 		char* d = std::end( buffer );
-		do
-		{
-			-- d;
+		do {
+			--d;
 			pair<__uint256_t,__uint256_t> p = divmod(tmp, base);
 			*d = "0123456789ABCDEF"[ (__uint64_t)p.second ];
 			tmp = p.first;
