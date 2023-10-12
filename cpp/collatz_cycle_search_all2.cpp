@@ -8,7 +8,7 @@
 * ./collatz_cycle_search
 */
 
-#include "__uint384_t.h"
+#include "__uint256_t.h"
 
 #include <bit>
 //#include <execution>
@@ -30,10 +30,10 @@ using namespace std;
 
 time_t start_time = time(0);
 
-typedef __uint384_t _bigint;
+typedef __uint256_t _bigint;
 
-constexpr __uint16_t M2=243;
-constexpr __uint16_t M3=243;
+constexpr __uint16_t M2=162;
+constexpr __uint16_t M3=162;
 constexpr __uint16_t DM = 12;
 __uint16_t m = 1;
 __uint16_t T = 11;
@@ -214,8 +214,7 @@ int main () {
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
 				pq += pn.first;
-				pq += (m - m1 - 1)/DM+4;
-				//pq += m1/3;
+				pq += (m - m1 - 1)/18+8;
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
 				if (ymin > pq) {
