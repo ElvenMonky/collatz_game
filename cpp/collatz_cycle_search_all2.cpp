@@ -8,7 +8,7 @@
 * ./collatz_cycle_search
 */
 
-#include "__uint256_t.h"
+#include "__uint384_t.h"
 
 #include <bit>
 //#include <execution>
@@ -30,10 +30,10 @@ using namespace std;
 
 time_t start_time = time(0);
 
-typedef __uint256_t _bigint;
+typedef __uint384_t _bigint;
 
-constexpr __uint16_t M2=162;
-constexpr __uint16_t M3=162;
+constexpr __uint16_t M2=243;
+constexpr __uint16_t M3=243;
 constexpr __uint16_t DM = 12;
 __uint16_t m = 1;
 __uint16_t T = 11;
@@ -41,7 +41,6 @@ __uint16_t T = 11;
 __uint16_t p2[DM+1];
 _bigint p23[M2][M3];
 _bigint pp23[M3][M3];
-_bigint dx[M3];
 _bigint yy[M3];
 _bigint dy[2 << DM];
 
@@ -114,14 +113,6 @@ int main () {
 			x >>= m2;
 		}
 	}
-
-	// 01 -> 10, 011 -> 100, 0111 -> 1000, 01111 -> 10000, ...
-	for (__uint16_t m3 = 0; m3 < M3; ++m3) {
-		dx[m3] = p23[0][m3];
-		dx[m3] -= p23[m3][0];
-	}
-	// dest.assign(dx, dx + M3);
-	// print_vector(dest);
 
 	for (__uint16_t l1 = 0; l1 < M3; ++l1) {
 		__uint16_t(& dll1)[] = dl[l1];
