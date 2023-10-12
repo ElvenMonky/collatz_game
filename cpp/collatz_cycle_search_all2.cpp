@@ -43,7 +43,6 @@ _bigint p23[M2][M3];
 _bigint pp23[M3][M3];
 _bigint dx[M3];
 _bigint yy[M3];
-_bigint ymin;
 _bigint dy[2 << DM];
 
 __uint16_t dl[M3][2 << DM];
@@ -158,7 +157,7 @@ int main () {
 	// print_vector(range);
 
 	while (1) {
-		ymin = p23[m][0];
+		_bigint ymin = p23[m][0];
 		for (__uint16_t l=0; l<=m; ++l) {
 			if (p23[m][0] >= p23[0][l]) {
 				yy[l] = p23[m][0];
@@ -203,7 +202,7 @@ int main () {
 			_bigint pq = pn.first;
 			pq <<= 1;
 			pq += 1;
-			_bigint mn = pq;
+			ymin = pq;
 			__uint16_t m1;
 			__uint16_t m2 = 0;
 			for (m1 = 1; m1 <= 2*l && m1 <= 2*(m-1-l); ++m1) {
@@ -219,9 +218,9 @@ int main () {
 				//pq += m1/3;
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
-				if (mn > pq) {
+				if (ymin > pq) {
 					m2 = m1;
-					mn = pq;
+					ymin = pq;
 				}
 			}
 			m1 = m - m2 - 1;
@@ -233,6 +232,11 @@ int main () {
 
 			__uint16_t ys;
 			_bigint ym = y.inv(ys);
+
+			ymin = p23[m1-1][0];
+			while (ymin >= y) {
+				ymin -= y;
+			}
 
 			stringstream str;
 			double seconds_since_start = difftime(time(0), start_time);
@@ -305,10 +309,8 @@ int main () {
 						z >>= DM;
 					}
 
-					while (p23[m1-1][0] > z) {
-						z += y;
-					}
-					z -= p23[m1-1][0];
+					z += (ymin > z) * y;
+					z -= ymin;
 					while (pp23[m1][l1-1] >= z) {
 						q = z;
 
