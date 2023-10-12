@@ -8,10 +8,10 @@
 * ./collatz_cycle_search
 */
 
-#include "__uint256_t.h"
+#include "__uint384_t.h"
 
 #include <bit>
-#include <execution>
+//#include <execution>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -22,18 +22,18 @@
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-//#define PSTLD_HACK_INTO_STD // export into namespace std
-//#include "pstld.h"
+#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+#define PSTLD_HACK_INTO_STD // export into namespace std
+#include "pstld.h"
 
 using namespace std;
 
 time_t start_time = time(0);
 
-typedef __uint256_t _bigint;
+typedef __uint384_t _bigint;
 
-constexpr __uint16_t M2=162;
-constexpr __uint16_t M3=162;
+constexpr __uint16_t M2=243;
+constexpr __uint16_t M3=243;
 constexpr __uint16_t DM = 12;
 __uint16_t m = 1;
 __uint16_t T = 11;
@@ -304,12 +304,6 @@ int main () {
 						z += dy[d];
 						z >>= DM;
 					}
-
-					/*for (__uint16_t m2 = m1+1; m2 < m; ++m2) {
-						bool d = z & 1;
-						z += d * y;
-						z >>= 1;
-					}*/
 
 					while (p23[m1-1][0] > z) {
 						z += y;
