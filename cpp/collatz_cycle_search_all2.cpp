@@ -36,7 +36,7 @@ constexpr __uint16_t M2=243;
 constexpr __uint16_t M3=243;
 constexpr __uint16_t DM = 12;
 __uint16_t m = 1;
-__uint16_t T = 11;
+constexpr __uint16_t T = 11;
 
 __uint16_t p2[DM+1];
 _bigint p23[M2][M3];
