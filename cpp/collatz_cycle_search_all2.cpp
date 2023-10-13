@@ -43,6 +43,7 @@ __uint16_t p2[DM+1];
 _bigint p23[M2][M3];
 _bigint pp23[M3][M3];
 _bigint yy[M3];
+_bigint ynn[2];
 _bigint dy[2 << DM];
 
 __uint16_t dl[M3][2 << DM];
@@ -171,6 +172,14 @@ int main () {
 
 		for (__uint16_t l=1; l < m; ++l) {
 			_bigint& y = yy[l];
+			ynn[0] = y;
+			ynn[0] <<= 1;
+			ynn[1] = y;
+			ynn[1] <<= 2;
+			/*for (__uint16_t n = 0; n < 1; ++n) {
+				ynn[n] = y;
+				ynn[n] <<= n+1;
+			}*/
 			dy[2] = y;
 			
 			for (__uint16_t dm = 1; dm < DM; ++dm) {
@@ -265,14 +274,19 @@ int main () {
 					__uint16_t l1 = l - l2;
 					_bigint q = p23[0][l1] * x;
 
-					_bigint qq = mulhi_fast_approx(q, ym);
-					qq >>= ys;
-					q -= qq * y;
+					if (q >= ynn[1]) {
+						_bigint qq = mulhi_fast_approx(q, ym);
+						qq >>= ys;
+						q -= qq * y;
+					} else {
+						q -= (q >= ynn[0]) * ynn[0];
+					}
 					q -= (q >= y) * y;
 					if (q >= y) {
 						cout << "Incorrect fast reminder "<< y << " " << ym << " " << ys << " " << q << " " << (q % y) << endl;
 						throw;
 					}
+					
 					_bigint z = y;
 					z -= q;
 
