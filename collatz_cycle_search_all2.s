@@ -8950,7 +8950,7 @@ Lloh318:
 	add	x12, x12, _p2@PAGEOFF
 	ldrh	w11, [x12, x11, lsl  #1]
 	cmp	w11, w9
-	b.ls	LBB44_182
+	b.ls	LBB44_179
 ; %bb.1:
 	mov	x25, x0
 	mov	w11, #11664
@@ -9042,7 +9042,7 @@ LBB44_8:
 	ldr	x9, [sp, #16]                   ; 8-byte Folded Reload
 	cmp	x11, x9
 	b.lo	LBB44_11
-	b	LBB44_182
+	b	LBB44_179
 LBB44_10:
 	mov	w9, #11664
 	madd	x9, x8, x9, x30
@@ -9079,7 +9079,7 @@ LBB44_10:
 	str	x9, [sp, #24]                   ; 8-byte Folded Spill
 	ldr	x9, [sp, #16]                   ; 8-byte Folded Reload
 	cmp	x17, x9
-	b.hs	LBB44_182
+	b.hs	LBB44_179
 LBB44_11:
 	mov	w9, #11664
 	mul	x8, x8, x9
@@ -9095,35 +9095,34 @@ LBB44_11:
 	add	x9, x10, #128
 	str	x9, [sp, #120]                  ; 8-byte Folded Spill
 	add	x9, x10, #16
-	str	x9, [sp, #304]                  ; 8-byte Folded Spill
+	str	x9, [sp, #280]                  ; 8-byte Folded Spill
 	add	x9, x10, #24
-	str	x9, [sp, #200]                  ; 8-byte Folded Spill
+	str	x9, [sp, #208]                  ; 8-byte Folded Spill
 Lloh321:
 	adrp	x12, __ZTTNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
 Lloh322:
 	ldr	x12, [x12, __ZTTNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
 	ldr	x9, [x12, #16]
-	str	x9, [sp, #192]                  ; 8-byte Folded Spill
+	str	x9, [sp, #200]                  ; 8-byte Folded Spill
 	ldr	x9, [x12, #24]
-	str	x9, [sp, #184]                  ; 8-byte Folded Spill
+	str	x9, [sp, #192]                  ; 8-byte Folded Spill
 	ldr	x9, [x12, #32]
-	str	x9, [sp, #168]                  ; 8-byte Folded Spill
+	str	x9, [sp, #176]                  ; 8-byte Folded Spill
 	ldr	x9, [x12, #40]
-	str	x9, [sp, #160]                  ; 8-byte Folded Spill
+	str	x9, [sp, #168]                  ; 8-byte Folded Spill
 	ldr	x9, [x12, #48]
-	str	x9, [sp, #152]                  ; 8-byte Folded Spill
+	str	x9, [sp, #160]                  ; 8-byte Folded Spill
 	add	x9, x10, #88
-	str	x9, [sp, #136]                  ; 8-byte Folded Spill
+	str	x9, [sp, #144]                  ; 8-byte Folded Spill
 	add	x9, sp, #1192
-	add	x9, x9, #256
-	str	x9, [sp, #352]                  ; 8-byte Folded Spill
+	add	x22, x9, #256
 	add	x9, sp, #576
 	add	x21, x9, #16
 	add	x9, sp, #384
 	add	x9, x9, #48
 	str	x9, [sp, #80]                   ; 8-byte Folded Spill
 	ldr	x9, [x12, #8]
-	str	x9, [sp, #144]                  ; 8-byte Folded Spill
+	str	x9, [sp, #152]                  ; 8-byte Folded Spill
 	ldr	x9, [x12]
 	str	x9, [sp, #112]                  ; 8-byte Folded Spill
 	add	x9, sp, #1072
@@ -9136,7 +9135,7 @@ Lloh322:
 	add	x9, sp, #480
 	ldr	x10, [x25, #16]
 	add	x9, x9, #16
-	str	x9, [sp, #176]                  ; 8-byte Folded Spill
+	str	x9, [sp, #184]                  ; 8-byte Folded Spill
 	mov	w26, #48
 	ldrh	w9, [x10]
 	movi.2d	v0, #0000000000000000
@@ -9145,30 +9144,30 @@ Lloh323:
 Lloh324:
 	ldr	x10, [x10, __ZTVNSt3__115basic_stringbufIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
 	add	x10, x10, #16
-	str	x10, [sp, #128]                 ; 8-byte Folded Spill
-	str	x25, [sp, #208]                 ; 8-byte Folded Spill
+	stp	x10, x22, [sp, #128]            ; 16-byte Folded Spill
+	str	x25, [sp, #216]                 ; 8-byte Folded Spill
 	b	LBB44_14
 LBB44_12:                               ;   in Loop: Header=BB44_14 Depth=1
-	ldr	x11, [sp, #232]                 ; 8-byte Folded Reload
+	ldr	x11, [sp, #240]                 ; 8-byte Folded Reload
 LBB44_13:                               ;   in Loop: Header=BB44_14 Depth=1
 	add	x11, x11, #1
 	rbit	x8, x11
 	clz	x8, x8
 	ldr	x10, [sp, #16]                  ; 8-byte Folded Reload
 	cmp	x11, x10
-	b.eq	LBB44_182
+	b.eq	LBB44_179
 LBB44_14:                               ; =>This Loop Header: Depth=1
                                         ;     Child Loop BB44_41 Depth 2
                                         ;     Child Loop BB44_51 Depth 2
-                                        ;       Child Loop BB44_66 Depth 3
-                                        ;       Child Loop BB44_78 Depth 3
-                                        ;       Child Loop BB44_93 Depth 3
-                                        ;       Child Loop BB44_124 Depth 3
-                                        ;       Child Loop BB44_133 Depth 3
-                                        ;       Child Loop BB44_142 Depth 3
-                                        ;       Child Loop BB44_151 Depth 3
-                                        ;       Child Loop BB44_159 Depth 3
-	str	x11, [sp, #232]                 ; 8-byte Folded Spill
+                                        ;       Child Loop BB44_65 Depth 3
+                                        ;       Child Loop BB44_77 Depth 3
+                                        ;       Child Loop BB44_92 Depth 3
+                                        ;       Child Loop BB44_121 Depth 3
+                                        ;       Child Loop BB44_130 Depth 3
+                                        ;       Child Loop BB44_139 Depth 3
+                                        ;       Child Loop BB44_148 Depth 3
+                                        ;       Child Loop BB44_156 Depth 3
+	str	x11, [sp, #240]                 ; 8-byte Folded Spill
 	ldp	x0, x10, [sp, #32]              ; 16-byte Folded Reload
 	sub	w10, w10, w8
 	and	x11, x10, #0xffff
@@ -9232,7 +9231,7 @@ LBB44_14:                               ; =>This Loop Header: Depth=1
 	sbc	x12, x12, xzr
 	subs	x8, x8, x11
 	str	x8, [sp, #32]                   ; 8-byte Folded Spill
-	ldr	x11, [sp, #232]                 ; 8-byte Folded Reload
+	ldr	x11, [sp, #240]                 ; 8-byte Folded Reload
 	sbc	x8, x12, xzr
 	str	x8, [sp, #24]                   ; 8-byte Folded Spill
 	cmp	x11, #0
@@ -9424,11 +9423,11 @@ LBB44_14:                               ; =>This Loop Header: Depth=1
 	adcs	x2, x2, xzr
 	cinc	x6, x6, hs
 	ldr	x0, [sp, #536]
-	ldr	x8, [sp, #528]
+	ldr	x1, [sp, #528]
 	umulh	x5, x0, x5
 	mul	x7, x0, x4
 	adds	x5, x5, x7
-	umulh	x7, x8, x4
+	umulh	x7, x1, x4
 	umulh	x4, x0, x4
 	cinc	x4, x4, hs
 	adds	x5, x5, x7
@@ -9490,8 +9489,8 @@ LBB44_14:                               ; =>This Loop Header: Depth=1
 	cinc	x11, x4, hs
 	ldrh	w12, [x12]
 	cmp	w12, #128
-	str	x24, [sp, #328]                 ; 8-byte Folded Spill
-	str	x8, [sp, #344]                  ; 8-byte Folded Spill
+	str	x24, [sp, #336]                 ; 8-byte Folded Spill
+	str	x1, [sp, #352]                  ; 8-byte Folded Spill
 	b.hs	LBB44_18
 ; %bb.17:                               ;   in Loop: Header=BB44_14 Depth=1
 	lsr	x2, x2, x12
@@ -9548,24 +9547,24 @@ LBB44_14:                               ; =>This Loop Header: Depth=1
 	lsr	x11, x11, x12
 	csel	x2, x11, x13, ne
 	csel	x8, xzr, x11, ne
-	str	x8, [sp, #336]                  ; 8-byte Folded Spill
+	str	x8, [sp, #344]                  ; 8-byte Folded Spill
 	str	x8, [sp, #1112]
 	str	x2, [sp, #1104]
 	b	LBB44_21
 LBB44_18:                               ;   in Loop: Header=BB44_14 Depth=1
 	and	w7, w12, #0x7f
 	cmp	w12, #256
+	mov	w8, #128
+	mov	x2, #0
 	b.hs	LBB44_20
 ; %bb.19:                               ;   in Loop: Header=BB44_14 Depth=1
-	mov	x2, #0
-	str	xzr, [sp, #336]                 ; 8-byte Folded Spill
+	str	xzr, [sp, #344]                 ; 8-byte Folded Spill
 	lsr	x12, x5, x7
 	lsl	x14, x17, #1
 	mvn	w5, w7
 	lsl	x14, x14, x5
 	orr	x12, x14, x12
 	lsr	x14, x17, x7
-	mov	w8, #128
 	sub	w17, w8, w7
 	mvn	w4, w17
 	lsr	x6, x13, #1
@@ -9599,8 +9598,7 @@ LBB44_18:                               ;   in Loop: Header=BB44_14 Depth=1
 	str	xzr, [sp, #1104]
 	b	LBB44_21
 LBB44_20:                               ;   in Loop: Header=BB44_14 Depth=1
-	mov	x2, #0
-	str	xzr, [sp, #336]                 ; 8-byte Folded Spill
+	str	xzr, [sp, #344]                 ; 8-byte Folded Spill
 	mov	x5, #0
 	mov	x6, #0
 	mvn	w12, w7
@@ -9618,7 +9616,7 @@ LBB44_20:                               ;   in Loop: Header=BB44_14 Depth=1
 	stp	q0, q0, [x8]
 LBB44_21:                               ;   in Loop: Header=BB44_14 Depth=1
 	ldr	x17, [x25, #40]
-	ldr	x8, [sp, #304]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #280]                  ; 8-byte Folded Reload
 	stp	q0, q0, [x8]
 	ldp	x7, x20, [x17]
 	umulh	x11, x7, x4
@@ -9700,7 +9698,7 @@ LBB44_21:                               ;   in Loop: Header=BB44_14 Depth=1
 	adcs	x8, x8, x23
 	umulh	x6, x2, x7
 	madd	x6, x2, x20, x6
-	ldr	x20, [sp, #336]                 ; 8-byte Folded Reload
+	ldr	x20, [sp, #344]                 ; 8-byte Folded Reload
 	madd	x6, x20, x7, x6
 	mul	x4, x7, x4
 	mul	x2, x2, x7
@@ -9708,7 +9706,7 @@ LBB44_21:                               ;   in Loop: Header=BB44_14 Depth=1
 	cinc	x1, x1, hs
 	adds	x2, x3, x2
 	adc	x3, x1, x6
-	ldr	x1, [sp, #344]                  ; 8-byte Folded Reload
+	ldr	x1, [sp, #352]                  ; 8-byte Folded Reload
 	subs	x1, x1, x4
 	sbc	x0, x0, x19
 	subs	x9, x9, x5
@@ -9741,6 +9739,11 @@ LBB44_21:                               ;   in Loop: Header=BB44_14 Depth=1
 	eor	x8, x9, x12
 	eor	x2, x10, x11
 	orr	x8, x8, x2
+	mov	w20, #128
+Lloh325:
+	adrp	x22, _dy@PAGE
+Lloh326:
+	add	x22, x22, _dy@PAGEOFF
 	cbnz	x8, LBB44_26
 ; %bb.23:                               ;   in Loop: Header=BB44_14 Depth=1
 	ldp	x2, x8, [x17]
@@ -9749,10 +9752,10 @@ LBB44_21:                               ;   in Loop: Header=BB44_14 Depth=1
 	cmp	x0, x8
 	cset	w8, lo
 	csel	w8, w2, w8, eq
-	ldr	x25, [sp, #208]                 ; 8-byte Folded Reload
-Lloh325:
+	ldr	x25, [sp, #216]                 ; 8-byte Folded Reload
+Lloh327:
 	adrp	x30, _p23@PAGE
-Lloh326:
+Lloh328:
 	add	x30, x30, _p23@PAGEOFF
 	mov	w26, #48
 	tbz	w8, #0, LBB44_25
@@ -9763,12 +9766,17 @@ LBB44_24:                               ;   in Loop: Header=BB44_14 Depth=1
 	cmp	x16, x14
 	cset	w2, hi
 	csel	w8, w8, w2, eq
-	ldr	x25, [sp, #208]                 ; 8-byte Folded Reload
-Lloh327:
+	ldr	x25, [sp, #216]                 ; 8-byte Folded Reload
+Lloh329:
 	adrp	x30, _p23@PAGE
-Lloh328:
+Lloh330:
 	add	x30, x30, _p23@PAGEOFF
 	mov	w26, #48
+	mov	w20, #128
+Lloh331:
+	adrp	x22, _dy@PAGE
+Lloh332:
+	add	x22, x22, _dy@PAGEOFF
 	tbz	w8, #0, LBB44_27
 LBB44_25:                               ;   in Loop: Header=BB44_14 Depth=1
 	ldp	x3, x4, [x17]
@@ -9783,10 +9791,10 @@ LBB44_26:                               ;   in Loop: Header=BB44_14 Depth=1
 	cmp	x10, x11
 	cset	w2, ls
 	csel	w8, w8, w2, eq
-	ldr	x25, [sp, #208]                 ; 8-byte Folded Reload
-Lloh329:
+	ldr	x25, [sp, #216]                 ; 8-byte Folded Reload
+Lloh333:
 	adrp	x30, _p23@PAGE
-Lloh330:
+Lloh334:
 	add	x30, x30, _p23@PAGEOFF
 	mov	w26, #48
 	tbz	w8, #0, LBB44_25
@@ -9843,7 +9851,7 @@ LBB44_28:                               ;   in Loop: Header=BB44_14 Depth=1
 	cset	w8, lo
 	csel	w8, w15, w8, eq
 	tbnz	w8, #0, LBB44_33
-	b	LBB44_184
+	b	LBB44_181
 LBB44_31:                               ;   in Loop: Header=BB44_14 Depth=1
 	cmp	x13, x3
 	cset	w8, lo
@@ -9851,14 +9859,14 @@ LBB44_31:                               ;   in Loop: Header=BB44_14 Depth=1
 	cset	w15, lo
 	csel	w8, w8, w15, eq
 	tbz	w8, #0, LBB44_33
-	b	LBB44_184
+	b	LBB44_181
 LBB44_32:                               ;   in Loop: Header=BB44_14 Depth=1
 	cmp	x12, x9
 	cset	w8, hs
 	cmp	x11, x10
 	cset	w15, hs
 	csel	w8, w8, w15, eq
-	tbz	w8, #0, LBB44_184
+	tbz	w8, #0, LBB44_181
 LBB44_33:                               ;   in Loop: Header=BB44_14 Depth=1
 	ldp	x16, x15, [x17]
 	subs	x17, x16, x1
@@ -9891,11 +9899,7 @@ LBB44_33:                               ;   in Loop: Header=BB44_14 Depth=1
 	ldrh	w8, [x8]
 	and	x9, x17, x8
 	add	x8, x9, x8
-Lloh331:
-	adrp	x9, _dy@PAGE
-Lloh332:
-	add	x9, x9, _dy@PAGEOFF
-	madd	x8, x8, x26, x9
+	madd	x8, x8, x26, x22
 	ldp	x10, x9, [x8]
 	ldp	x7, x6, [x8, #16]
 	ldp	x8, x19, [x8, #32]
@@ -9925,8 +9929,7 @@ Lloh332:
 	lsl	x0, x0, x1
 	orr	x8, x0, x8
 	lsr	x0, x4, #1
-	mov	w2, #128
-	sub	w2, w2, w5
+	sub	w2, w20, w5
 	mvn	w6, w2
 	lsr	x0, x0, x6
 	lsl	x7, x3, x2
@@ -9978,8 +9981,7 @@ LBB44_36:                               ;   in Loop: Header=BB44_14 Depth=1
 	lsl	x17, x17, x4
 	orr	x8, x17, x8
 	lsr	x17, x3, x6
-	mov	w0, #128
-	sub	w0, w0, w6
+	sub	w0, w20, w6
 	mvn	w3, w0
 	lsr	x7, x10, #1
 	lsr	x3, x7, x3
@@ -10029,42 +10031,40 @@ LBB44_39:                               ;   in Loop: Header=BB44_14 Depth=1
 	cmp	w6, w5, uxth
 	b.ls	LBB44_42
 ; %bb.40:                               ;   in Loop: Header=BB44_14 Depth=1
-Lloh333:
-	adrp	x8, _mask@PAGE
-Lloh334:
-	ldr	w7, [x8, _mask@PAGEOFF]
-Lloh335:
-	adrp	x28, _dy@PAGE
-Lloh336:
-	add	x28, x28, _dy@PAGEOFF
+	mov	x24, #17587891077120
 LBB44_41:                               ;   Parent Loop BB44_14 Depth=1
                                         ; =>  This Inner Loop Header: Depth=2
-	and	w8, w7, w17
-	add	w8, w8, w7
-	smaddl	x8, w8, w26, x28
-	ldp	x20, x19, [x8]
-	ldp	x23, x22, [x8, #16]
-	ldp	x8, x24, [x8, #32]
+	ubfiz	x8, x17, #32, #12
+	add	x8, x8, x24
+	lsr	x8, x8, #32
+	madd	x8, x8, x26, x22
+	ldp	x19, x7, [x8]
+	ldp	x22, x20, [x8, #16]
+	ldp	x8, x23, [x8, #32]
 	adds	x8, x8, x1
-	adc	x1, x24, x2
-	adds	x2, x23, x4
-	adcs	x3, x22, x3
+	adc	x1, x23, x2
+	adds	x2, x22, x4
+Lloh335:
+	adrp	x22, _dy@PAGE
+Lloh336:
+	add	x22, x22, _dy@PAGEOFF
+	adcs	x3, x20, x3
 	adcs	x8, x8, xzr
 	cinc	x1, x1, hs
-	adds	x17, x20, x17
-	adcs	x4, x19, x0
-	cset	w19, hs
+	adds	x17, x19, x17
+	adcs	x4, x7, x0
+	cset	w7, hs
 	adcs	x2, x2, xzr
-	cinc	x20, x3, hs
-	orr	x3, x2, x20
+	cinc	x19, x3, hs
+	orr	x3, x2, x19
 	extr	x0, x2, x4, #12
 	cmp	x3, #0
 	extr	x17, x4, x17, #12
 	cset	w3, eq
-	and	w3, w19, w3
+	and	w3, w7, w3
 	adds	x8, x8, x3
-	extr	x3, x8, x20, #12
-	extr	x4, x20, x2, #12
+	extr	x3, x8, x19, #12
+	extr	x4, x19, x2, #12
 	cinc	x2, x1, hs
 	extr	x1, x2, x8, #12
 	lsr	x2, x2, #12
@@ -10083,8 +10083,8 @@ LBB44_42:                               ;   in Loop: Header=BB44_14 Depth=1
 	eor	x8, x19, x3
 	eor	x22, x20, x4
 	orr	x8, x22, x8
-	ldr	x22, [sp, #328]                 ; 8-byte Folded Reload
-	cbnz	x8, LBB44_181
+	ldr	x23, [sp, #336]                 ; 8-byte Folded Reload
+	cbnz	x8, LBB44_178
 ; %bb.44:                               ;   in Loop: Header=BB44_14 Depth=1
 	ldp	x19, x8, [x5]
 	cmp	x19, x17
@@ -10100,7 +10100,7 @@ LBB44_45:                               ;   in Loop: Header=BB44_14 Depth=1
 	cmp	x2, x7
 	cset	w19, lo
 	csel	w8, w8, w19, eq
-	ldr	x22, [sp, #328]                 ; 8-byte Folded Reload
+	ldr	x23, [sp, #336]                 ; 8-byte Folded Reload
 	tbnz	w8, #0, LBB44_47
 LBB44_46:                               ;   in Loop: Header=BB44_14 Depth=1
 	mov	x16, #0
@@ -10110,7 +10110,7 @@ LBB44_46:                               ;   in Loop: Header=BB44_14 Depth=1
 	mov	x13, #0
 	mov	x14, #0
 LBB44_47:                               ;   in Loop: Header=BB44_14 Depth=1
-	sxth	w19, w22
+	sxth	w19, w23
 	subs	x8, x1, x6
 	sbc	x1, x2, x7
 	adds	x8, x8, x13
@@ -10139,7 +10139,7 @@ LBB44_47:                               ;   in Loop: Header=BB44_14 Depth=1
 	cset	w14, hs
 	cmn	x1, x0
 	adcs	xzr, x2, x17
-	mov	x17, x2
+	mov	x17, x1
 	cset	w15, hs
 	subs	x3, x12, x15
 	sbc	x4, x11, xzr
@@ -10155,11 +10155,11 @@ LBB44_47:                               ;   in Loop: Header=BB44_14 Depth=1
 	sbc	x7, x12, xzr
 	and	w8, w19, #0xffff
 	sub	w8, w8, #1
-	str	w8, [sp, #292]                  ; 4-byte Folded Spill
+	str	w8, [sp, #268]                  ; 4-byte Folded Spill
 	and	x8, x19, #0xffff
 	add	x8, x8, w19, uxth #1
 	lsl	x8, x8, #4
-	str	x8, [sp, #296]                  ; 8-byte Folded Spill
+	str	x8, [sp, #272]                  ; 8-byte Folded Spill
 	sxtw	x8, w19
 Lloh337:
 	adrp	x11, _dz@PAGE
@@ -10168,14 +10168,13 @@ Lloh338:
 	mov	w12, #393216
 	str	x19, [sp, #88]                  ; 8-byte Folded Spill
 	smaddl	x11, w19, w12, x11
-	str	x11, [sp, #224]                 ; 8-byte Folded Spill
-	mov	x19, x1
+	str	x11, [sp, #232]                 ; 8-byte Folded Spill
 Lloh339:
 	adrp	x11, _dl@PAGE
 Lloh340:
 	add	x11, x11, _dl@PAGEOFF
 	add	x8, x11, x8, lsl #14
-	str	x8, [sp, #216]                  ; 8-byte Folded Spill
+	str	x8, [sp, #224]                  ; 8-byte Folded Spill
 	b	LBB44_51
 LBB44_48:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x10, [x25, #16]
@@ -10186,22 +10185,22 @@ Lloh342:
 	mov	w26, #48
 	movi.2d	v0, #0000000000000000
 LBB44_49:                               ;   in Loop: Header=BB44_51 Depth=2
-	ldp	x16, x17, [sp, #336]            ; 16-byte Folded Reload
-	ldp	x1, x0, [sp, #320]              ; 16-byte Folded Reload
-	ldr	x2, [sp, #312]                  ; 8-byte Folded Reload
+	ldp	x2, x17, [sp, #320]             ; 16-byte Folded Reload
+	ldp	x0, x16, [sp, #304]             ; 16-byte Folded Reload
+	ldp	x3, x1, [sp, #288]              ; 16-byte Folded Reload
 LBB44_50:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x25, #40]
 	ldp	x11, x9, [x8]
 	ldp	x13, x12, [x8, #16]
 	ldp	x8, x14, [x8, #32]
 	adds	x8, x8, x1
-	adc	x14, x14, x2
+	adc	x14, x14, x3
 	adds	x13, x13, x16
 	adcs	x12, x12, x0
 	adcs	x8, x8, xzr
 	cinc	x14, x14, hs
-	adds	x19, x11, x19
-	adcs	x17, x9, x17
+	adds	x17, x11, x17
+	adcs	x2, x9, x2
 	cset	w9, hs
 	adcs	x3, x13, xzr
 	cinc	x4, x12, hs
@@ -10214,14 +10213,14 @@ LBB44_50:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldrh	w9, [x10]
 LBB44_51:                               ;   Parent Loop BB44_14 Depth=1
                                         ; =>  This Loop Header: Depth=2
-                                        ;       Child Loop BB44_66 Depth 3
-                                        ;       Child Loop BB44_78 Depth 3
-                                        ;       Child Loop BB44_93 Depth 3
-                                        ;       Child Loop BB44_124 Depth 3
-                                        ;       Child Loop BB44_133 Depth 3
-                                        ;       Child Loop BB44_142 Depth 3
-                                        ;       Child Loop BB44_151 Depth 3
-                                        ;       Child Loop BB44_159 Depth 3
+                                        ;       Child Loop BB44_65 Depth 3
+                                        ;       Child Loop BB44_77 Depth 3
+                                        ;       Child Loop BB44_92 Depth 3
+                                        ;       Child Loop BB44_121 Depth 3
+                                        ;       Child Loop BB44_130 Depth 3
+                                        ;       Child Loop BB44_139 Depth 3
+                                        ;       Child Loop BB44_148 Depth 3
+                                        ;       Child Loop BB44_156 Depth 3
 	and	x8, x9, #0xffff
 	mov	w11, #11664
 	mul	x11, x8, x11
@@ -10230,7 +10229,7 @@ Lloh343:
 Lloh344:
 	add	x12, x12, _pp23@PAGEOFF
 	add	x12, x12, x11
-	ldr	x13, [sp, #296]                 ; 8-byte Folded Reload
+	ldr	x13, [sp, #272]                 ; 8-byte Folded Reload
 	add	x12, x12, x13
 	ldp	x14, x13, [x12, #-16]
 	eor	x15, x13, x7
@@ -10245,9 +10244,9 @@ Lloh344:
 	cbnz	x15, LBB44_55
 ; %bb.53:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldp	x12, x13, [x12, #-48]
-	cmp	x12, x19
+	cmp	x12, x17
 	cset	w12, lo
-	cmp	x13, x17
+	cmp	x13, x2
 	cset	w13, lo
 	csel	w12, w12, w13, eq
 	tbz	w12, #0, LBB44_56
@@ -10270,21 +10269,21 @@ LBB44_55:                               ;   in Loop: Header=BB44_51 Depth=2
 LBB44_56:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x12, [x25, #72]
 	ldrh	w1, [x12]
-	stp	x3, x17, [sp, #336]             ; 16-byte Folded Spill
-	stp	x6, x4, [sp, #320]              ; 16-byte Folded Spill
-	str	x7, [sp, #312]                  ; 8-byte Folded Spill
+	stp	x2, x17, [sp, #320]             ; 16-byte Folded Spill
+	stp	x4, x3, [sp, #304]              ; 16-byte Folded Spill
+	stp	x7, x6, [sp, #288]              ; 16-byte Folded Spill
 	cbz	w1, LBB44_59
 ; %bb.57:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x12, [x25, #80]
 	ldrh	w12, [x12]
-	and	x13, x19, x12
+	and	x13, x17, x12
 	add	x0, x13, x12
-	ldr	x12, [sp, #224]                 ; 8-byte Folded Reload
+	ldr	x12, [sp, #232]                 ; 8-byte Folded Reload
 	madd	x12, x0, x26, x12
 	sub	x14, x12, #96, lsl #12          ; =393216
 	ldp	x16, x15, [x14]
-	subs	x13, x19, x16
-	sbc	x12, x17, x15
+	subs	x13, x17, x16
+	sbc	x12, x2, x15
 	ldp	x2, x17, [x14, #16]
 	subs	x3, x3, x2
 	sbc	x4, x4, x17
@@ -10357,18 +10356,17 @@ LBB44_56:                               ;   in Loop: Header=BB44_51 Depth=2
 	csel	x13, xzr, x13, ne
 	b	LBB44_63
 LBB44_59:                               ;   in Loop: Header=BB44_51 Depth=2
-	mov	x14, x19
-	mov	x15, x17
+	mov	x14, x17
+	mov	x15, x2
 	mov	x16, x3
 	mov	x17, x4
 	mov	x12, x6
 	mov	x13, x7
-	ldr	w0, [sp, #292]                  ; 4-byte Folded Reload
+	ldr	w0, [sp, #268]                  ; 4-byte Folded Reload
 	sxth	w2, w0
-	mov	x23, x19
 	cmp	w2, #1
 	b.ge	LBB44_64
-	b	LBB44_73
+	b	LBB44_72
 LBB44_60:                               ;   in Loop: Header=BB44_51 Depth=2
 	and	w4, w1, #0x7f
 	cmp	w1, #256
@@ -10424,130 +10422,127 @@ LBB44_62:                               ;   in Loop: Header=BB44_51 Depth=2
 	csel	x14, x15, x14, ne
 	csel	x15, xzr, x15, ne
 LBB44_63:                               ;   in Loop: Header=BB44_51 Depth=2
-	ldr	x2, [sp, #216]                  ; 8-byte Folded Reload
+	ldr	x2, [sp, #224]                  ; 8-byte Folded Reload
 	add	x0, x2, x0, lsl #1
 	mov	x2, #-16384
 	ldrh	w0, [x0, x2]
-	ldr	w2, [sp, #292]                  ; 4-byte Folded Reload
+	ldr	w2, [sp, #268]                  ; 4-byte Folded Reload
 	sub	w0, w2, w0
 	sxth	w2, w0
-	mov	x23, x19
 	cmp	w2, #1
-	b.lt	LBB44_73
+	b.lt	LBB44_72
 LBB44_64:                               ;   in Loop: Header=BB44_51 Depth=2
 	sub	w1, w9, w1
 	and	w2, w0, #0xffff
 	cmp	w2, w1, uxth
-	b.hs	LBB44_73
-; %bb.65:                               ;   in Loop: Header=BB44_51 Depth=2
-Lloh345:
-	adrp	x2, _mask@PAGE
-Lloh346:
-	ldr	w2, [x2, _mask@PAGEOFF]
-LBB44_66:                               ;   Parent Loop BB44_14 Depth=1
+	b.hs	LBB44_72
+LBB44_65:                               ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
-	and	x4, x1, #0xffff
-	and	x3, x0, #0xffff
-	mov	w5, #11664
-Lloh347:
-	adrp	x6, _pp23@PAGE
-Lloh348:
-	add	x6, x6, _pp23@PAGEOFF
-	madd	x4, x4, x5, x6
-	madd	x4, x3, x26, x4
-	ldp	x6, x5, [x4, #32]
-	eor	x7, x5, x13
-	eor	x19, x6, x12
-	orr	x7, x19, x7
-	cbnz	x7, LBB44_69
-; %bb.67:                               ;   in Loop: Header=BB44_66 Depth=3
-	ldp	x6, x5, [x4, #16]
-	eor	x7, x5, x17
-	eor	x19, x6, x16
-	orr	x7, x19, x7
-	cbnz	x7, LBB44_70
-; %bb.68:                               ;   in Loop: Header=BB44_66 Depth=3
-	ldp	x4, x5, [x4]
-	cmp	x4, x14
+	and	x3, x1, #0xffff
+	and	x2, x0, #0xffff
+	mov	w4, #11664
+Lloh345:
+	adrp	x5, _pp23@PAGE
+Lloh346:
+	add	x5, x5, _pp23@PAGEOFF
+	madd	x3, x3, x4, x5
+	madd	x3, x2, x26, x3
+	ldp	x5, x4, [x3, #32]
+	eor	x6, x4, x13
+	eor	x7, x5, x12
+	orr	x6, x7, x6
+	cbnz	x6, LBB44_68
+; %bb.66:                               ;   in Loop: Header=BB44_65 Depth=3
+	ldp	x5, x4, [x3, #16]
+	eor	x6, x4, x17
+	eor	x7, x5, x16
+	orr	x6, x7, x6
+	cbnz	x6, LBB44_69
+; %bb.67:                               ;   in Loop: Header=BB44_65 Depth=3
+	ldp	x3, x4, [x3]
+	cmp	x3, x14
+	cset	w3, lo
+	cmp	x4, x15
 	cset	w4, lo
-	cmp	x5, x15
-	cset	w5, lo
-	csel	w4, w4, w5, eq
-	tbz	w4, #0, LBB44_71
-	b	LBB44_73
-LBB44_69:                               ;   in Loop: Header=BB44_66 Depth=3
-	cmp	x6, x12
+	csel	w3, w3, w4, eq
+	tbz	w3, #0, LBB44_70
+	b	LBB44_72
+LBB44_68:                               ;   in Loop: Header=BB44_65 Depth=3
+	cmp	x5, x12
+	cset	w3, hi
+	cmp	x4, x13
 	cset	w4, hi
-	cmp	x5, x13
-	cset	w5, hi
-	csel	w4, w4, w5, eq
-	tbnz	w4, #0, LBB44_71
-	b	LBB44_73
-LBB44_70:                               ;   in Loop: Header=BB44_66 Depth=3
-	cmp	x6, x16
+	csel	w3, w3, w4, eq
+	tbnz	w3, #0, LBB44_70
+	b	LBB44_72
+LBB44_69:                               ;   in Loop: Header=BB44_65 Depth=3
+	cmp	x5, x16
+	cset	w3, hi
+	cmp	x4, x17
 	cset	w4, hi
-	cmp	x5, x17
-	cset	w5, hi
-	csel	w4, w4, w5, eq
-	tbz	w4, #0, LBB44_73
-LBB44_71:                               ;   in Loop: Header=BB44_66 Depth=3
-	and	w4, w2, w14
-	add	w4, w4, w2
-Lloh349:
+	csel	w3, w3, w4, eq
+	tbz	w3, #0, LBB44_72
+LBB44_70:                               ;   in Loop: Header=BB44_65 Depth=3
+	ubfiz	x3, x14, #32, #12
+	mov	x4, #17587891077120
+	add	x3, x3, x4
+	lsr	x4, x3, #32
+Lloh347:
 	adrp	x5, _dz@PAGE
-Lloh350:
+Lloh348:
 	add	x5, x5, _dz@PAGEOFF
 	mov	w6, #393216
-	madd	x5, x3, x6, x5
-	smaddl	x5, w4, w26, x5
-	ldp	x7, x6, [x5]
-	subs	x14, x14, x7
-	sbc	x19, x15, x6
-	ldp	x20, x15, [x5, #16]
-	subs	x16, x16, x20
+	madd	x5, x2, x6, x5
+	madd	x4, x4, x26, x5
+	ldp	x6, x5, [x4]
+	subs	x14, x14, x6
+	sbc	x7, x15, x5
+	ldp	x19, x15, [x4, #16]
+	subs	x16, x16, x19
 	sbc	x17, x17, x15
-	ldp	x5, x22, [x5, #32]
-	cmn	x16, x20
+	ldp	x4, x20, [x4, #32]
+	cmn	x16, x19
 	adcs	xzr, x17, x15
 	cset	w15, hs
-	subs	x12, x12, x5
-	sbc	x13, x13, x22
+	subs	x12, x12, x4
+	sbc	x13, x13, x20
 	subs	x12, x12, x15
 	sbc	x13, x13, xzr
-	cmn	x14, x7
-	adcs	xzr, x19, x6
+	cmn	x14, x6
+	adcs	xzr, x7, x5
 	cset	w15, hs
 	subs	x16, x16, x15
 	sbc	x17, x17, xzr
-	and	x5, x16, x17
-	cmn	x5, #1
-	cset	w5, eq
-	and	w15, w15, w5
+	and	x4, x16, x17
+	cmn	x4, #1
+	cset	w4, eq
+	and	w15, w15, w4
 	subs	x12, x12, x15
-	extr	x15, x16, x19, #12
-	extr	x14, x19, x14, #12
-	extr	x16, x17, x16, #12
 	sbc	x13, x13, xzr
+	extr	x15, x16, x7, #12
+	extr	x14, x7, x14, #12
+	extr	x16, x17, x16, #12
 	extr	x17, x12, x17, #12
 	extr	x12, x13, x12, #12
 	lsr	x13, x13, #12
-Lloh351:
-	adrp	x5, _dl@PAGE
-Lloh352:
-	add	x5, x5, _dl@PAGEOFF
-	add	x3, x5, x3, lsl #14
-	ldrh	w3, [x3, w4, sxtw  #1]
-	sub	w0, w0, w3
-	sxth	w3, w0
-	cmp	w3, #1
-	b.lt	LBB44_73
-; %bb.72:                               ;   in Loop: Header=BB44_66 Depth=3
+Lloh349:
+	adrp	x4, _dl@PAGE
+Lloh350:
+	add	x4, x4, _dl@PAGEOFF
+	add	x2, x4, x2, lsl #14
+	lsr	x3, x3, #31
+	ldrh	w2, [x2, x3]
+	sub	w0, w0, w2
+	sxth	w2, w0
+	cmp	w2, #1
+	b.lt	LBB44_72
+; %bb.71:                               ;   in Loop: Header=BB44_65 Depth=3
 	sub	w1, w1, #12
-	and	w3, w0, #0xffff
-	cmp	w3, w1, uxth
-	b.lo	LBB44_66
-LBB44_73:                               ;   in Loop: Header=BB44_51 Depth=2
+	and	w2, w0, #0xffff
+	cmp	w2, w1, uxth
+	b.lo	LBB44_65
+LBB44_72:                               ;   in Loop: Header=BB44_51 Depth=2
 	str	x12, [sp, #560]
 	str	x13, [sp, #568]
 	str	x16, [sp, #544]
@@ -10559,16 +10554,15 @@ LBB44_73:                               ;   in Loop: Header=BB44_51 Depth=2
 	orr	x12, x12, x14
 	orr	x13, x13, x15
 	orr	x12, x12, x13
-	cbnz	x12, LBB44_87
-; %bb.74:                               ;   in Loop: Header=BB44_51 Depth=2
+	cbnz	x12, LBB44_49
+; %bb.73:                               ;   in Loop: Header=BB44_51 Depth=2
 	tst	w0, #0xffff
-	mov	x19, x23
-	ldp	x16, x17, [sp, #336]            ; 16-byte Folded Reload
-	ldp	x1, x0, [sp, #320]              ; 16-byte Folded Reload
-	ldr	x2, [sp, #312]                  ; 8-byte Folded Reload
+	ldp	x2, x17, [sp, #320]             ; 16-byte Folded Reload
+	ldp	x0, x16, [sp, #304]             ; 16-byte Folded Reload
+	ldp	x3, x1, [sp, #288]              ; 16-byte Folded Reload
 	b.ne	LBB44_50
-; %bb.75:                               ;   in Loop: Header=BB44_51 Depth=2
-	mov	x20, #0
+; %bb.74:                               ;   in Loop: Header=BB44_51 Depth=2
+	mov	x19, #0
 	add	x10, x30, x11
 	mov	x11, #-11664
 	add	x10, x10, x11
@@ -10576,13 +10570,13 @@ LBB44_73:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldp	x14, x13, [x10, #16]
 	ldp	x10, x15, [x10, #32]
 	adds	x10, x1, x10
-	adc	x15, x2, x15
+	adc	x15, x3, x15
 	adds	x14, x16, x14
 	adcs	x13, x0, x13
 	adcs	x16, x10, xzr
 	cinc	x15, x15, hs
-	adds	x10, x12, x19
-	adcs	x11, x11, x17
+	adds	x10, x12, x17
+	adcs	x11, x11, x2
 	cset	w17, hs
 	adcs	x12, x14, xzr
 	cinc	x13, x13, hs
@@ -10593,21 +10587,26 @@ LBB44_73:                               ;   in Loop: Header=BB44_51 Depth=2
 	adds	x14, x16, x14
 	cinc	x15, x15, hs
 	tst	w9, #0xffff
-	b.eq	LBB44_88
-; %bb.76:                               ;   in Loop: Header=BB44_51 Depth=2
+	b.eq	LBB44_86
+; %bb.75:                               ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x16, [sp, #88]                  ; 8-byte Folded Reload
 	cmp	w16, #1
-	b.lt	LBB44_88
-; %bb.77:                               ;   in Loop: Header=BB44_51 Depth=2
+	mov	w5, #128
+Lloh351:
+	adrp	x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
+Lloh352:
+	ldr	x22, [x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
+	b.lt	LBB44_87
+; %bb.76:                               ;   in Loop: Header=BB44_51 Depth=2
 	mov	x9, #0
 	mov	x7, #0
-	mov	x22, #0
+	mov	x23, #0
 	mov	x24, #0
 	mov	x6, #0
-	mov	x20, #0
+	mov	x19, #0
                                         ; kill: def $w16 killed $w16 killed $x16 def $x16
-	ldr	x5, [sp, #232]                  ; 8-byte Folded Reload
-LBB44_78:                               ;   Parent Loop BB44_14 Depth=1
+	ldr	x20, [sp, #240]                 ; 8-byte Folded Reload
+LBB44_77:                               ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
 	orr	x17, x13, x15
@@ -10615,12 +10614,12 @@ LBB44_78:                               ;   Parent Loop BB44_14 Depth=1
 	orr	x0, x0, x10
 	orr	x17, x17, x11
 	orr	x17, x0, x17
-	cbz	x17, LBB44_89
-; %bb.79:                               ;   in Loop: Header=BB44_78 Depth=3
+	cbz	x17, LBB44_88
+; %bb.78:                               ;   in Loop: Header=BB44_77 Depth=3
 	and	w17, w10, #0x1
 	sub	w16, w16, w17
-	tbz	w10, #0, LBB44_81
-; %bb.80:                               ;   in Loop: Header=BB44_78 Depth=3
+	tbz	w10, #0, LBB44_80
+; %bb.79:                               ;   in Loop: Header=BB44_77 Depth=3
 	ldr	x17, [x25]
 	ldrh	w17, [x17]
 	add	x17, x9, x17
@@ -10629,24 +10628,24 @@ LBB44_78:                               ;   Parent Loop BB44_14 Depth=1
 	ldp	x0, x17, [x4]
 	ldp	x2, x1, [x4, #16]
 	ldp	x4, x3, [x4, #32]
-	b	LBB44_82
-LBB44_81:                               ;   in Loop: Header=BB44_78 Depth=3
+	b	LBB44_81
+LBB44_80:                               ;   in Loop: Header=BB44_77 Depth=3
 	mov	x0, #0
 	mov	x17, #0
 	mov	x2, #0
 	mov	x1, #0
 	mov	x4, #0
 	mov	x3, #0
-LBB44_82:                               ;   in Loop: Header=BB44_78 Depth=3
+LBB44_81:                               ;   in Loop: Header=BB44_77 Depth=3
 	sxth	w16, w16
 	adds	x4, x4, x7
-	adc	x3, x3, x22
+	adc	x3, x3, x23
 	adds	x2, x2, x24
 	adcs	x1, x1, x6
 	adcs	x4, x4, xzr
 	cinc	x3, x3, hs
-	adds	x5, x0, x5
-	adcs	x20, x17, x20
+	adds	x20, x0, x20
+	adcs	x19, x17, x19
 	cset	w17, hs
 	adcs	x24, x2, xzr
 	cinc	x6, x1, hs
@@ -10655,23 +10654,23 @@ LBB44_82:                               ;   in Loop: Header=BB44_78 Depth=3
 	cset	w0, eq
 	and	w17, w17, w0
 	adds	x7, x4, x17
-	cinc	x22, x3, hs
-	tbz	w10, #0, LBB44_84
-; %bb.83:                               ;   in Loop: Header=BB44_78 Depth=3
+	cinc	x23, x3, hs
+	tbz	w10, #0, LBB44_83
+; %bb.82:                               ;   in Loop: Header=BB44_77 Depth=3
 	and	x17, x16, #0xffff
 	madd	x4, x17, x26, x30
 	ldp	x0, x17, [x4]
 	ldp	x2, x1, [x4, #16]
 	ldp	x4, x3, [x4, #32]
-	b	LBB44_85
-LBB44_84:                               ;   in Loop: Header=BB44_78 Depth=3
+	b	LBB44_84
+LBB44_83:                               ;   in Loop: Header=BB44_77 Depth=3
 	mov	x0, #0
 	mov	x17, #0
 	mov	x2, #0
 	mov	x1, #0
 	mov	x4, #0
 	mov	x3, #0
-LBB44_85:                               ;   in Loop: Header=BB44_78 Depth=3
+LBB44_84:                               ;   in Loop: Header=BB44_77 Depth=3
 	subs	x10, x10, x0
 	sbc	x11, x11, x17
 	subs	x12, x12, x2
@@ -10702,33 +10701,44 @@ LBB44_85:                               ;   in Loop: Header=BB44_78 Depth=3
 	lsr	x15, x15, #1
 	add	x9, x9, #1
 	cmp	x9, x8
-	b.hs	LBB44_89
-; %bb.86:                               ;   in Loop: Header=BB44_78 Depth=3
+	b.hs	LBB44_88
+; %bb.85:                               ;   in Loop: Header=BB44_77 Depth=3
 	cmp	w16, #0
-	b.gt	LBB44_78
-	b	LBB44_89
+	b.gt	LBB44_77
+	b	LBB44_88
+LBB44_86:                               ;   in Loop: Header=BB44_51 Depth=2
+	ldr	x20, [sp, #240]                 ; 8-byte Folded Reload
+	mov	x24, x19
+	mov	x6, x19
+	mov	x7, x19
+	mov	x23, x19
+	mov	w5, #128
+Lloh353:
+	adrp	x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
+Lloh354:
+	ldr	x22, [x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
+	b	LBB44_88
 LBB44_87:                               ;   in Loop: Header=BB44_51 Depth=2
-	mov	x19, x23
-	b	LBB44_49
+	ldr	x20, [sp, #240]                 ; 8-byte Folded Reload
+	mov	x24, x19
+	mov	x6, x19
+	mov	x7, x19
+	mov	x23, x19
 LBB44_88:                               ;   in Loop: Header=BB44_51 Depth=2
-	ldr	x5, [sp, #232]                  ; 8-byte Folded Reload
-	mov	x24, x20
-	mov	x6, x20
-	mov	x7, x20
-	mov	x22, x20
-LBB44_89:                               ;   in Loop: Header=BB44_51 Depth=2
+	stp	x23, x6, [sp, #336]             ; 16-byte Folded Spill
+	str	x7, [sp, #352]                  ; 8-byte Folded Spill
 	str	x14, [sp, #560]
 	str	x15, [sp, #568]
 	str	x12, [sp, #544]
 	str	x13, [sp, #552]
 	str	x10, [sp, #528]
 	str	x11, [sp, #536]
-	ldr	x8, [sp, #176]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #184]                  ; 8-byte Folded Reload
 	stp	q0, q0, [x8]
 	adrp	x8, _m@PAGE
 	ldrh	w23, [x8, _m@PAGEOFF]
-	cbz	w23, LBB44_100
-; %bb.90:                               ;   in Loop: Header=BB44_51 Depth=2
+	cbz	w23, LBB44_99
+; %bb.89:                               ;   in Loop: Header=BB44_51 Depth=2
 	mov	x15, #0
 	mov	x14, #0
 	mov	x13, #0
@@ -10739,8 +10749,8 @@ LBB44_89:                               ;   in Loop: Header=BB44_51 Depth=2
 	sub	w10, w23, #1
 	mov	w11, #129
 	sub	w11, w11, w23
-	b	LBB44_93
-LBB44_91:                               ;   in Loop: Header=BB44_93 Depth=3
+	b	LBB44_92
+LBB44_90:                               ;   in Loop: Header=BB44_92 Depth=3
 	and	x17, x28, #0xffff
 	mov	w0, #11664
 	umaddl	x0, w10, w0, x30
@@ -10748,7 +10758,7 @@ LBB44_91:                               ;   in Loop: Header=BB44_93 Depth=3
 	ldp	x0, x17, [x4]
 	ldp	x2, x1, [x4, #16]
 	ldp	x4, x3, [x4, #32]
-LBB44_92:                               ;   in Loop: Header=BB44_93 Depth=3
+LBB44_91:                               ;   in Loop: Header=BB44_92 Depth=3
 	and	x16, x16, #0x1
 	adds	x15, x15, x4
 	adc	x14, x14, x3
@@ -10771,21 +10781,21 @@ LBB44_92:                               ;   in Loop: Header=BB44_93 Depth=3
 	add	w11, w11, #1
 	and	w16, w10, #0xffff
 	sub	w10, w10, #1
-	cbz	w16, LBB44_99
-LBB44_93:                               ;   Parent Loop BB44_14 Depth=1
+	cbz	w16, LBB44_98
+LBB44_92:                               ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
 	add	w17, w10, #1
 	cmp	w17, #129
-	b.hs	LBB44_95
-; %bb.94:                               ;   in Loop: Header=BB44_93 Depth=3
+	b.hs	LBB44_94
+; %bb.93:                               ;   in Loop: Header=BB44_92 Depth=3
 	mov	w16, w10
-	lsr	x17, x5, x16
+	lsr	x17, x20, x16
 	mvn	w0, w10
-	lsl	x1, x20, #1
+	lsl	x1, x19, #1
 	lsl	x0, x1, x0
 	orr	x17, x0, x17
-	lsr	x0, x20, x16
+	lsr	x0, x19, x16
 	tst	x16, #0x40
 	csel	x16, x0, x17, ne
 	mov	w17, w11
@@ -10795,69 +10805,70 @@ LBB44_93:                               ;   Parent Loop BB44_14 Depth=1
 	cmp	w10, #0
 	csel	x17, xzr, x17, eq
 	orr	x16, x17, x16
-	tbnz	w16, #0, LBB44_91
-	b	LBB44_98
-LBB44_95:                               ;   in Loop: Header=BB44_93 Depth=3
+	tbnz	w16, #0, LBB44_90
+	b	LBB44_97
+LBB44_94:                               ;   in Loop: Header=BB44_92 Depth=3
 	and	w16, w10, #0x7f
 	cmp	w17, #257
-	b.hs	LBB44_97
-; %bb.96:                               ;   in Loop: Header=BB44_93 Depth=3
+	b.hs	LBB44_96
+; %bb.95:                               ;   in Loop: Header=BB44_92 Depth=3
 	lsr	x17, x24, x16
 	mvn	w0, w16
-	lsl	x1, x6, #1
+	ldr	x2, [sp, #344]                  ; 8-byte Folded Reload
+	lsl	x1, x2, #1
 	lsl	x0, x1, x0
 	orr	x17, x0, x17
-	lsr	x0, x6, x16
+	lsr	x0, x2, x16
 	tst	x16, #0x40
 	csel	x17, x0, x17, ne
-	mov	w0, #128
-	sub	w0, w0, w16
-	lsl	x1, x7, x0
+	sub	w0, w5, w16
+	ldr	x1, [sp, #352]                  ; 8-byte Folded Reload
+	lsl	x1, x1, x0
 	tst	x0, #0x40
 	csel	x0, xzr, x1, ne
 	cmp	w16, #0
 	csel	x16, xzr, x0, eq
 	orr	x16, x16, x17
-	tbnz	w16, #0, LBB44_91
-	b	LBB44_98
-LBB44_97:                               ;   in Loop: Header=BB44_93 Depth=3
-	lsr	x17, x7, x16
+	tbnz	w16, #0, LBB44_90
+	b	LBB44_97
+LBB44_96:                               ;   in Loop: Header=BB44_92 Depth=3
+	ldr	x17, [sp, #352]                 ; 8-byte Folded Reload
+	lsr	x17, x17, x16
 	mvn	w0, w16
-	lsl	x1, x22, #1
+	ldr	x2, [sp, #336]                  ; 8-byte Folded Reload
+	lsl	x1, x2, #1
 	lsl	x0, x1, x0
 	orr	x17, x0, x17
-	lsr	x0, x22, x16
+	lsr	x0, x2, x16
 	tst	x16, #0x40
 	csel	x16, x0, x17, ne
-	tbnz	w16, #0, LBB44_91
-LBB44_98:                               ;   in Loop: Header=BB44_93 Depth=3
+	tbnz	w16, #0, LBB44_90
+LBB44_97:                               ;   in Loop: Header=BB44_92 Depth=3
 	mov	x0, #0
 	mov	x17, #0
 	mov	x2, #0
 	mov	x1, #0
 	mov	x4, #0
 	mov	x3, #0
-	b	LBB44_92
-LBB44_99:                               ;   in Loop: Header=BB44_51 Depth=2
+	b	LBB44_91
+LBB44_98:                               ;   in Loop: Header=BB44_51 Depth=2
 	stp	x13, x12, [sp, #496]
 	str	x15, [sp, #512]
 	str	x14, [sp, #520]
-	b	LBB44_101
-LBB44_100:                              ;   in Loop: Header=BB44_51 Depth=2
+	b	LBB44_100
+LBB44_99:                               ;   in Loop: Header=BB44_51 Depth=2
 	mov	x8, #0
 	mov	x9, #0
 	mov	w28, #0
-LBB44_101:                              ;   in Loop: Header=BB44_51 Depth=2
-	stp	x22, x7, [sp, #240]             ; 16-byte Folded Spill
-	stp	x6, x5, [sp, #272]              ; 16-byte Folded Spill
+LBB44_100:                              ;   in Loop: Header=BB44_51 Depth=2
 	stp	x8, x9, [sp, #480]
 	ldr	x1, [x25, #40]
 	add	x8, sp, #384
 	add	x0, sp, #480
 	bl	__Z6divmodRK11__uint384_tS1_
-Lloh353:
+Lloh355:
 	adrp	x10, _p23@PAGE
-Lloh354:
+Lloh356:
 	add	x10, x10, _p23@PAGEOFF
 	mov	w8, #11664
 	umaddl	x8, w23, w8, x10
@@ -10869,54 +10880,38 @@ Lloh354:
 	eor	x14, x10, x12
 	eor	x15, x11, x13
 	orr	x14, x15, x14
-	stp	x20, x19, [sp, #256]            ; 16-byte Folded Spill
-	cbnz	x14, LBB44_104
-; %bb.102:                              ;   in Loop: Header=BB44_51 Depth=2
+	stp	x20, x19, [sp, #248]            ; 16-byte Folded Spill
+	cbnz	x14, LBB44_103
+; %bb.101:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldp	x11, x10, [x8, #16]
 	ldp	x13, x12, [x9, #16]
 	eor	x14, x10, x12
 	eor	x15, x11, x13
 	orr	x14, x15, x14
-Lloh355:
-	adrp	x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
-Lloh356:
-	ldr	x22, [x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
-	cbnz	x14, LBB44_105
-; %bb.103:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbnz	x14, LBB44_103
+; %bb.102:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldp	x8, x10, [x8]
 	ldp	x9, x11, [x9]
 	cmp	x8, x9
 	cset	w8, hs
 	cmp	x10, x11
 	cset	w9, hs
-	b	LBB44_106
+	b	LBB44_104
+LBB44_103:                              ;   in Loop: Header=BB44_51 Depth=2
+	cmp	x11, x13
+	cset	w8, hi
+	cmp	x10, x12
+	cset	w9, hi
 LBB44_104:                              ;   in Loop: Header=BB44_51 Depth=2
-	cmp	x11, x13
-	cset	w8, hi
-	cmp	x10, x12
-	cset	w9, hi
 	csel	w8, w8, w9, eq
-Lloh357:
-	adrp	x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
-Lloh358:
-	ldr	x22, [x22, __ZTVNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
-	b	LBB44_107
-LBB44_105:                              ;   in Loop: Header=BB44_51 Depth=2
-	cmp	x11, x13
-	cset	w8, hi
-	cmp	x10, x12
-	cset	w9, hi
-LBB44_106:                              ;   in Loop: Header=BB44_51 Depth=2
-	csel	w8, w8, w9, eq
-LBB44_107:                              ;   in Loop: Header=BB44_51 Depth=2
 	cmp	w8, #0
-Lloh359:
+Lloh357:
 	adrp	x9, l_.str.1@PAGE
-Lloh360:
+Lloh358:
 	add	x9, x9, l_.str.1@PAGEOFF
-Lloh361:
+Lloh359:
 	adrp	x10, l_.str.23@PAGE
-Lloh362:
+Lloh360:
 	add	x10, x10, l_.str.23@PAGEOFF
 	csel	x1, x10, x9, ne
 	eor	w2, w8, #0x1
@@ -10930,7 +10925,7 @@ Lloh362:
 	str	x19, [sp, #912]
 	add	x25, x22, #64
 	str	x25, [sp, #800]
-	ldp	x9, x8, [sp, #184]              ; 16-byte Folded Reload
+	ldp	x9, x8, [sp, #192]              ; 16-byte Folded Reload
 	str	x8, [sp, #784]
 	ldur	x8, [x8, #-24]
 	add	x20, sp, #784
@@ -10941,19 +10936,19 @@ Lloh362:
 	add	x23, x20, x8
 Ltmp396:
 	mov	x0, x23
-	ldr	x26, [sp, #200]                 ; 8-byte Folded Reload
+	ldr	x26, [sp, #208]                 ; 8-byte Folded Reload
 	mov	x1, x26
 	bl	__ZNSt3__18ios_base4initEPv
 Ltmp397:
-; %bb.108:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.105:                              ;   in Loop: Header=BB44_51 Depth=2
 	str	xzr, [x23, #136]
 	mov	w8, #-1
 	str	w8, [x23, #144]
-	ldp	x10, x8, [sp, #160]             ; 16-byte Folded Reload
+	ldp	x10, x8, [sp, #168]             ; 16-byte Folded Reload
 	ldur	x8, [x8, #-24]
-	ldr	x9, [sp, #304]                  ; 8-byte Folded Reload
+	ldr	x9, [sp, #280]                  ; 8-byte Folded Reload
 	str	x10, [x9, x8]
-	ldp	x8, x9, [sp, #144]              ; 16-byte Folded Reload
+	ldp	x8, x9, [sp, #152]              ; 16-byte Folded Reload
 	ldur	x8, [x8, #-24]
 	str	x9, [x20, x8]
 	add	x8, x22, #24
@@ -10964,10 +10959,10 @@ Ltmp399:
 	mov	x0, x26
 	bl	__ZNSt3__115basic_streambufIcNS_11char_traitsIcEEEC2Ev
 Ltmp400:
-; %bb.109:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.106:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [sp, #128]                  ; 8-byte Folded Reload
 	str	x8, [sp, #808]
-	ldr	x8, [sp, #136]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #144]                  ; 8-byte Folded Reload
 	movi.2d	v0, #0000000000000000
 	stp	q0, q0, [x8]
 	mov	w8, #24
@@ -10976,116 +10971,119 @@ Ltmp402:
 	mov	x0, #0
 	bl	_time
 Ltmp403:
-	ldr	x25, [sp, #208]                 ; 8-byte Folded Reload
-Lloh363:
-	adrp	x20, l_.str@PAGE
-Lloh364:
-	add	x20, x20, l_.str@PAGEOFF
-	ldp	x22, x19, [sp, #272]            ; 16-byte Folded Reload
-; %bb.110:                              ;   in Loop: Header=BB44_51 Depth=2
-Lloh365:
+	ldr	x25, [sp, #216]                 ; 8-byte Folded Reload
+	ldr	x22, [sp, #136]                 ; 8-byte Folded Reload
+	mov	w19, #2
+	mov	w20, #10
+; %bb.107:                              ;   in Loop: Header=BB44_51 Depth=2
+Lloh361:
 	adrp	x8, _start_time@PAGE
-Lloh366:
+Lloh362:
 	ldr	x1, [x8, _start_time@PAGEOFF]
 Ltmp404:
 	bl	_difftime
 Ltmp405:
-; %bb.111:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.108:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp406:
-	ldr	x0, [sp, #304]                  ; 8-byte Folded Reload
+	ldr	x0, [sp, #280]                  ; 8-byte Folded Reload
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEd
 Ltmp407:
-; %bb.112:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.109:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp408:
-Lloh367:
+Lloh363:
 	adrp	x1, l_.str.15@PAGE
-Lloh368:
+Lloh364:
 	add	x1, x1, l_.str.15@PAGEOFF
 	mov	w2, #2
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp409:
-; %bb.113:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.110:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp410:
 	mov	x23, x0
 	bl	_pthread_self
 	mov	x1, x0
 Ltmp411:
-; %bb.114:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.111:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp413:
 	mov	x0, x23
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEPKv
 Ltmp414:
-; %bb.115:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.112:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp415:
-Lloh369:
+Lloh365:
 	adrp	x1, l_.str.16@PAGE
-Lloh370:
+Lloh366:
 	add	x1, x1, l_.str.16@PAGEOFF
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp416:
-; %bb.116:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.113:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp417:
-	ldr	x0, [sp, #304]                  ; 8-byte Folded Reload
-Lloh371:
+	ldr	x0, [sp, #280]                  ; 8-byte Folded Reload
+Lloh367:
 	adrp	x1, l_.str.24@PAGE
-Lloh372:
+Lloh368:
 	add	x1, x1, l_.str.24@PAGEOFF
 	mov	w2, #3
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp418:
-; %bb.117:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.114:                              ;   in Loop: Header=BB44_51 Depth=2
 	adrp	x8, _m@PAGE
 	ldrh	w1, [x8, _m@PAGEOFF]
 Ltmp419:
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 Ltmp420:
-; %bb.118:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.115:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp421:
-Lloh373:
+Lloh369:
 	adrp	x1, l_.str.25@PAGE
-Lloh374:
+Lloh370:
 	add	x1, x1, l_.str.25@PAGEOFF
 	mov	w2, #4
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp422:
-; %bb.119:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.116:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp423:
 	and	w1, w28, #0xffff
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEt
 Ltmp424:
-; %bb.120:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.117:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp425:
-Lloh375:
+Lloh371:
 	adrp	x1, l_.str.26@PAGE
-Lloh376:
+Lloh372:
 	add	x1, x1, l_.str.26@PAGEOFF
 	mov	w2, #4
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp426:
-; %bb.121:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.118:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp427:
 	mov	x28, x0
 	add	x0, sp, #768
 	mov	x1, x28
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_
 Ltmp428:
-; %bb.122:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.119:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #768]
-	cbz	w8, LBB44_128
-; %bb.123:                              ;   in Loop: Header=BB44_51 Depth=2
-	str	x19, [sp, #720]
+	cbz	w8, LBB44_125
+; %bb.120:                              ;   in Loop: Header=BB44_51 Depth=2
+	ldr	x8, [sp, #248]                  ; 8-byte Folded Reload
+	str	x8, [sp, #720]
 	ldr	x8, [sp, #256]                  ; 8-byte Folded Reload
 	str	x8, [sp, #728]
 	str	x24, [sp, #736]
-	str	x22, [sp, #744]
-	ldr	x23, [sp, #352]                 ; 8-byte Folded Reload
-	ldr	x8, [sp, #248]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #344]                  ; 8-byte Folded Reload
+	str	x8, [sp, #744]
+	mov	x23, x22
+	ldr	x8, [sp, #352]                  ; 8-byte Folded Reload
 	str	x8, [sp, #752]
-	ldr	x8, [sp, #240]                  ; 8-byte Folded Reload
+	ldr	x8, [sp, #336]                  ; 8-byte Folded Reload
 	str	x8, [sp, #760]
-	mov	w19, #2
-LBB44_124:                              ;   Parent Loop BB44_14 Depth=1
+Lloh373:
+	adrp	x24, l_.str@PAGE
+Lloh374:
+	add	x24, x24, l_.str@PAGEOFF
+LBB44_121:                              ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
 	movi.2d	v0, #0000000000000000
@@ -11097,7 +11095,7 @@ LBB44_124:                              ;   Parent Loop BB44_14 Depth=1
 	add	x1, sp, #576
 	bl	__Z6divmodRK11__uint384_tS1_
 	ldr	x8, [sp, #672]
-	ldrb	w8, [x20, x8]
+	ldrb	w8, [x24, x8]
 	strb	w8, [x23, #-1]!
 	ldr	q2, [x27, #176]
 	ldp	q1, q0, [x27, #144]
@@ -11114,14 +11112,13 @@ LBB44_124:                              ;   Parent Loop BB44_14 Depth=1
 	orr	x8, x8, x11
 	orr	x9, x9, x10
 	orr	x8, x9, x8
-	cbnz	x8, LBB44_124
-; %bb.125:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbnz	x8, LBB44_121
+; %bb.122:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x8, x28, x8
 	ldr	x0, [x8, #40]
-	ldr	x8, [sp, #352]                  ; 8-byte Folded Reload
-	sub	w8, w8, w23
+	sub	w8, w22, w23
 	sxtw	x24, w8
 	ldr	x8, [x0]
 	ldr	x8, [x8, #96]
@@ -11130,10 +11127,10 @@ Ltmp429:
 	mov	x2, x24
 	blr	x8
 Ltmp430:
-; %bb.126:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.123:                              ;   in Loop: Header=BB44_51 Depth=2
 	cmp	x0, x24
-	b.eq	LBB44_128
-; %bb.127:                              ;   in Loop: Header=BB44_51 Depth=2
+	b.eq	LBB44_125
+; %bb.124:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x0, x28, x8
@@ -11142,7 +11139,7 @@ Ltmp430:
 Ltmp431:
 	bl	__ZNSt3__18ios_base5clearEj
 Ltmp432:
-LBB44_128:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_125:                              ;   in Loop: Header=BB44_51 Depth=2
 	add	x0, sp, #768
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryD1Ev
 	mov	w8, #48
@@ -11153,46 +11150,49 @@ Ltmp434:
 	mov	w2, #1
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp435:
-; %bb.129:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.126:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp436:
-Lloh377:
+Lloh375:
 	adrp	x1, l_.str.27@PAGE
-Lloh378:
+Lloh376:
 	add	x1, x1, l_.str.27@PAGEOFF
 	mov	w2, #4
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp437:
-; %bb.130:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.127:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp438:
 	mov	x28, x0
 	add	x0, sp, #768
 	mov	x1, x28
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_
 Ltmp439:
-; %bb.131:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.128:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #768]
-	cbz	w8, LBB44_137
-; %bb.132:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbz	w8, LBB44_134
+; %bb.129:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [sp, #80]                   ; 8-byte Folded Reload
 	ldp	q0, q1, [x8]
 	stp	q0, q1, [x27, #240]
 	ldr	q0, [x8, #32]
 	str	q0, [x27, #272]
-	ldr	x23, [sp, #352]                 ; 8-byte Folded Reload
-	mov	w19, #10
-LBB44_133:                              ;   Parent Loop BB44_14 Depth=1
+	mov	x23, x22
+Lloh377:
+	adrp	x19, l_.str@PAGE
+Lloh378:
+	add	x19, x19, l_.str@PAGEOFF
+LBB44_130:                              ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
 	movi.2d	v0, #0000000000000000
 	stp	q0, q0, [x21]
 	str	xzr, [sp, #584]
-	str	x19, [sp, #576]
+	str	x20, [sp, #576]
 	add	x8, sp, #624
 	add	x0, sp, #720
 	add	x1, sp, #576
 	bl	__Z6divmodRK11__uint384_tS1_
 	ldr	x8, [sp, #672]
-	ldrb	w8, [x20, x8]
+	ldrb	w8, [x19, x8]
 	strb	w8, [x23, #-1]!
 	ldr	q2, [x27, #176]
 	ldp	q1, q0, [x27, #144]
@@ -11209,14 +11209,13 @@ LBB44_133:                              ;   Parent Loop BB44_14 Depth=1
 	orr	x8, x8, x11
 	orr	x9, x9, x10
 	orr	x8, x9, x8
-	cbnz	x8, LBB44_133
-; %bb.134:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbnz	x8, LBB44_130
+; %bb.131:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x8, x28, x8
 	ldr	x0, [x8, #40]
-	ldr	x8, [sp, #352]                  ; 8-byte Folded Reload
-	sub	w8, w8, w23
+	sub	w8, w22, w23
 	sxtw	x24, w8
 	ldr	x8, [x0]
 	ldr	x8, [x8, #96]
@@ -11225,10 +11224,10 @@ Ltmp440:
 	mov	x2, x24
 	blr	x8
 Ltmp441:
-; %bb.135:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.132:                              ;   in Loop: Header=BB44_51 Depth=2
 	cmp	x0, x24
-	b.eq	LBB44_137
-; %bb.136:                              ;   in Loop: Header=BB44_51 Depth=2
+	b.eq	LBB44_134
+; %bb.133:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x0, x28, x8
@@ -11237,7 +11236,7 @@ Ltmp441:
 Ltmp442:
 	bl	__ZNSt3__18ios_base5clearEj
 Ltmp443:
-LBB44_137:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_134:                              ;   in Loop: Header=BB44_51 Depth=2
 	add	x0, sp, #768
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryD1Ev
 Ltmp445:
@@ -11249,7 +11248,7 @@ Lloh380:
 	mov	w2, #4
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp446:
-; %bb.138:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.135:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #383]
 	sxtb	w9, w8
 	ldp	x10, x11, [sp, #360]
@@ -11260,36 +11259,39 @@ Ltmp446:
 Ltmp447:
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp448:
-; %bb.139:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.136:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp449:
 	mov	x28, x0
 	add	x0, sp, #768
 	mov	x1, x28
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_
 Ltmp450:
-; %bb.140:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.137:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #768]
-	cbz	w8, LBB44_146
-; %bb.141:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbz	w8, LBB44_143
+; %bb.138:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldp	q0, q1, [sp, #384]
 	stp	q0, q1, [x27, #240]
 	ldr	q0, [sp, #416]
 	str	q0, [x27, #272]
-	ldr	x23, [sp, #352]                 ; 8-byte Folded Reload
-	mov	w19, #10
-LBB44_142:                              ;   Parent Loop BB44_14 Depth=1
+	mov	x23, x22
+Lloh381:
+	adrp	x19, l_.str@PAGE
+Lloh382:
+	add	x19, x19, l_.str@PAGEOFF
+LBB44_139:                              ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
 	movi.2d	v0, #0000000000000000
 	stp	q0, q0, [x21]
 	str	xzr, [sp, #584]
-	str	x19, [sp, #576]
+	str	x20, [sp, #576]
 	add	x8, sp, #624
 	add	x0, sp, #720
 	add	x1, sp, #576
 	bl	__Z6divmodRK11__uint384_tS1_
 	ldr	x8, [sp, #672]
-	ldrb	w8, [x20, x8]
+	ldrb	w8, [x19, x8]
 	strb	w8, [x23, #-1]!
 	ldr	q2, [x27, #176]
 	ldp	q1, q0, [x27, #144]
@@ -11306,14 +11308,13 @@ LBB44_142:                              ;   Parent Loop BB44_14 Depth=1
 	orr	x8, x8, x11
 	orr	x9, x9, x10
 	orr	x8, x9, x8
-	cbnz	x8, LBB44_142
-; %bb.143:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbnz	x8, LBB44_139
+; %bb.140:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x8, x28, x8
 	ldr	x0, [x8, #40]
-	ldr	x8, [sp, #352]                  ; 8-byte Folded Reload
-	sub	w8, w8, w23
+	sub	w8, w22, w23
 	sxtw	x24, w8
 	ldr	x8, [x0]
 	ldr	x8, [x8, #96]
@@ -11322,10 +11323,10 @@ Ltmp451:
 	mov	x2, x24
 	blr	x8
 Ltmp452:
-; %bb.144:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.141:                              ;   in Loop: Header=BB44_51 Depth=2
 	cmp	x0, x24
-	b.eq	LBB44_146
-; %bb.145:                              ;   in Loop: Header=BB44_51 Depth=2
+	b.eq	LBB44_143
+; %bb.142:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x0, x28, x8
@@ -11334,19 +11335,19 @@ Ltmp452:
 Ltmp453:
 	bl	__ZNSt3__18ios_base5clearEj
 Ltmp454:
-LBB44_146:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_143:                              ;   in Loop: Header=BB44_51 Depth=2
 	add	x0, sp, #768
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryD1Ev
 Ltmp456:
 	mov	x0, x28
-Lloh381:
+Lloh383:
 	adrp	x1, l_.str.29@PAGE
-Lloh382:
+Lloh384:
 	add	x1, x1, l_.str.29@PAGEOFF
 	mov	w2, #4
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp457:
-; %bb.147:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.144:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #383]
 	sxtb	w9, w8
 	ldp	x10, x11, [sp, #360]
@@ -11357,7 +11358,7 @@ Ltmp457:
 Ltmp458:
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp459:
-; %bb.148:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.145:                              ;   in Loop: Header=BB44_51 Depth=2
 	mov	x28, x0
 	ldr	x19, [x25, #40]
 Ltmp460:
@@ -11365,29 +11366,32 @@ Ltmp460:
 	mov	x1, x28
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_
 Ltmp461:
-; %bb.149:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.146:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #768]
-	cbz	w8, LBB44_155
-; %bb.150:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbz	w8, LBB44_152
+; %bb.147:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldp	q0, q1, [x19]
 	stp	q0, q1, [x27, #240]
 	ldr	q0, [x19, #32]
 	str	q0, [x27, #272]
-	ldr	x23, [sp, #352]                 ; 8-byte Folded Reload
-	mov	w19, #10
-LBB44_151:                              ;   Parent Loop BB44_14 Depth=1
+	mov	x23, x22
+Lloh385:
+	adrp	x19, l_.str@PAGE
+Lloh386:
+	add	x19, x19, l_.str@PAGEOFF
+LBB44_148:                              ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
 	movi.2d	v0, #0000000000000000
 	stp	q0, q0, [x21]
 	str	xzr, [sp, #584]
-	str	x19, [sp, #576]
+	str	x20, [sp, #576]
 	add	x8, sp, #624
 	add	x0, sp, #720
 	add	x1, sp, #576
 	bl	__Z6divmodRK11__uint384_tS1_
 	ldr	x8, [sp, #672]
-	ldrb	w8, [x20, x8]
+	ldrb	w8, [x19, x8]
 	strb	w8, [x23, #-1]!
 	ldr	q2, [x27, #176]
 	ldp	q1, q0, [x27, #144]
@@ -11404,14 +11408,13 @@ LBB44_151:                              ;   Parent Loop BB44_14 Depth=1
 	orr	x8, x8, x11
 	orr	x9, x9, x10
 	orr	x8, x9, x8
-	cbnz	x8, LBB44_151
-; %bb.152:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbnz	x8, LBB44_148
+; %bb.149:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x8, x28, x8
 	ldr	x0, [x8, #40]
-	ldr	x8, [sp, #352]                  ; 8-byte Folded Reload
-	sub	w8, w8, w23
+	sub	w8, w22, w23
 	sxtw	x24, w8
 	ldr	x8, [x0]
 	ldr	x8, [x8, #96]
@@ -11420,10 +11423,10 @@ Ltmp462:
 	mov	x2, x24
 	blr	x8
 Ltmp463:
-; %bb.153:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.150:                              ;   in Loop: Header=BB44_51 Depth=2
 	cmp	x0, x24
-	b.eq	LBB44_155
-; %bb.154:                              ;   in Loop: Header=BB44_51 Depth=2
+	b.eq	LBB44_152
+; %bb.151:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x0, x28, x8
@@ -11432,48 +11435,51 @@ Ltmp463:
 Ltmp464:
 	bl	__ZNSt3__18ios_base5clearEj
 Ltmp465:
-LBB44_155:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_152:                              ;   in Loop: Header=BB44_51 Depth=2
 	add	x0, sp, #768
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryD1Ev
 Ltmp467:
 	mov	x0, x28
-Lloh383:
+Lloh387:
 	adrp	x1, l_.str.30@PAGE
-Lloh384:
+Lloh388:
 	add	x1, x1, l_.str.30@PAGEOFF
 	mov	w2, #4
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp468:
-; %bb.156:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.153:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp469:
 	mov	x28, x0
 	add	x0, sp, #768
 	mov	x1, x28
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_
 Ltmp470:
-; %bb.157:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.154:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #768]
-	cbz	w8, LBB44_163
-; %bb.158:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbz	w8, LBB44_160
+; %bb.155:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	q0, [sp, #480]
 	ldp	q1, q2, [x27, #16]
 	stp	q0, q1, [x27, #240]
 	str	q2, [x27, #272]
-	ldr	x23, [sp, #352]                 ; 8-byte Folded Reload
-	mov	w19, #10
-LBB44_159:                              ;   Parent Loop BB44_14 Depth=1
+	mov	x23, x22
+Lloh389:
+	adrp	x19, l_.str@PAGE
+Lloh390:
+	add	x19, x19, l_.str@PAGEOFF
+LBB44_156:                              ;   Parent Loop BB44_14 Depth=1
                                         ;     Parent Loop BB44_51 Depth=2
                                         ; =>    This Inner Loop Header: Depth=3
 	movi.2d	v0, #0000000000000000
 	stp	q0, q0, [x21]
 	str	xzr, [sp, #584]
-	str	x19, [sp, #576]
+	str	x20, [sp, #576]
 	add	x8, sp, #624
 	add	x0, sp, #720
 	add	x1, sp, #576
 	bl	__Z6divmodRK11__uint384_tS1_
 	ldr	x8, [sp, #672]
-	ldrb	w8, [x20, x8]
+	ldrb	w8, [x19, x8]
 	strb	w8, [x23, #-1]!
 	ldr	q2, [x27, #176]
 	ldp	q1, q0, [x27, #144]
@@ -11490,14 +11496,13 @@ LBB44_159:                              ;   Parent Loop BB44_14 Depth=1
 	orr	x8, x8, x11
 	orr	x9, x9, x10
 	orr	x8, x9, x8
-	cbnz	x8, LBB44_159
-; %bb.160:                              ;   in Loop: Header=BB44_51 Depth=2
+	cbnz	x8, LBB44_156
+; %bb.157:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x8, x28, x8
 	ldr	x0, [x8, #40]
-	ldr	x8, [sp, #352]                  ; 8-byte Folded Reload
-	sub	w8, w8, w23
+	sub	w8, w22, w23
 	sxtw	x24, w8
 	ldr	x8, [x0]
 	ldr	x8, [x8, #96]
@@ -11506,10 +11511,10 @@ Ltmp471:
 	mov	x2, x24
 	blr	x8
 Ltmp472:
-; %bb.161:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.158:                              ;   in Loop: Header=BB44_51 Depth=2
 	cmp	x0, x24
-	b.eq	LBB44_163
-; %bb.162:                              ;   in Loop: Header=BB44_51 Depth=2
+	b.eq	LBB44_160
+; %bb.159:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x28]
 	ldur	x8, [x8, #-24]
 	add	x0, x28, x8
@@ -11518,7 +11523,7 @@ Ltmp472:
 Ltmp473:
 	bl	__ZNSt3__18ios_base5clearEj
 Ltmp474:
-LBB44_163:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_160:                              ;   in Loop: Header=BB44_51 Depth=2
 	add	x0, sp, #768
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryD1Ev
 	ldr	x8, [x28]
@@ -11528,23 +11533,23 @@ Ltmp476:
 	add	x8, sp, #1192
 	bl	__ZNKSt3__18ios_base6getlocEv
 Ltmp477:
-; %bb.164:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.161:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp478:
 	add	x0, sp, #1192
-Lloh385:
+Lloh391:
 	adrp	x1, __ZNSt3__15ctypeIcE2idE@GOTPAGE
-Lloh386:
+Lloh392:
 	ldr	x1, [x1, __ZNSt3__15ctypeIcE2idE@GOTPAGEOFF]
 	bl	__ZNKSt3__16locale9use_facetERNS0_2idE
 Ltmp479:
-; %bb.165:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.162:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x8, [x0]
 	ldr	x8, [x8, #56]
 Ltmp480:
 	mov	w1, #10
 	blr	x8
 Ltmp481:
-; %bb.166:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.163:                              ;   in Loop: Header=BB44_51 Depth=2
 	mov	x23, x0
 	add	x0, sp, #1192
 	bl	__ZNSt3__16localeD1Ev
@@ -11553,18 +11558,18 @@ Ltmp483:
 	mov	x1, x23
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE3putEc
 Ltmp484:
-; %bb.167:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.164:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp485:
 	mov	x0, x28
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE5flushEv
 Ltmp486:
-; %bb.168:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.165:                              ;   in Loop: Header=BB44_51 Depth=2
 Ltmp487:
 	add	x8, sp, #1192
 	mov	x0, x26
 	bl	__ZNKSt3__115basic_stringbufIcNS_11char_traitsIcEENS_9allocatorIcEEE3strEv
 Ltmp488:
-; %bb.169:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.166:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #1215]
 	sxtb	w9, w8
 	ldr	x10, [sp, #1192]
@@ -11574,26 +11579,26 @@ Ltmp488:
 	csel	x1, x10, x9, lt
 	csel	x2, x11, x8, lt
 Ltmp490:
-Lloh387:
+Lloh393:
 	adrp	x0, __ZNSt3__14coutE@GOTPAGE
-Lloh388:
+Lloh394:
 	ldr	x0, [x0, __ZNSt3__14coutE@GOTPAGEOFF]
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp491:
-; %bb.170:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.167:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrsb	w8, [sp, #1215]
-	tbz	w8, #31, LBB44_172
-; %bb.171:                              ;   in Loop: Header=BB44_51 Depth=2
+	tbz	w8, #31, LBB44_169
+; %bb.168:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x0, [sp, #1192]
 	bl	__ZdlPv
-LBB44_172:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_169:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x23, [x25, #88]
 Ltmp493:
 	add	x8, sp, #1192
 	mov	x0, x26
 	bl	__ZNKSt3__115basic_stringbufIcNS_11char_traitsIcEENS_9allocatorIcEEE3strEv
 Ltmp494:
-; %bb.173:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.170:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrb	w8, [sp, #1215]
 	sxtb	w9, w8
 	ldr	x10, [sp, #1192]
@@ -11606,42 +11611,42 @@ Ltmp496:
 	mov	x0, x23
 	bl	__ZNSt3__124__put_character_sequenceB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m
 Ltmp497:
-; %bb.174:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.171:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldrsb	w8, [sp, #1215]
-	tbz	w8, #31, LBB44_176
-; %bb.175:                              ;   in Loop: Header=BB44_51 Depth=2
+	tbz	w8, #31, LBB44_173
+; %bb.172:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x0, [sp, #1192]
 	bl	__ZdlPv
-LBB44_176:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_173:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x0, [x25, #88]
 Ltmp499:
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE5flushEv
 Ltmp500:
-; %bb.177:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.174:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldp	x10, x8, [sp, #104]             ; 16-byte Folded Reload
 	str	x8, [sp, #784]
 	ldur	x8, [x8, #-24]
 	add	x9, sp, #784
 	str	x10, [x9, x8]
-Lloh389:
+Lloh395:
 	adrp	x8, __ZTVNSt3__115basic_stringbufIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
-Lloh390:
+Lloh396:
 	ldr	x8, [x8, __ZTVNSt3__115basic_stringbufIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
 	add	x8, x8, #16
 	ldr	x9, [sp, #96]                   ; 8-byte Folded Reload
 	str	x9, [sp, #800]
 	str	x8, [sp, #808]
 	ldrsb	w8, [sp, #895]
-	tbz	w8, #31, LBB44_179
-; %bb.178:                              ;   in Loop: Header=BB44_51 Depth=2
+	tbz	w8, #31, LBB44_176
+; %bb.175:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x0, [sp, #872]
 	bl	__ZdlPv
-LBB44_179:                              ;   in Loop: Header=BB44_51 Depth=2
+LBB44_176:                              ;   in Loop: Header=BB44_51 Depth=2
 	mov	x0, x26
 	bl	__ZNSt3__115basic_streambufIcNS_11char_traitsIcEEED2Ev
-Lloh391:
+Lloh397:
 	adrp	x8, __ZTTNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
-Lloh392:
+Lloh398:
 	ldr	x8, [x8, __ZTTNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
 	add	x1, x8, #8
 	add	x0, sp, #784
@@ -11649,13 +11654,12 @@ Lloh392:
 	ldr	x0, [sp, #120]                  ; 8-byte Folded Reload
 	bl	__ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev
 	ldrsb	w8, [sp, #383]
-	ldr	x19, [sp, #264]                 ; 8-byte Folded Reload
 	tbz	w8, #31, LBB44_48
-; %bb.180:                              ;   in Loop: Header=BB44_51 Depth=2
+; %bb.177:                              ;   in Loop: Header=BB44_51 Depth=2
 	ldr	x0, [sp, #360]
 	bl	__ZdlPv
 	b	LBB44_48
-LBB44_181:                              ;   in Loop: Header=BB44_14 Depth=1
+LBB44_178:                              ;   in Loop: Header=BB44_14 Depth=1
 	cmp	x20, x4
 	cset	w8, hi
 	cmp	x19, x3
@@ -11663,17 +11667,17 @@ LBB44_181:                              ;   in Loop: Header=BB44_14 Depth=1
 	csel	w8, w8, w19, eq
 	tbz	w8, #0, LBB44_46
 	b	LBB44_47
-LBB44_182:
+LBB44_179:
 	ldur	x8, [x29, #-104]
-Lloh393:
+Lloh399:
 	adrp	x9, ___stack_chk_guard@GOTPAGE
-Lloh394:
+Lloh400:
 	ldr	x9, [x9, ___stack_chk_guard@GOTPAGEOFF]
-Lloh395:
+Lloh401:
 	ldr	x9, [x9]
 	cmp	x9, x8
-	b.ne	LBB44_185
-; %bb.183:
+	b.ne	LBB44_182
+; %bb.180:
 	add	sp, sp, #1472
 	ldp	x29, x30, [sp, #80]             ; 16-byte Folded Reload
 	ldp	x20, x19, [sp, #64]             ; 16-byte Folded Reload
@@ -11682,21 +11686,21 @@ Lloh395:
 	ldp	x26, x25, [sp, #16]             ; 16-byte Folded Reload
 	ldp	x28, x27, [sp], #96             ; 16-byte Folded Reload
 	ret
-LBB44_184:
-Lloh396:
+LBB44_181:
+Lloh402:
 	adrp	x0, __ZNSt3__14coutE@GOTPAGE
-Lloh397:
+Lloh403:
 	ldr	x0, [x0, __ZNSt3__14coutE@GOTPAGEOFF]
-Lloh398:
+Lloh404:
 	adrp	x1, l_.str.22@PAGE
-Lloh399:
+Lloh405:
 	add	x1, x1, l_.str.22@PAGEOFF
 	bl	__ZNSt3__1lsB7v160006INS_11char_traitsIcEEEERNS_13basic_ostreamIcT_EES6_PKc
 	ldr	x1, [x25, #40]
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
-Lloh400:
+Lloh406:
 	adrp	x20, l_.str.9@PAGE
-Lloh401:
+Lloh407:
 	add	x20, x20, l_.str.9@PAGEOFF
 	mov	x1, x20
 	bl	__ZNSt3__1lsB7v160006INS_11char_traitsIcEEEERNS_13basic_ostreamIcT_EES6_PKc
@@ -11723,87 +11727,87 @@ Lloh401:
 	bl	__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERK11__uint384_t
 	bl	__ZNSt3__14endlB7v160006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_
 	bl	___cxa_rethrow
-LBB44_185:
+LBB44_182:
 	bl	___stack_chk_fail
-LBB44_186:
+LBB44_183:
 Ltmp475:
-	b	LBB44_191
-LBB44_187:
+	b	LBB44_188
+LBB44_184:
 Ltmp466:
-	b	LBB44_191
-LBB44_188:
+	b	LBB44_188
+LBB44_185:
 Ltmp455:
-	b	LBB44_191
-LBB44_189:
+	b	LBB44_188
+LBB44_186:
 Ltmp444:
-	b	LBB44_191
-LBB44_190:
+	b	LBB44_188
+LBB44_187:
 Ltmp433:
-LBB44_191:
+LBB44_188:
 	mov	x19, x0
 	add	x0, sp, #768
 	bl	__ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryD1Ev
-	b	LBB44_205
-LBB44_192:
+	b	LBB44_202
+LBB44_189:
 Ltmp498:
-	b	LBB44_195
-LBB44_193:
+	b	LBB44_192
+LBB44_190:
 Ltmp495:
-	b	LBB44_204
-LBB44_194:
+	b	LBB44_201
+LBB44_191:
 Ltmp492:
-LBB44_195:
+LBB44_192:
 	mov	x19, x0
 	ldrsb	w8, [sp, #1215]
-	tbz	w8, #31, LBB44_205
-; %bb.196:
+	tbz	w8, #31, LBB44_202
+; %bb.193:
 	ldr	x0, [sp, #1192]
 	bl	__ZdlPv
-	b	LBB44_205
-LBB44_197:
+	b	LBB44_202
+LBB44_194:
 Ltmp489:
-	b	LBB44_204
-LBB44_198:
+	b	LBB44_201
+LBB44_195:
 Ltmp412:
 	bl	___clang_call_terminate
-LBB44_199:
+LBB44_196:
 Ltmp401:
 	mov	x19, x0
-Lloh402:
+Lloh408:
 	adrp	x8, __ZTTNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGE
-Lloh403:
+Lloh409:
 	ldr	x8, [x8, __ZTTNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE@GOTPAGEOFF]
 	add	x1, x8, #8
 	add	x0, sp, #784
 	bl	__ZNSt3__114basic_iostreamIcNS_11char_traitsIcEEED2Ev
-	b	LBB44_201
-LBB44_200:
+	b	LBB44_198
+LBB44_197:
 Ltmp398:
 	mov	x19, x0
-LBB44_201:
+LBB44_198:
 	ldr	x0, [sp, #120]                  ; 8-byte Folded Reload
 	bl	__ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev
-	b	LBB44_206
-LBB44_202:
+	b	LBB44_203
+LBB44_199:
 Ltmp482:
 	mov	x19, x0
 	add	x0, sp, #1192
 	bl	__ZNSt3__16localeD1Ev
-	b	LBB44_205
-LBB44_203:
+	b	LBB44_202
+LBB44_200:
 Ltmp501:
-LBB44_204:
+LBB44_201:
 	mov	x19, x0
-LBB44_205:
+LBB44_202:
 	add	x0, sp, #784
 	bl	__ZNSt3__118basic_stringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEED1Ev
-LBB44_206:
+LBB44_203:
 	ldrsb	w8, [sp, #383]
-	tbz	w8, #31, LBB44_208
-; %bb.207:
+	tbz	w8, #31, LBB44_205
+; %bb.204:
 	ldr	x0, [sp, #360]
 	bl	__ZdlPv
-LBB44_208:
+LBB44_205:
 	mov	x0, x19
 	bl	__Unwind_Resume
 	.loh AdrpAdd	Lloh317, Lloh318
@@ -11813,25 +11817,25 @@ LBB44_208:
 	.loh AdrpLdrGot	Lloh321, Lloh322
 	.loh AdrpAdd	Lloh325, Lloh326
 	.loh AdrpAdd	Lloh327, Lloh328
-	.loh AdrpAdd	Lloh329, Lloh330
 	.loh AdrpAdd	Lloh331, Lloh332
+	.loh AdrpAdd	Lloh329, Lloh330
+	.loh AdrpAdd	Lloh333, Lloh334
 	.loh AdrpAdd	Lloh335, Lloh336
-	.loh AdrpLdr	Lloh333, Lloh334
 	.loh AdrpAdd	Lloh339, Lloh340
 	.loh AdrpAdd	Lloh337, Lloh338
 	.loh AdrpAdd	Lloh341, Lloh342
 	.loh AdrpAdd	Lloh343, Lloh344
-	.loh AdrpLdr	Lloh345, Lloh346
-	.loh AdrpAdd	Lloh347, Lloh348
-	.loh AdrpAdd	Lloh351, Lloh352
+	.loh AdrpAdd	Lloh345, Lloh346
 	.loh AdrpAdd	Lloh349, Lloh350
-	.loh AdrpAdd	Lloh353, Lloh354
-	.loh AdrpLdrGot	Lloh355, Lloh356
-	.loh AdrpLdrGot	Lloh357, Lloh358
-	.loh AdrpAdd	Lloh361, Lloh362
+	.loh AdrpAdd	Lloh347, Lloh348
+	.loh AdrpLdrGot	Lloh351, Lloh352
+	.loh AdrpLdrGot	Lloh353, Lloh354
+	.loh AdrpAdd	Lloh355, Lloh356
 	.loh AdrpAdd	Lloh359, Lloh360
+	.loh AdrpAdd	Lloh357, Lloh358
+	.loh AdrpLdr	Lloh361, Lloh362
 	.loh AdrpAdd	Lloh363, Lloh364
-	.loh AdrpLdr	Lloh365, Lloh366
+	.loh AdrpAdd	Lloh365, Lloh366
 	.loh AdrpAdd	Lloh367, Lloh368
 	.loh AdrpAdd	Lloh369, Lloh370
 	.loh AdrpAdd	Lloh371, Lloh372
@@ -11841,15 +11845,18 @@ LBB44_208:
 	.loh AdrpAdd	Lloh379, Lloh380
 	.loh AdrpAdd	Lloh381, Lloh382
 	.loh AdrpAdd	Lloh383, Lloh384
-	.loh AdrpLdrGot	Lloh385, Lloh386
-	.loh AdrpLdrGot	Lloh387, Lloh388
-	.loh AdrpLdrGot	Lloh389, Lloh390
+	.loh AdrpAdd	Lloh385, Lloh386
+	.loh AdrpAdd	Lloh387, Lloh388
+	.loh AdrpAdd	Lloh389, Lloh390
 	.loh AdrpLdrGot	Lloh391, Lloh392
-	.loh AdrpLdrGotLdr	Lloh393, Lloh394, Lloh395
-	.loh AdrpAdd	Lloh400, Lloh401
-	.loh AdrpAdd	Lloh398, Lloh399
-	.loh AdrpLdrGot	Lloh396, Lloh397
+	.loh AdrpLdrGot	Lloh393, Lloh394
+	.loh AdrpLdrGot	Lloh395, Lloh396
+	.loh AdrpLdrGot	Lloh397, Lloh398
+	.loh AdrpLdrGotLdr	Lloh399, Lloh400, Lloh401
+	.loh AdrpAdd	Lloh406, Lloh407
+	.loh AdrpAdd	Lloh404, Lloh405
 	.loh AdrpLdrGot	Lloh402, Lloh403
+	.loh AdrpLdrGot	Lloh408, Lloh409
 Lfunc_end12:
 	.cfi_endproc
 	.section	__TEXT,__gcc_except_tab
@@ -11984,44 +11991,44 @@ __GLOBAL__sub_I_collatz_cycle_search_all2.cpp: ; @_GLOBAL__sub_I_collatz_cycle_s
 	bl	_time
 	adrp	x8, _start_time@PAGE
 	str	x0, [x8, _start_time@PAGEOFF]
-Lloh404:
+Lloh410:
 	adrp	x0, _p23@PAGE
-Lloh405:
+Lloh411:
 	add	x0, x0, _p23@PAGEOFF
 	mov	w1, #16304
 	movk	w1, #43, lsl #16
 	bl	_bzero
-Lloh406:
+Lloh412:
 	adrp	x0, _pp23@PAGE
-Lloh407:
+Lloh413:
 	add	x0, x0, _pp23@PAGEOFF
 	mov	w1, #16304
 	movk	w1, #43, lsl #16
 	bl	_bzero
-Lloh408:
+Lloh414:
 	adrp	x0, _yy@PAGE
-Lloh409:
+Lloh415:
 	add	x0, x0, _yy@PAGEOFF
 	mov	w1, #11664
 	bl	_bzero
-Lloh410:
+Lloh416:
 	adrp	x0, _dy@PAGE
-Lloh411:
+Lloh417:
 	add	x0, x0, _dy@PAGEOFF
 	mov	w1, #393216
 	bl	_bzero
-Lloh412:
+Lloh418:
 	adrp	x0, _dz@PAGE
-Lloh413:
+Lloh419:
 	add	x0, x0, _dz@PAGEOFF
 	mov	w1, #95551488
 	ldp	x29, x30, [sp], #16             ; 16-byte Folded Reload
 	b	_bzero
+	.loh AdrpAdd	Lloh418, Lloh419
+	.loh AdrpAdd	Lloh416, Lloh417
+	.loh AdrpAdd	Lloh414, Lloh415
 	.loh AdrpAdd	Lloh412, Lloh413
 	.loh AdrpAdd	Lloh410, Lloh411
-	.loh AdrpAdd	Lloh408, Lloh409
-	.loh AdrpAdd	Lloh406, Lloh407
-	.loh AdrpAdd	Lloh404, Lloh405
 	.cfi_endproc
                                         ; -- End function
 	.section	__TEXT,__cstring,cstring_literals
@@ -12053,11 +12060,6 @@ _m:
 .zerofill __DATA,__common,_dl,3981312,1
 	.globl	_dz                             ; @dz
 .zerofill __DATA,__common,_dz,95551488,4
-	.globl	_mask                           ; @mask
-	.p2align	2, 0x0
-_mask:
-	.long	4095                            ; 0xfff
-
 	.section	__TEXT,__cstring,cstring_literals
 l_.str.7:                               ; @.str.7
 	.asciz	"solutions.txt"
