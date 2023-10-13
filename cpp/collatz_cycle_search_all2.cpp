@@ -35,8 +35,9 @@ typedef __uint384_t _bigint;
 constexpr __uint16_t M2=243;
 constexpr __uint16_t M3=243;
 constexpr __uint16_t DM = 12;
-__uint16_t m = 1;
 constexpr __uint16_t T = 11;
+constexpr int mask = (1 << DM) - 1;
+__uint16_t m = 1;
 
 __uint16_t p2[DM+1];
 _bigint p23[M2][M3];
@@ -46,7 +47,6 @@ _bigint dy[2 << DM];
 
 __uint16_t dl[M3][2 << DM];
 _bigint dz[M3][2 << DM];
-int mask = (1 << DM) - 1;
 
 int main () {
 	ofstream destfile;
