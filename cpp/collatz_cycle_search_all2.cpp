@@ -9,6 +9,7 @@
 */
 
 #include "__uint384_t.h"
+typedef __uint384_t _bigint;
 
 #include <bit>
 //#include <execution>
@@ -29,8 +30,6 @@
 using namespace std;
 
 time_t start_time = time(0);
-
-typedef __uint384_t _bigint;
 
 constexpr __uint16_t M2=243;
 constexpr __uint16_t M3=243;
