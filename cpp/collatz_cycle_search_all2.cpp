@@ -43,7 +43,7 @@ __uint16_t p2[DM+1];
 _bigint p23[M2][M3];
 _bigint pp23[M3][M3];
 _bigint yy[M3];
-_bigint ynn[2];
+_bigint ynn;
 _bigint dy[2 << DM];
 
 __uint16_t dl[M3][2 << DM];
@@ -172,14 +172,8 @@ int main () {
 
 		for (__uint16_t l=1; l < m; ++l) {
 			_bigint& y = yy[l];
-			ynn[0] = y;
-			ynn[0] <<= 1;
-			ynn[1] = y;
-			ynn[1] <<= 2;
-			/*for (__uint16_t n = 0; n < 1; ++n) {
-				ynn[n] = y;
-				ynn[n] <<= n+1;
-			}*/
+			ynn = y;
+			ynn <<= 1;
 			dy[2] = y;
 			
 			for (__uint16_t dm = 1; dm < DM; ++dm) {
@@ -274,20 +268,18 @@ int main () {
 					__uint16_t l1 = l - l2;
 					_bigint q = p23[0][l1] * x;
 
-					if (q >= ynn[1]) {
+					if (q >= ynn) {
 						_bigint qq = mulhi_fast_approx(q, ym);
 						qq >>= ys;
 						q -= qq * y;
-					} else {
-						q -= (q >= ynn[0]) * ynn[0];
 					}
-					q -= (q >= y) * y;
-					if (q >= y) {
+					//q -= (q >= y) * y;
+					/*if (q >= y) {
 						cout << "Incorrect fast reminder "<< y << " " << ym << " " << ys << " " << q << " " << (q % y) << endl;
 						throw;
-					}
+					}*/
 					
-					_bigint z = y;
+					_bigint z = q >= y ? ynn : y;
 					z -= q;
 
 					/*stringstream str;
@@ -348,17 +340,21 @@ int main () {
 							q += p23[m1-1][0];
 							for (; k < m1 && ll > 0 && q != 0; ++k) {
 								bool d = q & 1;
-								ll -= d * (ll > 0);
-								ss += d * p23[m2 + k][0];
-								q -= d * p23[0][ll];
+								if (d != 0) {
+									ll -= (ll > 0);
+									ss += p23[m2 + k][0];
+									q -= p23[0][ll];
+								}
 								q >>= 1;
 							}
 							_bigint xx = 0;
 							__uint16_t l = 0;
 							for (__uint16_t i=m; i>0; --i) {
 								bool d = (ss>>(i-1)) & 1;
-								xx += d*p23[i-1][l];
-								l += d;
+								if (d != 0) {
+									xx += p23[i-1][l];
+									l += d;
+								}
 							}
 							pair<_bigint, _bigint> qr = divmod(xx, y);
 							std::string sign = p23[m][0] >= p23[0][l] ? "" : "-";
