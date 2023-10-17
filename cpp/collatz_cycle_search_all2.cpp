@@ -8,8 +8,8 @@
 * ./collatz_cycle_search
 */
 
-#include "__uint384_t.h"
-typedef __uint384_t _bigint;
+#include "__uint256_t.h"
+typedef __uint256_t _bigint;
 
 #include <bit>
 //#include <execution>
@@ -31,8 +31,8 @@ using namespace std;
 
 time_t start_time = time(0);
 
-constexpr __uint16_t M2=243;
-constexpr __uint16_t M3=243;
+constexpr __uint16_t M2=162;
+constexpr __uint16_t M3=162;
 constexpr __uint16_t DM = 12;
 constexpr __uint16_t T = 11;
 constexpr int mask = (1 << DM) - 1;
@@ -84,8 +84,17 @@ int main () {
 	// check validity of big number operations
 	for (__uint16_t m3 = 0; m3 < M3; ++m3) {
 		_bigint x = p23[0][m3];
+		__uint16_t xbit = x.bit();
 		for (__uint16_t m2 = 0; m2 < M2; ++m2) {
 			x <<= m2;
+			if (x.bit() - xbit != m2 && xbit + m2 < 256) {
+				cout << "bit error: " << m3 << " " << m2 << " " << x << " " << x.bit() << " " << xbit << endl;
+				return 0;
+			}
+			if (x.bit2() != x.bit()) {
+				cout << "bit2 error: " << m3 << " " << m2 << " " << x << " " << x.bit2() << " " << x.bit() << endl;
+				return 0;
+			}
 			if (x != p23[m2][m3]) {
 				cout << "shift error: " << m3 << " " << m2 << " " << p23[m2][m3] << " " << x << endl;
 				return 0;
@@ -207,7 +216,7 @@ int main () {
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
 				pq += pn.first;
-				pq += (m - m1 - 1)/18+8;
+				pq += (m - m1 - 1)/32+8;
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
 				if (ymin > pq) {

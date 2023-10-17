@@ -4,6 +4,7 @@
 */
 #pragma once
 
+#include <bit>
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -45,6 +46,13 @@ class __uint256_t {
     }
 
 	inline __uint16_t bit() const {
+		__uint16_t i = _[1] != 0;
+		__uint16_t j = 64 * ((_[i] >> 64) > 0);
+		j += 63 - std::countl_zero((__uint64_t)(_[i] >> j));
+		return (i << 7) + j;
+	}
+
+	inline __uint16_t bit2() const {
 		__uint16_t i = _[1] != 0;
 		__uint16_t j = 64 * ((_[i] >> 64) > 0);
 		j += 32 * ((_[i] >> (32 + j)) > 0);
