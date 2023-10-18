@@ -49,7 +49,7 @@ _bigint dy[2 << DM];
 __uint16_t dl[M3][2 << DM];
 _bigint dz[M3][2 << DM];
 
-inline void fast_reminder(_bigint &res, _bigint &y) {
+inline void fast_reminder(_bigint &res, const _bigint &y) {
 	if (res >= ynn) {
 		_bigint qq = mulhi_fast_approx(res, ym);
 		qq >>= ys;
@@ -193,7 +193,7 @@ int main () {
 		cout << str.str();
 
 		for (__uint16_t l=1; l < m; ++l) {
-			_bigint& y = yy[l];
+			_bigint &y = yy[l];
 			ynn = y;
 			ynn <<= 1;
 			dy[2] = y;
@@ -257,13 +257,20 @@ int main () {
 				p23y[d][l-d+1] = 0;
 				for (__int16_t l1 = l-d; l1 >= 0; --l1) {
 					_bigint &q = p23y[d][l1];
-					q = p23[m2][l1];
-					q += p23[m2-d-1][l1+d-1];
-					_bigint tmp = p23[m2-d][l1+d];
-					fast_reminder(tmp, y);
-					q += y;
-					q -= tmp;
-					fast_reminder(q, y);
+					if (d == 0) {
+						q = p23[m2-d-1][l1+d-1];
+						fast_reminder(q, y);
+					} else {
+						_bigint tmp = p23[m2-d][l1+d];
+						// if (tmp < p23[m2][l1]) throw;
+						tmp -= p23[m2][l1];
+						// if (tmp < p23[m2-d-1][l1+d-1]) throw;
+						tmp -= p23[m2-d-1][l1+d-1];
+						fast_reminder(tmp, y);
+						q = (tmp != 0) * y;
+						q -= tmp;
+						// if (q >= y) throw;
+					}
 				}
 			}
 			for (__int16_t l1 = l; l1 >= 0; --l1) {
@@ -301,19 +308,6 @@ int main () {
 				cout << str.str();*/
 				__uint16_t d = s != 0 ? std::countr_zero(s) : 0;
 				for (; s < e; ++s, d = std::countr_zero(s)) {
-					//_bigint q = x;
-					/*q += p23[m2][l1];
-					q += p23[m2-1-d][l1+d-1];
-					if (s == 0) {
-						while (q < p23[m2-1][l1-1]) {
-							q += y;
-						}
-						q -= p23[m2-1][l1-1];
-					}
-					while (q < p23[m2-d][l1+d]) {
-						q += y;
-					}
-					q -= p23[m2-d][l1+d];*/
 					x += p23y[d][l1];
 					x -= (x >= y) * y;
 					l1 += d-1;
@@ -322,14 +316,7 @@ int main () {
 						throw;
 					}*/
 					
-					/*fast_reminder(q, y);
-
-					if (q != x) {
-						cout << "Incorrect p23y " << s << " " << m2 << " " << d << " " << l1 << " " << p23y[d][l1] << " " << q << " " << x << " " << p23[m2-1-d][l1+d-1] << " " << endl;
-						throw;
-					}*/
-
-					_bigint z = /*q >= y ? ynn : */y;
+					_bigint z = y;
 					z -= x;
 
 					/*stringstream str;
