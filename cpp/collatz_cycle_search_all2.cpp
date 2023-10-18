@@ -31,7 +31,6 @@ using namespace std;
 
 time_t start_time = time(0);
 
-constexpr __uint16_t M2=162;
 constexpr __uint16_t M3=162;
 constexpr __uint16_t DM = 12;
 constexpr __uint16_t T = 11;
@@ -39,14 +38,29 @@ constexpr int mask = (1 << DM) - 1;
 __uint16_t m = 1;
 
 __uint16_t p2[DM+1];
-_bigint p23[M2][M3];
+_bigint p23[M3][M3];
+_bigint p23y[M3][M3];
 _bigint pp23[M3][M3];
 _bigint yy[M3];
-_bigint ynn;
+_bigint ynn, ym;
+__uint16_t ys;
 _bigint dy[2 << DM];
 
 __uint16_t dl[M3][2 << DM];
 _bigint dz[M3][2 << DM];
+
+inline void fast_reminder(_bigint &res, _bigint &y) {
+	if (res >= ynn) {
+		_bigint qq = mulhi_fast_approx(res, ym);
+		qq >>= ys;
+		res -= qq * y;
+	}
+	res -= (res >= y) * y;
+	if (res >= y) {
+		cout << "Incorrect fast reminder ! "<< y << " " << ym << " " << ys << " " << res << " " << (res % y) << endl;
+		throw;
+	}
+}
 
 int main () {
 	ofstream destfile;
@@ -60,10 +74,10 @@ int main () {
 	//std::vector<_bigint> dest;
 	// powers of 2 and 3
 	p23[0][0] = 1;
-	for (__uint16_t m2 = 1; m2 < M2; ++m2) {
+	for (__uint16_t m2 = 1; m2 < M3; ++m2) {
 		p23[m2][0] = 2 * p23[m2-1][0];
 	}
-	for (__uint16_t m2 = 0; m2 < M2; ++m2) {
+	for (__uint16_t m2 = 0; m2 < M3; ++m2) {
 		for (__uint16_t m3 = 1; m3 < M3; ++m3) {
 			p23[m2][m3] = 3 * p23[m2][m3-1];
 		}
@@ -85,7 +99,7 @@ int main () {
 	for (__uint16_t m3 = 0; m3 < M3; ++m3) {
 		_bigint x = p23[0][m3];
 		__uint16_t xbit = x.bit();
-		for (__uint16_t m2 = 0; m2 < M2; ++m2) {
+		for (__uint16_t m2 = 0; m2 < M3; ++m2) {
 			x <<= m2;
 			if (x.bit() - xbit != m2 && xbit + m2 < 256) {
 				cout << "bit error: " << m3 << " " << m2 << " " << x << " " << x.bit() << " " << xbit << endl;
@@ -207,7 +221,7 @@ int main () {
 			ymin = pq;
 			__uint16_t m1;
 			__uint16_t m2 = 0;
-			for (m1 = 1; m1 <= 2*l && m1 <= 2*(m-1-l); ++m1) {
+			for (m1 = 1; m1 <= l && m1 <= 2*(m-1-l); ++m1) {
 				x = p23[m-1-l-(m1+1)/2][l-m1/2];
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
@@ -231,12 +245,29 @@ int main () {
 			__uint16_t r2 = m2%DM;
 			__uint16_t rmask2 = p2[r2] - 1;
 
-			__uint16_t ys;
-			_bigint ym = y.inv(ys);
+			
+			ym = y.inv(ys);
 
 			ymin = p23[m1-1][0];
-			while (ymin >= y) {
+			while (ymin > y) {
 				ymin -= y;
+			}
+
+			for (__uint16_t d = 0; d < m2; ++d) {
+				p23y[d][l-d+1] = 0;
+				for (__int16_t l1 = l-d; l1 >= 0; --l1) {
+					_bigint &q = p23y[d][l1];
+					q = p23[m2][l1];
+					q += p23[m2-d-1][l1+d-1];
+					_bigint tmp = p23[m2-d][l1+d];
+					fast_reminder(tmp, y);
+					q += y;
+					q -= tmp;
+					fast_reminder(q, y);
+				}
+			}
+			for (__int16_t l1 = l; l1 >= 0; --l1) {
+				p23y[m2][l1] = 0;
 			}
 
 			stringstream str;
@@ -248,52 +279,63 @@ int main () {
 			std::for_each(std::execution::par, range.begin(), range.end(), [&](__uint16_t& t) {
 				__uint16_t m0 = (m2-T)*(m2>T);
 				if (t >= p2[m2-m0]) return;
-				__uint16_t l2 = 0;
+				__uint16_t l1 = l;
 				_bigint x = 0;
 				__uint64_t s = t*(__uint64_t)p23[m0][0];
 				__uint64_t e = s+(__uint64_t)p23[m0][0];
-				for (__uint16_t i=m2; i>0; --i) {
-					bool d = ((s-1)>>(i-1)) & 1;
-					x += d*p23[i-1][l2];
-					l2 += d;
-				}
-				if (t == 0) {
-					x -= p23[m2][0];
+				if (s != 0) {
+					for (__uint16_t i=m2; i>0; --i) {
+						bool d = ((s-1)>>(i-1)) & 1;
+						l1 -= d;
+						x += d*p23[m2-i][l1];
+					}
+					fast_reminder(x, y);
+				} else {
+					//x -= p23[m2-1][l1];
+					++l1;
 				}
 				/*stringstream str;
 				double seconds_since_start = difftime(time(0), start_time);
 				str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-				str << "\t" << m2 << " " << l2 << " " << t << " " << x << endl;
+				str << "\t m2 l1 t x " << m2 << " " << l1 << " " << t << " " << x << endl;
 				cout << str.str();*/
-				__uint16_t d = std::countr_zero(s+(__uint64_t)p23[m2][0]);
+				__uint16_t d = s != 0 ? std::countr_zero(s) : 0;
 				for (; s < e; ++s, d = std::countr_zero(s)) {
-					l2 -= d;
-					x += p23[d+1][l2];
-					x -= p23[0][d+l2];
-					l2 += (s > 0);
-					if (l > m1 + l2 || l <= l2)
-						continue;
-					__uint16_t l1 = l - l2;
-					_bigint q = p23[0][l1] * x;
-
-					if (q >= ynn) {
-						_bigint qq = mulhi_fast_approx(q, ym);
-						qq >>= ys;
-						q -= qq * y;
+					//_bigint q = x;
+					/*q += p23[m2][l1];
+					q += p23[m2-1-d][l1+d-1];
+					if (s == 0) {
+						while (q < p23[m2-1][l1-1]) {
+							q += y;
+						}
+						q -= p23[m2-1][l1-1];
 					}
-					//q -= (q >= y) * y;
-					/*if (q >= y) {
-						cout << "Incorrect fast reminder "<< y << " " << ym << " " << ys << " " << q << " " << (q % y) << endl;
+					while (q < p23[m2-d][l1+d]) {
+						q += y;
+					}
+					q -= p23[m2-d][l1+d];*/
+					x += p23y[d][l1];
+					x -= (x >= y) * y;
+					l1 += d-1;
+					/*if (l1 > m1 || l1 == 0) {
+						cout << "Incorrect l1 "<< l1 << " " << m1 << endl;
 						throw;
 					}*/
 					
-					_bigint z = q >= y ? ynn : y;
-					z -= q;
+					/*fast_reminder(q, y);
+
+					if (q != x) {
+						cout << "Incorrect p23y " << s << " " << m2 << " " << d << " " << l1 << " " << p23y[d][l1] << " " << q << " " << x << " " << p23[m2-1-d][l1+d-1] << " " << endl;
+						throw;
+					}*/
+
+					_bigint z = /*q >= y ? ynn : */y;
+					z -= x;
 
 					/*stringstream str;
 					double seconds_since_start = difftime(time(0), start_time);
 					str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-					str << "\t" << m2 << " " << l1 << " " << l2 << " " << d << " " >> (s+(__uint64_t)p23[m2][0]) << " " << x << " " << q << " " << z << endl;
+					str << "\t" << m2 << " " << l1 << " " << d << " " >> (s+(__uint64_t)p23[m2][0]) << " " << x << " " << q << " " << z << endl;
 					cout << str.str();*/
 
 					// n*y = z * 2^m2 + x * 3^l1
@@ -316,7 +358,7 @@ int main () {
 					z += (ymin > z) * y;
 					z -= ymin;
 					while (pp23[m1][l1-1] >= z) {
-						q = z;
+						_bigint q = z;
 
 						/*stringstream str;
 						double seconds_since_start = difftime(time(0), start_time);
@@ -342,8 +384,13 @@ int main () {
 						//cout << "? " << ll << " " << r << " " << q << " " >> (q & mask) << " " << endl;
 						if (q == 0 && ll == 0) {
 							__uint16_t k = 0;
-							__int16_t ll = l1;
-							_bigint ss = s;
+							__int16_t ll = l;
+							_bigint ss = 0;
+							for (__uint16_t i=m2; i>0; --i) {
+								bool d = (s>>(i-1)) & 1;
+								ll -= d;
+								ss += d*p23[m2-i][0];
+							}
 							q = z;
 							q += p23[m1-1][0];
 							for (; k < m1 && ll > 0 && q != 0; ++k) {
