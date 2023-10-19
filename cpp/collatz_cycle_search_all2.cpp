@@ -8,8 +8,8 @@
 * ./collatz_cycle_search
 */
 
-#include "__uint256_t.h"
-typedef __uint256_t _bigint;
+#include "__uint384_t.h"
+typedef __uint384_t _bigint;
 
 #include <bit>
 //#include <execution>
@@ -31,7 +31,7 @@ using namespace std;
 
 time_t start_time = time(0);
 
-constexpr __uint16_t M3=162;
+constexpr __uint16_t M3=243;
 constexpr __uint16_t DM = 12;
 constexpr __uint16_t T = 11;
 constexpr int mask = (1 << DM) - 1;
