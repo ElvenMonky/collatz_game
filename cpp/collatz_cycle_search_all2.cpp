@@ -8,11 +8,11 @@
 * ./collatz_cycle_search
 */
 
-#include "__uint384_t.h"
-typedef __uint384_t _bigint;
+#include "__uint256_t.h"
+typedef __uint256_t _bigint;
 
 #include <bit>
-//#include <execution>
+#include <execution>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -23,15 +23,15 @@ typedef __uint384_t _bigint;
 /* If running on Mac, uncomment following lines and use `pstld.h` from https://github.com/mikekazakov/pstld (MIT License) by Michael G. Kazakov.
 * This is because clang under Mac does not support `std::execution::par` even with `-std=c++2b`
 */
-#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
-#define PSTLD_HACK_INTO_STD // export into namespace std
-#include "pstld.h"
+//#define PSTLD_HEADER_ONLY   // no prebuilt library, only the header
+//#define PSTLD_HACK_INTO_STD // export into namespace std
+//#include "pstld.h"
 
 using namespace std;
 
 time_t start_time = time(0);
 
-constexpr __uint16_t M3=243;
+constexpr __uint16_t M3=180;
 constexpr __uint16_t DM = 12;
 constexpr __uint16_t T = 11;
 constexpr int mask = (1 << DM) - 1;
@@ -365,7 +365,7 @@ int main () {
 							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 							q -= dz[ll][d];
-							q >>= DM;
+							fast_shift_right(q, DM);
 							ll -= dl[ll][d];
 						}
 						//cout << "? " << ll << " " << r << " " << q << " " >> (q & mask) << " " << endl;
