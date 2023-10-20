@@ -334,7 +334,7 @@ int main () {
 					if (r2 > 0) {
 						int d = (z & rmask2) + rmask2;
 						z += dy[d];
-						z >>= r2;
+						fast_shift_right(z, r2);
 					}
 					for (; mm2 < m; mm2 += DM) {
 						int d = (z & mask) + mask;
@@ -358,7 +358,7 @@ int main () {
 							int d = (q & rmask) + rmask;
 							//cout << "!! " << ll << " " << q << " " >> (q & rmask) << " " << dz[ll-1][d+rmask] << " " << dl[ll-1][d+rmask] << " " << endl;
 							q -= dz[ll][d];
-							q >>= r;
+							fast_shift_right(q, r);
 							ll -= dl[ll][d];
 						}
 						for (__uint16_t k = m1-r; ll > 0 && ll < k && pp23[k][ll] >= q; k -= DM) {

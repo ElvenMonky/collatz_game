@@ -126,6 +126,14 @@ __uint384_t operator-(const __uint16_t s, const __uint384_t& a) {
 	return r;
 }
 
+inline void fast_shift_right(__uint384_t& a, const __uint16_t i) {
+	a._[0] >>= i;
+	a._[0] |= (a._[1] << (128-i));
+	a._[1] >>= i;
+	a._[1] |= (a._[2] << (128-i));
+	a._[2] >>= i;
+}
+
 __uint384_t& operator>>=(__uint384_t& a, const int s) {
 	if (s >> 7) {
 		if (s >> 8) {

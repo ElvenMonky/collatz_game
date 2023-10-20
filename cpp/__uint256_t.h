@@ -118,6 +118,12 @@ __uint256_t operator-(const __uint16_t s, const __uint256_t& a) {
 	return r;
 }
 
+inline void fast_shift_right(__uint256_t& a, const __uint16_t i) {
+	a._[0] >>= i;
+	a._[0] |= (a._[1] << (128-i));
+	a._[1] >>= i;
+}
+
 __uint256_t& operator>>=(__uint256_t& a, const int s) {
 	if (s >> 7) {
 		a._[0] = a._[1] >> (s & 0x7F);
