@@ -32,7 +32,7 @@ using namespace std;
 time_t start_time = time(0);
 
 constexpr __uint16_t M3=180;
-constexpr __uint16_t DM = 12;
+constexpr __uint16_t DM = 13;
 constexpr __uint16_t T = 11;
 constexpr int mask = (1 << DM) - 1;
 __uint16_t m = 1;
@@ -244,7 +244,6 @@ int main () {
 
 			__uint16_t r2 = m2%DM;
 			__uint16_t rmask2 = p2[r2] - 1;
-
 			
 			ym = y.inv(ys);
 
@@ -350,25 +349,25 @@ int main () {
 						/*stringstream str;
 						double seconds_since_start = difftime(time(0), start_time);
 						str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-						str << "\t in loop: l1 l2 x y z s " << l1 << " " << l2 << " " << x << " " << y << " " << z << " " >> (s+(__uint64_t)p23[m2][0]) << endl;
+						str << "\t in loop: l1 x y z s " << l1 << " " << x << " " << y << " " << z << " " >> (s+(__uint64_t)p23[m2][0]) << endl;
 						cout << str.str();*/
 
 						__int16_t ll = l1-1;
-						if (r > 0) {
+						/*if (r > 0) {
 							int d = (q & rmask) + rmask;
-							//cout << "!! " << ll << " " << q << " " >> (q & rmask) << " " << dz[ll-1][d+rmask] << " " << dl[ll-1][d+rmask] << " " << endl;
+							// cout << "!! " << ll << " " << q << " " >> (q & rmask) << " " << dz[ll][d] << " " << dl[ll][d] << " " << endl;
 							q -= dz[ll][d];
 							fast_shift_right(q, r);
 							ll -= dl[ll][d];
-						}
-						for (__uint16_t k = m1-r; ll > 0 && ll < k && pp23[k][ll] >= q; k -= DM) {
+						}*/
+						for (__int16_t k = m1; ll > 0 && ll < k && pp23[k][ll] >= q; k -= DM) {
 							int d = (q & mask) + mask;
 							//cout << "! " << ll << " " << k << " " << q << " " >> (q & mask) << " " << dz[ll-1][d+mask] << " " << dl[ll-1][d+mask] << " " << endl;
 							q -= dz[ll][d];
 							fast_shift_right(q, DM);
 							ll -= dl[ll][d];
 						}
-						//cout << "? " << ll << " " << r << " " << q << " " >> (q & mask) << " " << endl;
+						// cout << "? " << ll << " " << r << " " << q << " " << endl;
 						if (q == 0 && ll == 0) {
 							__uint16_t k = 0;
 							__int16_t ll = l;
@@ -399,14 +398,16 @@ int main () {
 								}
 							}
 							pair<_bigint, _bigint> qr = divmod(xx, y);
-							std::string sign = p23[m][0] >= p23[0][l] ? "" : "-";
-							stringstream str;
-							double seconds_since_start = difftime(time(0), start_time);
-							str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-							str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << ",\tx=" << xx << endl;
-							cout << str.str();
-							destfile << str.str();
-							destfile.flush();
+							if (qr.second == 0) {
+								std::string sign = p23[m][0] >= p23[0][l] ? "" : "-";
+								stringstream str;
+								double seconds_since_start = difftime(time(0), start_time);
+								str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+								str << "\tm=" << m << ",\tl=" << l << ",\ts=" >> ss << '0' << ",\tr=" << qr.second << ",\tn=" << sign << qr.first << ",\ty=" << sign << y << ",\tx=" << xx << endl;
+								cout << str.str();
+								destfile << str.str();
+								destfile.flush();
+							}
 						}
 
 						z += y;
