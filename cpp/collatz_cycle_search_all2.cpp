@@ -32,7 +32,7 @@ using namespace std;
 time_t start_time = time(0);
 
 constexpr __uint16_t M3=180;
-constexpr __uint16_t DM = 13;
+constexpr __uint16_t DM = 12;
 constexpr __uint16_t T = 11;
 constexpr int mask = (1 << DM) - 1;
 __uint16_t m = 1;
