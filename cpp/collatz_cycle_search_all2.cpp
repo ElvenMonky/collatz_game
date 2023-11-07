@@ -230,7 +230,7 @@ int main () {
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
 				pq += pn.first;
-				pq += (m - m1 - 1)/32+8;
+				pq += 9;
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
 				if (ymin > pq) {
