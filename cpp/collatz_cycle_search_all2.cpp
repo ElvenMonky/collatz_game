@@ -35,7 +35,7 @@ constexpr __uint16_t M3=180;
 constexpr __uint16_t DM = 12;
 constexpr __uint16_t T = 11;
 constexpr int mask = (1 << DM) - 1;
-__uint16_t m = 1;
+__uint16_t m = 149;
 
 __uint16_t p2[DM+1];
 _bigint p23[M3][M3];
@@ -192,7 +192,7 @@ int main () {
 		str << "\t m ymin " << m << " " << ymin << endl;
 		cout << str.str();
 
-		for (__uint16_t l=1; l < m; ++l) {
+		for (__uint16_t l=94; l < m; ++l) {
 			_bigint &y = yy[l];
 			ynn = y;
 			ynn <<= 1;
@@ -230,7 +230,7 @@ int main () {
 				x -= p23[m-1-m1][0];
 				pn = divmod(x, y);
 				pq += pn.first;
-				pq += 9;
+				pq += 9 - m1/15;
 				pq <<= m1;
 				//cout << "\t m l m1 " << m  << " " << l  << " " << m1 << " " << ps << endl;
 				if (ymin > pq) {
