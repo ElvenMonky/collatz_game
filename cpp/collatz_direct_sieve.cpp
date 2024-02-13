@@ -4,8 +4,8 @@
 */
 
 /* Usage:
-* clang++ cpp/collatz_direct_check_sieve.cpp -Ofast -o collatz_direct_check_sieve -std=c++2b
-* ./collatz_direct_check_sieve
+* clang++ cpp/collatz_direct_sieve.cpp -Ofast -o collatz_direct_sieve -std=c++2b
+* ./collatz_direct_sieve
 */
 
 typedef __uint128_t _bigint;
@@ -14,6 +14,7 @@ typedef __uint128_t _bigint;
 //#include <execution>
 #include <fstream>
 #include <iostream>
+#include <mutex>
 #include <sstream>
 #include <thread>
 #include <time.h>
@@ -30,17 +31,16 @@ using namespace std;
 
 time_t start_time = time(0);
 
-constexpr uint16_t T = 10; // CPU threads available
+constexpr uint16_t T = 8; // CPU threads available
 
 constexpr _bigint MAX = std::numeric_limits<_bigint>::max();
 
-constexpr uint16_t M = 17; // reminders depth
+constexpr uint16_t M = 40; // reminders depth
 constexpr uint64_t S = 1ULL<<M;
 constexpr uint64_t mask = S-1;
-uint64_t a[S];
-uint64_t b[S];
-uint64_t R = 0; // reminders per thread
+uint64_t R = 0; // number of reminders
 vector<uint64_t> rr;
+mutex rr_mutex;
 
 inline int clz_u128(__uint128_t u) {
   uint64_t hi = u>>64;
@@ -103,32 +103,6 @@ std::ostream& operator<<( std::ostream& dest, __uint128_t value )
 }
 
 int main () {
-	for (uint64_t k = 0; k <= mask; ++k) {
-		uint64_t x = k;
-		uint64_t c = 1;
-		for (uint16_t m = 0; m < M; ++m) {
-			c *= 1 + 2*(x&1);
-			x += x&1 ? (x<<1)+1 : 0;
-			x >>= 1;
-		}
-		a[k] = c;
-		b[k] = x;
-		if (c > mask) {
-			rr.push_back(k);
-			/*stringstream str;
-			double seconds_since_start = difftime(time(0), start_time);
-			str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-			str << "\t next seed " << R << " " << rr[R] << endl;
-			cout << str.str();*/
-			++R;
-		}
-		/*stringstream str;
-		double seconds_since_start = difftime(time(0), start_time);
-		str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-		str << "\t precalculation " << r << " " << a[r] << " " << b[r] << endl;
-		cout << str.str();*/
-	}
-
 	// enables parallel computations
 	vector<uint16_t> range;
 	range.resize(T);
@@ -136,51 +110,44 @@ int main () {
 		range[t] = t;
 	}
 
-	stringstream str;
-	double seconds_since_start = difftime(time(0), start_time);
-	str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-	str << "\t start " << T << " threads " << R << " reminders " << ((R-1)/T+1) << " per thread" << endl;
-	cout << str.str();
-
-	// spread reminders by threads
-	uint64_t r = R;
-	R = (R-1)/T+1;
-	rr.resize(R*T);
-	for (; r < R*T; ++r) {
-		rr[r] = rr[0];
-	}
-
 	std::for_each(std::execution::par, range.begin(), range.end(), [&](uint16_t& t) {
-		_bigint n = 0;
-		_bigint x, y;
-		uint64_t *rrr = &rr[0] + t*R;
-		for(_bigint i=0; i<MAX; ++i) {
-			for (uint64_t r = 0; r < R; ++r) {
-				y = n + rrr[r];
-				x = y;
-				while (x >= y) {
-					uint64_t k = x & mask;
-					x = a[k]*(x>>M) + b[k];
-					if (x == y) {
-						stringstream str;
-						double seconds_since_start = difftime(time(0), start_time);
-						str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-						str << "\t cycle found! " << y << " " >> y << " " << clz_u128(y) << endl;
-						cout << str.str();
-						return;
-					}
-				}
+		for (uint64_t k = t; k <= mask; k+=T) {
+			uint64_t x = k;
+			uint64_t c = 1;
+			uint16_t m = 0;
+			for (; m < M; ++m) {
+				if ((c>>m) == 0) break;
+				if ((c>>m) >= 3) break;
+				if (x&1) c += c<<1;
+				x += x&1 ? (x<<1)+1 : 0;
+				x >>= 1;
 			}
-
-			if (!(i&0xFFF)) {
+			if (m == M) {
+				rr_mutex.lock();
+				++R;
+				rr.push_back(k);
 				stringstream str;
 				double seconds_since_start = difftime(time(0), start_time);
 				str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-				str << "\t processed so far " << n << " " >> n << " " << clz_u128(n) << endl;
+				str << "\t next seed " << rr[R-1] << " " >> rr[R-1] << endl;
+				/*uint64_t x = k;
+				uint64_t c = 1;
+				uint16_t m = 0;
+				for (; m < M; ++m) {
+					if (x&1) c += c<<1;
+					x += x&1 ? (x<<1)+1 : 0;
+					x >>= 1;
+					str << " " << c << endl;
+				}*/
 				cout << str.str();
+				rr_mutex.unlock();
 			}
-
-			n += S;
 		}
 	});
+
+	stringstream str;
+	double seconds_since_start = difftime(time(0), start_time);
+	str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+	str << "\t total of " << R << " reminders found at depth " << (uint32_t)M << endl;
+	cout << str.str();
 }
