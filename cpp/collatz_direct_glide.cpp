@@ -4,13 +4,14 @@
 */
 
 /* Usage:
-* clang++ cpp/collatz_direct_sieve.cpp -Ofast -o collatz_direct_sieve -std=c++2b
-* ./collatz_direct_sieve
+* clang++ cpp/collatz_direct_glide.cpp -Ofast -o collatz_direct_glide -std=c++2b
+* ./collatz_direct_glide
 */
 
 typedef __uint128_t _bigint;
 
 #include <bit>
+#include <cmath>
 //#include <execution>
 #include <fstream>
 #include <iostream>
@@ -39,11 +40,13 @@ const long double log23 = log2(three);
 
 constexpr uint16_t M = 39; // sieve depth
 constexpr uint64_t S = 1ULL<<(M-2);
-uint64_t R = 0; // number of reminders
+constexpr uint64_t mask = S-1;
 vector<bool> sieve;
+vector<_bigint> pow3;
 mutex rr_mutex;
+vector<pair<_bigint, int>> records;
 
-inline int clz_u128(__uint128_t u) {
+inline int clz_u128(const __uint128_t u) {
   uint64_t hi = u>>64;
   uint64_t lo = u;
   int retval[3]={
@@ -55,8 +58,11 @@ inline int clz_u128(__uint128_t u) {
   return 128-retval[idx];
 }
 
-std::ostream& operator>>( std::ostream& dest, __uint128_t value )
-{
+inline int crz_u128(const __uint128_t u) {
+	return (uint64_t)u ? std::countr_zero((uint64_t)u) : 64 + std::countr_zero((uint64_t)(u >> 64));
+}
+
+std::ostream& operator>>( std::ostream& dest, __uint128_t value ) {
 	__uint8_t base = 2;
 	std::ostream::sentry s( dest );
 	if ( s ) {
@@ -64,8 +70,7 @@ std::ostream& operator>>( std::ostream& dest, __uint128_t value )
 		char buffer[ 128 ];
 		char* d = std::end( buffer );
 		__uint8_t i = 0;
-		do
-		{
+		do {
 			-- d;
 			*d = "0123456789ABCDEF"[ tmp % base ];
 			tmp /= base;
@@ -79,8 +84,7 @@ std::ostream& operator>>( std::ostream& dest, __uint128_t value )
 	return dest;
 }
 
-std::ostream& operator<<( std::ostream& dest, __uint128_t value )
-{
+std::ostream& operator<<( std::ostream& dest, __uint128_t value ) {
 	__uint8_t base = 10;
 	std::ostream::sentry s( dest );
 	if ( s ) {
@@ -88,8 +92,7 @@ std::ostream& operator<<( std::ostream& dest, __uint128_t value )
 		char buffer[ 128 ];
 		char* d = std::end( buffer );
 		__uint8_t i = 0;
-		do
-		{
+		do {
 			-- d;
 			*d = "0123456789ABCDEF"[ tmp % base ];
 			tmp /= base;
@@ -103,31 +106,12 @@ std::ostream& operator<<( std::ostream& dest, __uint128_t value )
 	return dest;
 }
 
-void binary_write(ofstream& fout, const vector<bool>& x)
-{
-    vector<bool>::size_type n = x.size();
-    fout.write((const char*)&n, sizeof(vector<bool>::size_type));
-	cout << n;
-    for(vector<bool>::size_type i = 0; i < n;)
-    {
-        unsigned char aggr = 0;
-        for(unsigned char mask = 1; mask > 0 && i < n; ++i, mask <<= 1)
-            if(x[i])
-                aggr |= mask;
-		// cout << " " >> aggr;
-        fout.put((char &)aggr);
-    }
-	cout << endl;
-}
-
-void binary_read(ifstream& fin, vector<bool>& x)
-{
+void binary_read(ifstream& fin, vector<bool>& x) {
     vector<bool>::size_type n = 0;
     fin.read((char*)&n, sizeof(vector<bool>::size_type));
     x.resize(n);
 	cout << n;
-    for(vector<bool>::size_type i = 0; i < n;)
-    {
+    for(vector<bool>::size_type i = 0; i < n;) {
         unsigned char aggr = 0;
         fin.get((char &)aggr);
 		// cout << " " >> aggr;
@@ -145,25 +129,79 @@ int main () {
 		range[t] = t;
 	}
 
-	sieve.resize(S);
+	ifstream fin("sieve.dat", ios::binary);
+	binary_read(fin, sieve);
+	fin.close();
+
+	pow3.resize(83);
+	pow3[0] = 1;
+	for (uint16_t t = 1; t < 83; ++t) {
+		pow3[t] = 3*pow3[t-1];
+	}
 
 	std::for_each(std::execution::par, range.begin(), range.end(), [&](uint16_t& t) {
-		for (uint64_t k = t; k < S; k+=T) {
-			uint64_t x = 4*k+3;
+		int mmax = 0;
+		for (_bigint k = t; k <= MAX; k+=T) {
+			if (!sieve[k&mask]) {
+				continue;
+			}
+			_bigint x = 4*k+3;
 			int c = 0;
 			int m = 0;
-			for (; m < M; ++m) {
-				if (log23*c < m) break;
+			do {
+				++x;
+				int a = std::countr_zero((uint64_t)x);
+				x >>= a;
+				x *= pow3[a];
+				--x;
+				int b = std::countr_zero((uint64_t)x);
+				x >>= b;
+				c += a;
+				m += a+b;
+			} while (log23*c > m);
+
+			/*for (; m < MAX; ++m) {
+				if (log23*c < m) {
+					break;
+				}
+				//if ((c>>m) >= 3) break;
 				if (x&1) {
 					++c;
 					x += (x<<1)+1;
 				}
 				x >>= 1;
-			}
-			if (log23*c > m) {
+			}*/
+			if (m > mmax) {
+				while (log23*c < m-1) {
+					--m;
+				}
+				if (m <= mmax) {
+					continue;
+				}
+				mmax = m;
+				_bigint y = 4*k+3;
 				rr_mutex.lock();
-				++R;
-				sieve[k] = 1;
+				auto it = records.begin();
+				bool found = false;
+				while(it != records.end()) {
+					if (y < it->first && m >= it->second) {
+						it = records.erase(it);
+					} else {
+						if (y > it->first && m <= it->second) {
+							found = true;
+						}
+						++it;
+					}
+				}
+				if (!found) {
+					records.emplace_back(y, m);
+					sort(records.begin(), records.end());
+					stringstream str;
+					double seconds_since_start = difftime(time(0), start_time);
+					str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
+					str << "\t glide " << m << " " << y << " " >> y << " " << c << " " << x << endl;
+					cout << str.str();
+				}
 				rr_mutex.unlock();
 			}
 		}
@@ -172,30 +210,9 @@ int main () {
 	stringstream str;
 	double seconds_since_start = difftime(time(0), start_time);
 	str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-	str << "\t total of " << R << " reminders found at depth " << (uint32_t)M << endl;
+	str << "\t total of " << records.size() << " possible glide records found" << endl;
+	for (auto r: records) {
+		str << r.first << " " << r.second << endl;
+	}
 	cout << str.str();
-
-	/*cout << sieve.size();
-	for (uint64_t k = 0; k < S; ++k) {
-		if (sieve[k]) {
-				cout << " " << 4*k+3;
-		}
-	}
-	cout << endl;*/
-
-	ofstream fout("sieve.dat", ios::binary);
-	binary_write(fout, sieve);
-	fout.close();
-
-	ifstream fin("sieve.dat", ios::binary);
-	binary_read(fin, sieve);
-	fin.close();
-
-	/*cout << sieve.size();
-	for (uint64_t k = 0; k < S; ++k) {
-		if (sieve[k]) {
-				cout << " " << 4*k+3;
-		}
-	}
-	cout << endl;*/
 }
