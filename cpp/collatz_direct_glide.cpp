@@ -45,6 +45,7 @@ vector<bool> sieve;
 vector<_bigint> pow3;
 mutex rr_mutex;
 vector<pair<_bigint, int>> records;
+int mmax_global = 58;
 
 inline int clz_u128(const __uint128_t u) {
   uint64_t hi = u>>64;
@@ -140,7 +141,7 @@ int main () {
 	}
 
 	std::for_each(std::execution::par, range.begin(), range.end(), [&](uint16_t& t) {
-		int mmax = 0;
+		int mmax = 58;
 		for (_bigint k = t; k <= MAX; k+=T) {
 			if (!sieve[k&mask]) {
 				continue;
@@ -149,6 +150,14 @@ int main () {
 			int c = 0;
 			int m = 0;
 			do {
+				if (c > mmax_global) {
+					_bigint z = 4*k+3;
+					stringstream str;
+					double seconds_since_start = difftime(time(0), start_time);
+					str << seconds_since_start << "s\t" << t << " " << std::this_thread::get_id() << ":";
+					str << "\t candidate\t " << m << " " << c << "\t " << z << " " >> z << " " << x << endl;
+					cout << str.str();
+				}
 				++x;
 				int a = std::countr_zero((uint64_t)x);
 				x >>= a;
@@ -172,34 +181,56 @@ int main () {
 				x >>= 1;
 			}*/
 			if (m > mmax) {
+				_bigint y = x;
+				int c2 = c;
+				int m2 = m;
 				while (log23*c < m-1) {
 					--m;
+					x <<= 1;
 				}
 				if (m <= mmax) {
 					continue;
 				}
 				mmax = m;
-				_bigint y = 4*k+3;
+				if (m > mmax_global) {
+					mmax_global = m;
+				}
+				_bigint z = 4*k+3;
 				rr_mutex.lock();
 				auto it = records.begin();
 				bool found = false;
 				while(it != records.end()) {
-					if (y < it->first && m >= it->second) {
+					if (z < it->first && m >= it->second) {
 						it = records.erase(it);
 					} else {
-						if (y > it->first && m <= it->second) {
+						if (z > it->first && m <= it->second) {
 							found = true;
 						}
 						++it;
 					}
 				}
 				if (!found) {
-					records.emplace_back(y, m);
+					do {
+						++y;
+						int a = std::countr_zero((uint64_t)y);
+						y >>= a;
+						y *= pow3[a];
+						--y;
+						int b = std::countr_zero((uint64_t)y);
+						y >>= b;
+						c2 += a;
+						m2 += a+b;
+					} while (y > 1);
+					records.emplace_back(z, m);
 					sort(records.begin(), records.end());
 					stringstream str;
 					double seconds_since_start = difftime(time(0), start_time);
-					str << seconds_since_start << "s\t" << std::this_thread::get_id() << ":";
-					str << "\t glide " << m << " " << y << " " >> y << " " << c << " " << x << endl;
+					str << seconds_since_start << "s\t" << t << " " << std::this_thread::get_id() << ":";
+					str << "\t glide\t " << m << " " << c << "\t " << m2 << " " << c2 << "\t " << z << " " >> z << "\t ";
+					if (x > z) {
+						str << "!! ";
+					}
+					str << x << endl;
 					cout << str.str();
 				}
 				rr_mutex.unlock();
