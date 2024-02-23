@@ -10,12 +10,16 @@ const colorMap = ['yellow','indigo','gold','blue'];
 
 const App = () => {
 	const [x, setX] = React.useState(0);
-	const [n, setN] = React.useState(0);
+	const [m, setM] = React.useState(0);
+	const [l, setL] = React.useState(0);
 	const [z, setZ] = React.useState(BigInt(x));
 	const [bits, setBits] = React.useState([]);
+	const [path, setPath] = React.useState('');
 	React.useEffect(() => {
+		setM(0);
+		setL(0);
+		setPath('');
 		setZ(BigInt(`${x}`));
-		setN(0);
 	}, [x]);
 	React.useEffect(() => {
 		const newBits = [];
@@ -23,7 +27,7 @@ const App = () => {
 			let y = z;
 			let i = 0;
 			while (y > 0n) {
-				const prevBit = ((bits[0]??0n)&1n) && n>0 ? (bits[i]??0n)&1n : y&1n;
+				const prevBit = ((bits[0]??0n)&1n) && m>0 ? (bits[i+1]??0n)&1n : y&1n;
 				newBits.push((y&1n)+2n*prevBit);
 				y /= 2n;
 				i++;
@@ -31,15 +35,21 @@ const App = () => {
 		} catch {
 			console.log(x, y);
 		}
+		if (m > 0) {
+			setL(l => l + (bits[0]&1n ? 1 : 0));
+			setPath(`${bits[0]&1n ? '1' : '0'}${path}`);
+		}
 		setBits(newBits);
 	}, [z]);
 	return <>
 		<menu style={{ display: "flex", }}>
 			<input value={x} onChange={(e) => setX(e.target.value)} />
-			<button onClick={() => { setZ(y => y&1n ? 3n*y+1n : y/2n); setN(n => n+1) }}>Next</button>
+			<button onClick={() => { setZ(y => y&1n ? (3n*y+1n)/2n : y/2n); setM(m => m+1) }}>Next</button>
 		</menu>
-		<pre>Current number: {z.toString()}</pre>
-		<pre>Current step:   {n}</pre>
+		<pre>Current value: {z.toString()}</pre>
+		<pre>Current step:  {m}</pre>
+		<pre>Current odds:  {l}</pre>
+		<pre>Current path:  {path}</pre>
 		<svg style={{ "max-height": "100px" }} viewBox={`0 0 ${20*bits.length} 20`} xmlns="http://www.w3.org/2000/svg">
 			{bits.map((b, i) =>
 				<rect key={i} {...{
