@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+<script type="text/babel">
+
+const colorMap = ['yellow','indigo','gold','blue'];
+
+const App = () => {
+	const [x, setX] = React.useState(0);
+	const [n, setN] = React.useState(0);
+	const [z, setZ] = React.useState(BigInt(x));
+	const [bits, setBits] = React.useState([]);
+	React.useEffect(() => {
+		setZ(BigInt(`${x}`));
+		setN(0);
+	}, [x]);
+	React.useEffect(() => {
+		const newBits = [];
+		try {
+			let y = z;
+			let i = 0;
+			while (y > 0n) {
+				const prevBit = ((bits[0]??0n)&1n) && n>0 ? (bits[i]??0n)&1n : y&1n;
+				newBits.push((y&1n)+2n*prevBit);
+				y /= 2n;
+				i++;
+			}
+		} catch {
+			console.log(x, y);
+		}
+		setBits(newBits);
+	}, [z]);
+	return <>
+		<menu style={{ display: "flex", }}>
+			<input value={x} onChange={(e) => setX(e.target.value)} />
+			<button onClick={() => { setZ(y => y&1n ? 3n*y+1n : y/2n); setN(n => n+1) }}>Next</button>
+		</menu>
+		<pre>Current number: {z.toString()}</pre>
+		<pre>Current step:   {n}</pre>
+		<svg style={{ "max-height": "100px" }} viewBox={`0 0 ${20*bits.length} 20`} xmlns="http://www.w3.org/2000/svg">
+			{bits.map((b, i) =>
+				<rect key={i} {...{
+					fill: colorMap[b],
+					x: 2+20*i,
+					y: 2,
+					width: 16,
+					height: 16,
+				}} />
+			)}
+		</svg>
+	</>;
+}
+
+ReactDOM.createRoot(document.body).render(<App />);
+</script>
+</body>
+</html>
