@@ -37,7 +37,7 @@ constexpr _bigint MAX = std::numeric_limits<_bigint>::max();
 constexpr long double three = 3;
 const long double log23 = log2(three);
 
-constexpr uint16_t M = 39; // sieve depth
+constexpr uint16_t M = 40; // sieve depth
 constexpr uint64_t S = 1ULL<<(M-2);
 uint64_t R = 0; // number of reminders
 vector<bool> sieve;

@@ -33,19 +33,24 @@ using namespace std;
 time_t start_time = time(0);
 
 constexpr uint16_t T = 10; // CPU threads available
+_bigint minx[T];
+_bigint minx_global = 0;
 
-constexpr _bigint MAX = std::numeric_limits<_bigint>::max();
+constexpr uint16_t MAXP3 = 42;
+uint64_t pow3[MAXP3];
+
 constexpr long double three = 3;
 const long double log23 = log2(three);
 
-constexpr uint16_t M = 39; // sieve depth
+constexpr int MMAX = 1000000;
+
+constexpr uint16_t M = 40; // sieve depth
 constexpr uint64_t S = 1ULL<<(M-2);
 constexpr uint64_t mask = S-1;
 vector<bool> sieve;
-vector<_bigint> pow3;
+
 mutex rr_mutex;
 vector<pair<_bigint, int>> records;
-int mmax_global = 58;
 
 inline int clz_u128(const __uint128_t u) {
   uint64_t hi = u>>64;
@@ -60,7 +65,7 @@ inline int clz_u128(const __uint128_t u) {
 }
 
 inline int crz_u128(const __uint128_t u) {
-	return (uint64_t)u ? std::countr_zero((uint64_t)u) : 64 + std::countr_zero((uint64_t)(u >> 64));
+	return (uint64_t)u ? countr_zero((uint64_t)u) : (64 + countr_zero((uint64_t)(u >> 64)));
 }
 
 std::ostream& operator>>( std::ostream& dest, __uint128_t value ) {
@@ -134,15 +139,14 @@ int main () {
 	binary_read(fin, sieve);
 	fin.close();
 
-	pow3.resize(83);
 	pow3[0] = 1;
-	for (uint16_t t = 1; t < 83; ++t) {
+	for (uint16_t t = 1; t < MAXP3; ++t) {
 		pow3[t] = 3*pow3[t-1];
 	}
 
 	std::for_each(std::execution::par, range.begin(), range.end(), [&](uint16_t& t) {
 		int mmax = 58;
-		for (_bigint k = t; k <= MAX; k+=T) {
+		for (_bigint k = t;; k+=T) {
 			if (!sieve[k&mask]) {
 				continue;
 			}
@@ -150,7 +154,7 @@ int main () {
 			int c = 0;
 			int m = 0;
 			do {
-				if (c > mmax_global) {
+				if (c > MMAX) {
 					_bigint z = 4*k+3;
 					stringstream str;
 					double seconds_since_start = difftime(time(0), start_time);
@@ -159,27 +163,16 @@ int main () {
 					cout << str.str();
 				}
 				++x;
-				int a = std::countr_zero((uint64_t)x);
+				int a = countr_zero((uint64_t)x);
 				x >>= a;
 				x *= pow3[a];
 				--x;
-				int b = std::countr_zero((uint64_t)x);
+				int b = countr_zero((uint64_t)x);
 				x >>= b;
 				c += a;
 				m += a+b;
 			} while (log23*c > m);
 
-			/*for (; m < MAX; ++m) {
-				if (log23*c < m) {
-					break;
-				}
-				//if ((c>>m) >= 3) break;
-				if (x&1) {
-					++c;
-					x += (x<<1)+1;
-				}
-				x >>= 1;
-			}*/
 			if (m > mmax) {
 				_bigint y = x;
 				int c2 = c;
@@ -192,14 +185,27 @@ int main () {
 					continue;
 				}
 				mmax = m;
-				if (m > mmax_global) {
-					mmax_global = m;
-				}
 				_bigint z = 4*k+3;
 				rr_mutex.lock();
+				if (minx[t] <= minx_global) {
+					minx_global = z;
+					for (uint16_t tt=0; tt<T; ++tt) {
+						if (minx_global > minx[tt] && tt != t) {
+							minx_global = minx[tt];
+						}
+					}
+					if (minx_global > 0) {
+						stringstream str;
+						double seconds_since_start = difftime(time(0), start_time);
+						str << seconds_since_start << "s\t" << t << " " << std::this_thread::get_id() << ":";
+						str << "\t current progress: checked all numbers up to \t" << minx_global << endl;
+						cout << str.str();
+					}
+				}
+				minx[t] = z;
 				auto it = records.begin();
 				bool found = false;
-				while(it != records.end()) {
+				while (it != records.end()) {
 					if (z < it->first && m >= it->second) {
 						it = records.erase(it);
 					} else {
@@ -226,7 +232,7 @@ int main () {
 					stringstream str;
 					double seconds_since_start = difftime(time(0), start_time);
 					str << seconds_since_start << "s\t" << t << " " << std::this_thread::get_id() << ":";
-					str << "\t glide\t " << m << " " << c << "\t " << m2 << " " << c2 << "\t " << z << " " >> z << "\t ";
+					str << "\t glide\t" << m << " " << c << "\t" << m2 << " " << c2 << "\t" << z << " " >> z << "\t";
 					if (x > z) {
 						str << "!! ";
 					}
