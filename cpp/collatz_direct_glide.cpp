@@ -36,8 +36,8 @@ constexpr uint16_t T = 10; // CPU threads available
 _bigint minx[T];
 _bigint minx_global = 0;
 
-constexpr uint16_t MAXP3 = 42;
-uint64_t pow3[MAXP3];
+constexpr uint16_t MAXP3 = 83;
+_bigint pow3[MAXP3];
 
 constexpr long double three = 3;
 const long double log23 = log2(three);
@@ -150,7 +150,7 @@ int main () {
 			if (!sieve[k&mask]) {
 				continue;
 			}
-			_bigint x = 4*k+3;
+			_bigint x = (k<<2)|3;
 			int c = 0;
 			int m = 0;
 			do {
@@ -163,11 +163,11 @@ int main () {
 					cout << str.str();
 				}
 				++x;
-				int a = countr_zero((uint64_t)x);
+				int a = crz_u128(x);
 				x >>= a;
 				x *= pow3[a];
 				--x;
-				int b = countr_zero((uint64_t)x);
+				int b = crz_u128(x);
 				x >>= b;
 				c += a;
 				m += a+b;
@@ -218,11 +218,11 @@ int main () {
 				if (!found) {
 					do {
 						++y;
-						int a = std::countr_zero((uint64_t)y);
+						int a = crz_u128(y);
 						y >>= a;
 						y *= pow3[a];
 						--y;
-						int b = std::countr_zero((uint64_t)y);
+						int b = crz_u128(y);
 						y >>= b;
 						c2 += a;
 						m2 += a+b;
